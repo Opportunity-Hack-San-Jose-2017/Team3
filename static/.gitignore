@@ -1,0 +1,10 @@
+/node_modules
+.DS_Store
+build/
+npm-debug.log
+typings/
+.awcache/
+public/
+.*.swp
+**/__pycache__
+backend/venv
