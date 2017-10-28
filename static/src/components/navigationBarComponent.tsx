@@ -3,7 +3,7 @@ import store from '../redux/store/store'
 
 import * as style from 'ts-style'
 import {UIRouter, UIView, UISref, UISrefActive, pushStateLocationPlugin} from 'ui-router-react'
-import { aboutState, homeState, contactState } from '../routes/routes'
+import { aboutState, signupState, contactState } from '../routes/routes'
 import MainHeaderComponent from './mainHeaderComponent'
 import Link from './linkComponent'
 interface NavigationProps {
@@ -38,12 +38,12 @@ class NavigationBarComponent extends React.Component<NavigationProps, Navigation
     render() {
         return (
             <div>
-                <UIRouter plugins={[pushStateLocationPlugin]} states={[aboutState, contactState, homeState]}>
+                <UIRouter plugins={[pushStateLocationPlugin]} states={[aboutState, signupState, contactState]}>
 
                     <div style={mainPageCSS}>
                         <MainHeaderComponent />
                         <div style={navigationBarContainer}>
-                            <Link name='home' displayText='Home' />
+                            <Link name='signup' displayText='Signup' />
                             <Link name='about' displayText='About' />
                             <Link name='contact' displayText='Contact' />
                         </div>

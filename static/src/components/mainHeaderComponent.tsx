@@ -18,7 +18,7 @@ class MainHeaderComponent extends React.Component<{}, MainHeaderState> {
         return (
             <div>
                 <div style={mainHeaderContainer}>
-                    <h1>Council-Catalog</h1>
+                    <h1>Volenteer Game Changer</h1>
                     <div>
                     </div>
                 </div>
