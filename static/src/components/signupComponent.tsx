@@ -77,8 +77,6 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
         }
         else {
             interests.splice(interestIndex, 1)
-            console.log(interests)
-            console.log(interestIndex)
         }
         this.setState({
             ...this.state,
