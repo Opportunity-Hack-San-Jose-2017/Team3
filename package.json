@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
     "test": "npm run lint",
-    "build": "webpack",
+    "build": "webpack --hot",
     "start": "node index.js",
     "deploy": "NODE_ENV=production webpack --config webpack.production.config.js",
     "deploy-windows": "SET NODE_ENV=production & webpack --config webpack.production.config.js"

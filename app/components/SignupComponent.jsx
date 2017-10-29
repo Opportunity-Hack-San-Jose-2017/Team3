@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { interests } from '../models/interests'
 import  Checkbox from 'material-ui/Checkbox'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 
 class SignupComponent extends React.Component {
@@ -23,18 +26,18 @@ class SignupComponent extends React.Component {
             checkboxInterests: checkInter
         }
     }
-    handleFirstName = (event) => {
+    handleName = (event) => {
         event.preventDefault()
         this.setState({
             ...this.state,
-            firstName: event.target.value
+            name: event.target.value
         })
     }
-    handleLastName = (event) => {
+    handleCountry = (event) => {
         event.preventDefault()
         this.setState({
             ...this.state,
-            lastName: event.target.value
+            country: event.target.value
         })
     }
     handleEmail = (event) => {
@@ -51,7 +54,7 @@ class SignupComponent extends React.Component {
             password: event.target.value
         })
     }
-    handleRePass = (event) => {
+    handleRePassword = (event) => {
         event.preventDefault()
         this.setState({
             ...this.state,
@@ -71,43 +74,52 @@ class SignupComponent extends React.Component {
         })
     }
     disableCheckboxes = () => {
-        console.log(this.state.checkboxInterests)
-        console.log(this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length)
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
+    onSubmit(e) {
+        e.preventDefault();
+        fetch('/user', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state),
+        }).then(response => {
+            return console.log(response);
+        });
+    };
     render () {
         return (
-            <div>
-                <div>
-                    <label >First Name: </label><input type='text' placeholder='First Name' onChange={this.handleFirstName}/><br />
-                    <label>Last Name: </label><input type='text' placeholder='Last Name' onChange={this.handleLastName}/><br />
-                    <label>Email: </label><input type='email' placeholder='Email' onChange={this.handleEmail}/><br />
-                    <label>Password: </label><input type='password' placeholder='Passphrase' onChange={this.handlePassword}/><br />
-                    <label>Re Password: </label><input type='password' placeholder='Retype Passphrase' onChange={this.handleRePass}/><br />
-                </div>
-                <div>
-                    Interests list to select from
-                    {
-                        this.state.checkboxInterests.map( (checkInterest, index) => {
-                            if (this.disableCheckboxes()) {
-                                return (
-                                      <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                )
-                            }
-                            else {
-                                return (
-                                      <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                )
+            <MuiThemeProvider>
+                <form onSubmit={e => this.onSubmit(e)} className="MyForm">
+                    <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
+                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
+                    <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>
+                    <div><TextField type="password" name="password" floatingLabelText="Password"  onChange={this.handlePassword} /></div>
+                    <div><TextField type="password" name="password" floatingLabelText="Retype Password"  onChange={this.handleRePassword} /></div>
+                    <div>
+                        Interests list to select from
+                        {
+                            this.state.checkboxInterests.map( (checkInterest, index) => {
+                                if (this.disableCheckboxes()) {
+                                    return (
+                                          <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                    )
+                                }
+                                else {
+                                    return (
+                                          <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                    )
 
-                            }
-                        })
-                    }
-                </div>
-                <div>
-                    Skill list to select from
-                </div>
-                    <button onClick={this.handleRegister}>Register</button>
-                </div>
+                                }
+                            })
+                        }
+                    </div>
+
+                    <div><RaisedButton type="submit" label="Save" /></div>
+                </form>
+            </MuiThemeProvider>
         )
     }
 }
