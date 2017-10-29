@@ -124,7 +124,8 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
     }
 
     disableCheckboxes = () => {
-        console.log(this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3)
+        console.log(this.state.checkboxInterests)
+        console.log(this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length)
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
 
@@ -149,7 +150,7 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
                             }
                             else {
                                 return (
-                                        <Checkbox key={index} disabled={checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onChange={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                        <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onChange={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
                                 )
 
                             }
