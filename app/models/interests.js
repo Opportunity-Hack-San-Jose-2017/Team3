@@ -1,13 +1,14 @@
 var interests = [
-      'Grant Writing',
-      'Graphic Design/Web Design',
+      'Grant Writing / Legal',
+      'Web Design / Graphic Design',
       'Orphan Database Management',
       'Web Content Management',
       'Marketing',
-      'Corporate/Legal',
+      'Corporate / Legal',
       'Event Planning',
       'Teaching',
       'Public Speaking',
+      'Restaurant Campaign',
       'Other'
 ]
 

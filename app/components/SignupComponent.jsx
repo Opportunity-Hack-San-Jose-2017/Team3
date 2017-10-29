@@ -87,7 +87,9 @@ class SignupComponent extends React.Component {
             body: JSON.stringify(this.state),
         }).then(response => {
             return console.log(response);
-        });
+        }).catch(error => {
+            
+        };
     };
     render () {
         return (
