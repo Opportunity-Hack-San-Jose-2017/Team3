@@ -1,4 +1,5 @@
 import React from 'react';
+import SignupComponent from './SignupComponent';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -42,6 +43,8 @@ export default class App extends React.Component {
           <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={e => this.handleChange(e)} /></div>
           <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleChange(e)} /></div>
           <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={e => this.handleChange(e)} /></div>
+
+          <SignupComponent />
           <div><RaisedButton type="submit" label="Save" /></div>
         </form>
       </MuiThemeProvider>
