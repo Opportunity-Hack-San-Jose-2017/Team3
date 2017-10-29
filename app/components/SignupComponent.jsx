@@ -6,6 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import FbLogin from './fb-login.component.js'
 
+import FacebookLogin from 'react-facebook-login';
+
 class SignupComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -16,12 +18,10 @@ class SignupComponent extends React.Component {
         })
 
         this.state = {
-            firstName: '',
-            lastName: '',
+            name: '',
             email: '',
+            country: '',
             phone: '',
-            password: '',
-            rePassword: '',
             volenteerInterests: [],
             checkboxInterests: checkInter
         }
@@ -47,23 +47,26 @@ class SignupComponent extends React.Component {
             email: event.target.value
         })
     }
-    handlePassword = (event) => {
+    handlePhone = (event) => {
         event.preventDefault()
         this.setState({
             ...this.state,
-            password: event.target.value
+            phone: event.target.value
         })
     }
-    handleRePassword = (event) => {
-        event.preventDefault()
+    responseFacebook = (response) => {
+        console.log(response);
+        console.log(response.name);
+        console.log(response.email);
+
         this.setState({
             ...this.state,
-            rePassword: event.target.value
-        })
+            name: response.name,
+            email: response.email,
+        });
     }
-    handleRegister = (event) => {
-        event.preventDefault()
-        console.log(this.state)
+    redirectUrl = () => {
+
     }
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
@@ -95,12 +98,18 @@ class SignupComponent extends React.Component {
         return (
             <MuiThemeProvider>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
-                    <FbLogin />
+                    <FacebookLogin
+                        appId="749202875279319"
+                        autoLoad={true}
+                        textButton="Use Facebook Info"
+                        fields="name,email,picture"
+                        onClick={this.redirectUrl}
+                        callback={this.responseFacebook}
+                    />
                     <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>
-                    <div><TextField type="password" name="password" floatingLabelText="Password"  onChange={this.handlePassword} /></div>
-                    <div><TextField type="password" name="password" floatingLabelText="Retype Password"  onChange={this.handleRePassword} /></div>
+                    <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
                     <div>
                         Interests list to select from
                         {
@@ -126,7 +135,6 @@ class SignupComponent extends React.Component {
         )
     }
 }
-
 
 
 export default SignupComponent

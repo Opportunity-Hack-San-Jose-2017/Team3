@@ -14,7 +14,7 @@ export default class FbLogin extends React.Component {
         this.redirectUrl = this.redirectUrl.bind(this);
     }
 
-	responseFacebook = (response) => {
+    responseFacebook = (response) => {
         console.log(response);
         console.log(response.name);
         console.log(response.email);
