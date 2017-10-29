@@ -1,20 +1,34 @@
 import * as React from 'react'
 import { interests } from '../models/interests'
+import  Checkbox from 'react-toolbox/lib/checkbox'
+
+interface InterestCheckbox {
+    interest: string,
+    checked: boolean
+}
 
 interface VolenteerSignupState {
     firstName: string,
     lastName: string,
     phone: string,
     email: string,
-    volenteerInterests?: Array<string>,
+    volenteerInterests?: Array<InterestCheckbox>,
+    checkboxInterests?: Array<InterestCheckbox>,
     password: string,
     rePassword: string
 
 }
 
+
 class SignupComponent extends React.Component<{},VolenteerSignupState> {
     constructor(props) {
         super(props)
+        var checkInter = []
+        interests.map( (interest) => {
+            var data = { interest: interest, checked: false }
+            checkInter.push(data)
+        })
+
         this.state = {
             firstName: '',
             lastName: '',
@@ -22,7 +36,8 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
             phone: '',
             password: '',
             rePassword: '',
-            volenteerInterests: []
+            volenteerInterests: [],
+            checkboxInterests: checkInter
         }
     }
 
@@ -65,6 +80,21 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
         event.preventDefault()
         console.log(this.state)
     }
+    hasInterest = (event) => {
+        event.preventDefault()
+
+        var interest = event.target.value
+
+        var interests = this.state.volenteerInterests
+        var interestIndex = interests.indexOf(interest)
+        if (interestIndex == -1) {
+            return false
+        }
+        else {
+            return true
+        }
+
+    }
     handleInterest = (event) => {
         event.preventDefault()
 
@@ -84,6 +114,20 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
         })
     }
 
+    handleCheckbox = (event, index, interest) => {
+        var data = this.state.checkboxInterests
+        data[index] = { interest: data[index].interest, checked: !data[index].checked }
+        this.setState({
+            ...this.state,
+            checkboxInterests: data
+        })
+    }
+
+    disableCheckboxes = () => {
+        console.log(this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3)
+        return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
+    }
+
     render () {
         return (
             <div>
@@ -97,12 +141,18 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
                 <div>
                     Interests list to select from
                     {
-                        interests.map( (interest, index) => {
-                            return (
-                            <div key={index}>
-                                <input type='checkbox' value={interest} onChange={this.handleInterest}/><span>{interest}</span>
-                            </div>
-                            )
+                        this.state.checkboxInterests.map( (checkInterest, index) => {
+                            if (this.disableCheckboxes()) {
+                                return (
+                                    <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onChange={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                )
+                            }
+                            else {
+                                return (
+                                        <Checkbox key={index} disabled={checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onChange={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                )
+
+                            }
                         })
                     }
                 </div>
@@ -110,6 +160,30 @@ class SignupComponent extends React.Component<{},VolenteerSignupState> {
                     Skill list to select from
                 </div>
                 <button onClick={this.handleRegister}>Register</button>
+            </div>
+        )
+    }
+}
+
+
+interface CheckboxState {
+    checked: boolean
+}
+interface CheckboxProps {
+    key: any,
+    handleCheckbox: any,
+    checkedInterest: string
+}
+class MyCheckbox extends React.Component<CheckboxProps, CheckboxState> {
+    constructor(props) {
+        super(props)
+    }
+
+    render () {
+        return (
+            <div>
+                {this.props}
+                <input type='checkbox' value={this.props.checkedInterest} onChange={this.props.handleCheckbox}/><span>{this.props.checkedInterest}</span>
             </div>
         )
     }
