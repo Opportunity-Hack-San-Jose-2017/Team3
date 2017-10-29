@@ -6,6 +6,9 @@ export class NavbarComponent {
   menu = [{
     'title': 'Home',
     'state': 'main'
+  },{
+    'title': 'Events',
+    'state': 'event'
   }];
   isLoggedIn: Function;
   isAdmin: Function;

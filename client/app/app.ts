@@ -24,7 +24,7 @@ import main from './main/main.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
-
+import EventComponent from './event/event.component';
 
 import './app.scss';
 
@@ -47,7 +47,8 @@ angular.module('givelightApp', [
   main,
   constants,
   socket,
-  util
+  util,
+  EventComponent
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
