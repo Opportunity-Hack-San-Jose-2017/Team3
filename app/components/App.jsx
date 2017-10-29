@@ -3,6 +3,7 @@ import SignupComponent from './SignupComponent';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Header from './Header';
 
 require('./App.css');
 
@@ -25,7 +26,12 @@ export default class App extends React.Component {
 
   render() {
     return (
+      <MuiThemeProvider>
+        <div>
+        <Header />
         <SignupComponent />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
