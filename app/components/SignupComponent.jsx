@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import FbLogin from './fb-login.component.js'
+import Paper from 'material-ui/Paper';
 
 import FacebookLogin from 'react-facebook-login';
 
@@ -94,9 +95,15 @@ class SignupComponent extends React.Component {
             return console.log(error)
         });
     };
+
     render () {
+
+        const style = {
+                margin: "20px",
+                backgroundColor: "#F3F2F0"
+        };
         return (
-            <MuiThemeProvider>
+            <Paper zDepth={1} style={style}>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
                     <FacebookLogin
                         appId="749202875279319"
@@ -131,7 +138,7 @@ class SignupComponent extends React.Component {
 
                     <div><RaisedButton type="submit" label="Save" /></div>
                 </form>
-            </MuiThemeProvider>
+                </Paper>
         )
     }
 }
