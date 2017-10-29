@@ -108,6 +108,11 @@ class SignupComponent extends React.Component {
         const checkBoxStyle = {
                 marginTop: "20px",
         };
+
+        const darkStyle = {
+            margin: "20px",
+            backgroundColor: "#252525"
+        }
         return (
             <Paper zDepth={1} style={style}>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
@@ -143,7 +148,8 @@ class SignupComponent extends React.Component {
                         }
                     </div>
 
-                    <div style = {checkBoxStyle}><RaisedButton type="submit" label="Save" /></div>
+                    <div><RaisedButton style={darkStyle} type="submit" label="Save" /></div>
+
                 </form>
                 </Paper>
         )
