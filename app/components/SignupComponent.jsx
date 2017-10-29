@@ -102,6 +102,10 @@ class SignupComponent extends React.Component {
                 margin: "20px",
                 backgroundColor: "#F3F2F0"
         };
+
+        const checkBoxStyle = {
+                marginTop: "20px",
+        };
         return (
             <Paper zDepth={1} style={style}>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
@@ -112,12 +116,13 @@ class SignupComponent extends React.Component {
                         fields="name,email,picture"
                         onClick={this.redirectUrl}
                         callback={this.responseFacebook}
+                        style = {checkBoxStyle}
                     />
-                    <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
+                    <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    <div>
+                    <div style = {checkBoxStyle}>
                         Interests list to select from
                         {
                             this.state.checkboxInterests.map( (checkInterest, index) => {
@@ -136,7 +141,7 @@ class SignupComponent extends React.Component {
                         }
                     </div>
 
-                    <div><RaisedButton type="submit" label="Save" /></div>
+                    <div style = {checkBoxStyle}><RaisedButton type="submit" label="Save" /></div>
                 </form>
                 </Paper>
         )
