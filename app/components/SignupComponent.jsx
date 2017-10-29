@@ -4,7 +4,6 @@ import  Checkbox from 'material-ui/Checkbox'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import FbLogin from './fb-login.component.js'
 import Paper from 'material-ui/Paper';
 
 import FacebookLogin from 'react-facebook-login';
