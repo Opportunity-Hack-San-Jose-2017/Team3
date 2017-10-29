@@ -22,7 +22,6 @@ export default class FbLogin extends React.Component {
         this.setState({
             name: response.name,
             email: response.email,
-        });
     }
 
     redirectUrl = () => {

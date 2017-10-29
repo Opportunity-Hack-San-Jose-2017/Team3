@@ -89,8 +89,10 @@ class SignupComponent extends React.Component {
             },
             body: JSON.stringify(this.state),
         }).then(response => {
+            window.alert('Successfully signed up')
             return console.log(response);
         }).catch(error => {
+            window.alert('Error signing up')
             return console.log(error)
         });
     };
