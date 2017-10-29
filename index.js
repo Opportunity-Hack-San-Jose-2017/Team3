@@ -10,7 +10,6 @@ const db = require('./lib/db');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 const publicDir = process.argv[2] || __dirname + '/app';
-const hostname = 'localhost';
 
 app.use(bodyParser.json());
 
@@ -36,5 +35,5 @@ app.use(errorHandler({
   showStack: true
 }));
 
-console.log('Simple static server showing %s listening at http://%s:%s', publicDir, hostname, port);
-app.listen(port, hostname);
+console.log('Simple static server showing %s listening at port %s', publicDir, port);
+app.listen(port);
