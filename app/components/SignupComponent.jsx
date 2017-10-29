@@ -88,8 +88,8 @@ class SignupComponent extends React.Component {
         }).then(response => {
             return console.log(response);
         }).catch(error => {
-            
-        };
+            return console.log(error)
+        });
     };
     render () {
         return (

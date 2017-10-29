@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FacebookLogin from 'react-facebook-login';
 
-export class FbLogin extends React.Component {
+export default class FbLogin extends React.Component {
 
     constructor(props) {
         super(props);
