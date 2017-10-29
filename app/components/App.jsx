@@ -7,6 +7,11 @@ import Header from './Header';
 
 require('./App.css');
 
+var mystyle = {
+    margin: "0px",
+    backgroundColor: "#F3F2F0"
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
