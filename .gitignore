@@ -41,7 +41,6 @@ build
 .DS_Store
 
 # Packaged and compiled files
-lib
 .eslintcache
 
 # Env configuration
