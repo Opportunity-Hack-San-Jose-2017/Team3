@@ -4,7 +4,7 @@ import  Checkbox from 'material-ui/Checkbox'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-
+import FbLogin from './fb-login.component.js'
 
 class SignupComponent extends React.Component {
     constructor(props) {
@@ -95,6 +95,7 @@ class SignupComponent extends React.Component {
         return (
             <MuiThemeProvider>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
+                    <FbLogin />
                     <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>

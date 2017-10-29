@@ -8,7 +8,7 @@ const errorHandler = require('errorhandler');
 const methodOverride = require('method-override');
 const db = require('./lib/db');
 
-const port = parseInt(process.env.PORT, 10) || 8000;
+const port = parseInt(process.env.PORT, 10) || 3000;
 const publicDir = process.argv[2] || __dirname + '/app';
 
 app.use(bodyParser.json());
