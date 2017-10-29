@@ -1,4 +1,7 @@
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 require('./App.css');
 
@@ -14,7 +17,6 @@ export default class App extends React.Component {
   };
 
   handleChange(event) {
-    console.log(event.target.name);
     const field = event.target.name;
     this.setState({[field]: event.target.value});
   }
@@ -35,14 +37,14 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-      <form onSubmit={e => this.onSubmit(e)} className="MyForm">
-        <div>Name: <input type="text" name="name" value={this.state.name} onChange={e => this.handleChange(e)} /></div>
-        <div>Email: <input type="text" name="email" value={this.state.email} onChange={e => this.handleChange(e)} /></div>
-        <div>Country: <input type="text" name="country" value={this.state.country}  onChange={e => this.handleChange(e)} /></div>
-        <div><button type="submit">Save</button></div>
-      </form>
-      </div>
+      <MuiThemeProvider>
+        <form onSubmit={e => this.onSubmit(e)} className="MyForm">
+          <div><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={e => this.handleChange(e)} /></div>
+          <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleChange(e)} /></div>
+          <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={e => this.handleChange(e)} /></div>
+          <div><RaisedButton type="submit" label="Save" /></div>
+        </form>
+      </MuiThemeProvider>
     );
   }
 }

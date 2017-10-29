@@ -16,6 +16,7 @@
     "body-parser": "^1.1.2",
     "errorhandler": "^1.0.1",
     "express": "^4.1.2",
+    "material-ui": "^0.19.4",
     "method-override": "^1.0.0",
     "mongodb": "^2.2.33",
     "react": "15.x",
