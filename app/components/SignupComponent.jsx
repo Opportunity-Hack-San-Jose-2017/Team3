@@ -23,7 +23,8 @@ class SignupComponent extends React.Component {
             country: '',
             phone: '',
             volenteerInterests: [],
-            checkboxInterests: checkInter
+            checkboxInterests: checkInter,
+            skills: []
         }
     }
     handleName = (event) => {
@@ -55,10 +56,6 @@ class SignupComponent extends React.Component {
         })
     }
     responseFacebook = (response) => {
-        console.log(response);
-        console.log(response.name);
-        console.log(response.email);
-
         this.setState({
             ...this.state,
             name: response.name,
@@ -71,9 +68,15 @@ class SignupComponent extends React.Component {
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
+        var volenteerInterests = data.map( interestCheckbox => {
+            if (interestCheckbox.checked) {
+                return interestCheckbox.interest
+            }
+        })
         this.setState({
             ...this.state,
-            checkboxInterests: data
+            checkboxInterests: data,
+            volenteerInterests: volenteerInterests
         })
     }
     disableCheckboxes = () => {
@@ -81,13 +84,17 @@ class SignupComponent extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault();
+        var uploadData = {
+            ...this.state
+        }
+        delete uploadData.checkboxInterests
         fetch('/user', {
             method: 'POST',
             headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
             },
-            body: JSON.stringify(this.state),
+            body: JSON.stringify(uploadData),
         }).then(response => {
             window.alert('Successfully signed up')
             return console.log(response);
@@ -100,24 +107,33 @@ class SignupComponent extends React.Component {
     render () {
 
         const style = {
-                margin: "20px",
-                backgroundColor: "#F3F2F0"
+            margin: "20px",
+            backgroundColor: "#F3F2F0"
         };
 
         const checkBoxStyle = {
-                marginTop: "20px",
+            marginTop: "20px",
         };
 
         const darkStyle = {
             margin: "20px",
             backgroundColor: "#252525"
         }
+        const volunteerDetailsContainer = {
+            display: 'inline-block',
+            width: '100%'
+        }
+        const interestsCheckboxContainer = {
+            display: 'inline-block',
+            width: '50%',
+            backgroundColor: 'red'
+        }
         return (
             <Paper zDepth={1} style={style}>
                 <form onSubmit={e => this.onSubmit(e)} className="MyForm">
                     <FacebookLogin
                         appId="749202875279319"
-                        autoLoad={true}
+                        autoLoad={false}
                         textButton="Use Facebook Info"
                         fields="name,email,picture"
                         onClick={this.redirectUrl}
@@ -128,25 +144,29 @@ class SignupComponent extends React.Component {
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    <div style = {checkBoxStyle}>
-                        Interests list to select from
-                        {
-                            this.state.checkboxInterests.map( (checkInterest, index) => {
-                                if (this.disableCheckboxes()) {
-                                    return (
-                                          <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                    )
-                                }
-                                else {
-                                    return (
-                                          <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                    )
+                    
+                    <div style={volunteerDetailsContainer}>
+                        <div style={interestsCheckboxContainer}>
+                            <div style = {checkBoxStyle}>
+                                Interests list to select from
+                                {
+                                    this.state.checkboxInterests.map( (checkInterest, index) => {
+                                        if (this.disableCheckboxes()) {
+                                            return (
+                                                  <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                  <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                            )
 
+                                        }
+                                    })
                                 }
-                            })
-                        }
+                            </div>
+                        </div>
                     </div>
-
                     <div><RaisedButton style={darkStyle} type="submit" label="Save" /></div>
 
                 </form>
