@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector'
 
 import FacebookLogin from 'react-facebook-login';
 
@@ -21,10 +22,10 @@ class SignupComponent extends React.Component {
             name: '',
             email: '',
             country: '',
+            region: '',
             phone: '',
             volenteerInterests: [],
             checkboxInterests: checkInter,
-            skills: []
         }
     }
     handleName = (event) => {
@@ -34,11 +35,18 @@ class SignupComponent extends React.Component {
             name: event.target.value
         })
     }
-    handleCountry = (event) => {
-        event.preventDefault()
+    handleCountry = (value) => {
+        console.log(value)
         this.setState({
             ...this.state,
-            country: event.target.value
+            country: value
+        })
+    }
+    handleRegion = (value) => {
+        console.log(value)
+        this.setState({
+            ...this.state,
+            region: value
         })
     }
     handleEmail = (event) => {
@@ -68,9 +76,10 @@ class SignupComponent extends React.Component {
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volenteerInterests = data.map( interestCheckbox => {
+        var volenteerInterests = []
+        data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                return interestCheckbox.interest
+                volenteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
@@ -82,8 +91,36 @@ class SignupComponent extends React.Component {
     disableCheckboxes = () => {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
+    validateState = () => {
+        var errorMessage = ''
+        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
+        console.log(emailPatternReg.test(this.state.email))
+        if (this.state.name.length == 0) {
+            errorMessage += 'Please enter a valid name\n'
+        }
+        if (emailPatternReg.test(this.state.email)) {
+            errorMessage += 'Please enter a valid email\n'
+        }
+        if (this.state.country == '') {
+            errorMessage += 'Please select a country\n'
+        }
+        if (this.state.region == '') {
+            errorMessage += 'Please select a region\n'
+        }
+        return errorMessage
+    }
     onSubmit(e) {
         e.preventDefault();
+        let error = this.validateState()
+        if (error.length == 0) {
+            //this.createUser()
+        }
+        else {
+            window.alert(error)
+        }
+
+    };
+    createUser = () => {
         var uploadData = {
             ...this.state
         }
@@ -91,8 +128,8 @@ class SignupComponent extends React.Component {
         fetch('/user', {
             method: 'POST',
             headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(uploadData),
         }).then(response => {
@@ -102,13 +139,15 @@ class SignupComponent extends React.Component {
             window.alert('Error signing up')
             return console.log(error)
         });
-    };
+
+    }
 
     render () {
 
         const style = {
             margin: "20px",
-            backgroundColor: "#F3F2F0"
+            backgroundColor: "#F3F2F0",
+            textAlign: 'center'
         };
 
         const checkBoxStyle = {
@@ -125,8 +164,10 @@ class SignupComponent extends React.Component {
         }
         const interestsCheckboxContainer = {
             display: 'inline-block',
-            width: '50%',
-            backgroundColor: 'red'
+            width: '50%'
+        }
+        const countryRegionContainer = {
+            margin: '10px',
         }
         return (
             <Paper zDepth={1} style={style}>
@@ -142,13 +183,22 @@ class SignupComponent extends React.Component {
                     />
                     <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
-                    <div><TextField type="text" name="country" value={this.state.country} floatingLabelText="Country"  onChange={this.handleCountry} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    
+                    <div style={countryRegionContainer}>
+                        <CountryDropdown
+                            value={this.state.country}
+                            onChange={this.handleCountry} 
+                        />
+                        <RegionDropdown
+                            country={this.state.country}
+                            value={this.state.region}
+                            onChange={this.handleRegion} 
+                        />
+                    </div>
                     <div style={volunteerDetailsContainer}>
                         <div style={interestsCheckboxContainer}>
                             <div style = {checkBoxStyle}>
-                                Interests list to select from
+                                <h3>Please choose at most 3</h3>
                                 {
                                     this.state.checkboxInterests.map( (checkInterest, index) => {
                                         if (this.disableCheckboxes()) {
