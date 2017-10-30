@@ -164,7 +164,8 @@ class SignupComponent extends React.Component {
         }
         const interestsCheckboxContainer = {
             display: 'inline-block',
-            width: '50%'
+            width: '360px',
+            textAlign: 'left'
         }
         const countryRegionContainer = {
             margin: '10px',
@@ -196,9 +197,9 @@ class SignupComponent extends React.Component {
                         />
                     </div>
                     <div style={volunteerDetailsContainer}>
+                        <h3>Please choose at most 3</h3>
                         <div style={interestsCheckboxContainer}>
                             <div style = {checkBoxStyle}>
-                                <h3>Please choose at most 3</h3>
                                 {
                                     this.state.checkboxInterests.map( (checkInterest, index) => {
                                         if (this.disableCheckboxes()) {
