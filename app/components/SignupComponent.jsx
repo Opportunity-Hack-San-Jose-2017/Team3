@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector'
+import { registerUser } from '../api/api'
 
 import FacebookLogin from 'react-facebook-login';
 
@@ -113,34 +114,13 @@ class SignupComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (error.length == 0) {
-            //this.createUser()
+            registerUser(this.state)
         }
         else {
             window.alert(error)
         }
 
     };
-    createUser = () => {
-        var uploadData = {
-            ...this.state
-        }
-        delete uploadData.checkboxInterests
-        fetch('/user', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(uploadData),
-        }).then(response => {
-            window.alert('Successfully signed up')
-            return console.log(response);
-        }).catch(error => {
-            window.alert('Error signing up')
-            return console.log(error)
-        });
-
-    }
 
     render () {
 
@@ -169,6 +149,10 @@ class SignupComponent extends React.Component {
         }
         const countryRegionContainer = {
             margin: '10px',
+        }
+        const saveButton = {
+            width: '185px',
+            fontSize: '26px'
         }
         return (
             <Paper zDepth={1} style={style}>
@@ -218,7 +202,7 @@ class SignupComponent extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div><RaisedButton style={darkStyle} type="submit" label="Save" /></div>
+                    <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Save" /></div>
 
                 </form>
                 </Paper>
