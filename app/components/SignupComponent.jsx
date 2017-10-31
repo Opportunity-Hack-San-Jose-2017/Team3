@@ -205,7 +205,7 @@ class SignupComponent extends React.Component {
                     <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Save" /></div>
 
                 </form>
-                </Paper>
+            </Paper>
         )
     }
 }

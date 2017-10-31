@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { loginUser } from '../api/api'
 
 class LoginComponent extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class LoginComponent extends React.Component {
         })
     }
 
-    handleLoginEvent = (event) => {
+    loginUser = () => {
         
     }
 
@@ -38,11 +39,14 @@ class LoginComponent extends React.Component {
             ...this.state,
             name: response.name,
             email: response.email,
-        });
+        })
     }
 
     redirectUrl = () => {
 
+    }
+    onSubmit = (even) => {
+        loginUser()
     }
 
     render() {
@@ -66,7 +70,7 @@ class LoginComponent extends React.Component {
         }
         return (
             <Paper zDepth={1} style={style}>
-                <form onSubmit={e => this.onSubmit(e)} className="MyForm">
+                <form onSubmit={this.onSubmit} className="LoginForm">
                     <FacebookLogin
                         appId="749202875279319"
                         autoLoad={false}

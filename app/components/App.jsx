@@ -22,6 +22,7 @@ export default class App extends React.Component {
     return (
       <MuiThemeProvider>
           <div>
+              <Header />
               <NavigationBarComponent />
           </div>
       </MuiThemeProvider>
