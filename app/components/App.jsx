@@ -20,9 +20,11 @@ export default class App extends React.Component {
 
   render() {
     return (
-        <div>
-            <NavigationBarComponent />
-        </div>
+      <MuiThemeProvider>
+          <div>
+              <NavigationBarComponent />
+          </div>
+      </MuiThemeProvider>
     );
   }
 }

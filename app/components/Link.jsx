@@ -19,7 +19,6 @@ class Link extends React.Component {
     }
     toggleHoverState = (event) => {
         event.preventDefault()
-        console.log(this.state)
         this.setState({
             hover: !this.state.hover
         })
