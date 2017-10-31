@@ -32,7 +32,13 @@ class LoginComponent extends React.Component {
         
     }
 
-    rendor() {
-
+    render() {
+        return (
+            <div>
+                ready to login
+            </div>
+        )
     }
 }
+
+export default LoginComponent

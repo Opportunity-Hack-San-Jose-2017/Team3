@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Header from './Header';
+import NavigationBarComponent from './NavigationComponent' 
 
 require('./App.css');
 
@@ -17,26 +18,11 @@ export default class App extends React.Component {
     super(props);
   }
 
-  state = {
-    name: '',
-    email: '',
-    country: '',
-  };
-
-  handleChange(event) {
-    const field = event.target.name;
-    this.setState({[field]: event.target.value});
-  }
-
-
   render() {
     return (
-      <MuiThemeProvider>
         <div>
-        <Header />
-        <SignupComponent />
+            <NavigationBarComponent />
         </div>
-      </MuiThemeProvider>
     );
   }
 }

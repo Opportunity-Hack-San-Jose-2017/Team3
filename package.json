@@ -13,6 +13,7 @@
     "heroku-postbuild": "webpack -p --config ./webpack.production.config.js --progress"
   },
   "dependencies": {
+    "@uirouter/react": "^0.5.4",
     "babel-core": "6.x",
     "babel-eslint": "7.x",
     "babel-loader": "6.x",
@@ -47,6 +48,7 @@
     "react-facebook-login": "3.6.2",
     "react-toolbox": "^2.0.0-beta.12",
     "style-loader": "~0.13.1",
+    "ui-router-react": "^0.5.0",
     "webpack": "1.x"
   },
   "devDependencies": {
