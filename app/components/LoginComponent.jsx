@@ -9,6 +9,7 @@ import { loginUser } from '../api/api'
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
+        console.log(this.props.params)
         this.state = {
             email: '',
             passphrase: ''
@@ -30,23 +31,35 @@ class LoginComponent extends React.Component {
         })
     }
 
-    loginUser = () => {
-        
-    }
-
     responseFacebook = (response) => {
         this.setState({
             ...this.state,
             name: response.name,
             email: response.email,
         })
+        loginUser(this.state)
+        window.location.href = window.location.origin + '/profile'
     }
 
     redirectUrl = () => {
 
     }
+    validateState = () => {
+        var errorMessage = ''
+        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
+        if (this.state.email.length == 0 || emailPatternReg.test(this.state.email)) {
+            errorMessage += 'Please enter a valid email\n'
+        }
+        return errorMessage
+    }
     onSubmit = (even) => {
-        loginUser()
+        let errorMsg = this.validateState()
+        if (errorMsg.length != 0) {
+            loginUser(this.state)
+        }
+        else {
+            window.alert(errorMsg)
+        }
     }
 
     render() {

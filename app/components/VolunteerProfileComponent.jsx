@@ -6,11 +6,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector'
-import { registerUser } from '../api/api'
+import { updateUser } from '../api/api'
 
 import FacebookLogin from 'react-facebook-login';
 
-class SignupComponent extends React.Component {
+class VolunteerProfileComponent extends React.Component {
     constructor(props) {
         super(props)
         var checkInter = []
@@ -103,7 +103,7 @@ class SignupComponent extends React.Component {
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            volenteerInterests: volenteerInterests
+            interests: volenteerInterests
         })
     }
     disableCheckboxes = () => {
@@ -139,7 +139,7 @@ class SignupComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (error.length == 0) {
-            registerUser(this.state)
+            updateUser(this.state)
         }
         else {
             window.alert(error)
@@ -181,16 +181,8 @@ class SignupComponent extends React.Component {
         }
         return (
             <Paper zDepth={1} style={style}>
-                <form onSubmit={e => this.onSubmit(e)} className="MyForm">
-                    <FacebookLogin
-                        appId="749202875279319"
-                        autoLoad={false}
-                        textButton="Use Facebook Info"
-                        fields="name,email,picture"
-                        onClick={this.redirectUrl}
-                        callback={this.responseFacebook}
-                        style = {checkBoxStyle}
-                    />
+                <h2>Volunteer Profile</h2>
+                <form onSubmit={e => this.onSubmit(e)} className="UpdateProfileForm">
                     <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
@@ -229,7 +221,7 @@ class SignupComponent extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Save" /></div>
+                    <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Update Info" /></div>
 
                 </form>
             </Paper>
@@ -238,4 +230,4 @@ class SignupComponent extends React.Component {
 }
 
 
-export default SignupComponent
+export default VolunteerProfileComponent
