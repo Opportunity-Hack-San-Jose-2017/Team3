@@ -154,15 +154,6 @@ class VolunteerProfileComponent extends React.Component {
         if (this.state.region == '') {
             errorMessage += 'Please select a region\n'
         }
-        if (this.state.passphrase == this.state.retypePassphrase) {
-            errorMessage += 'Passphrases do not match\n'
-        }
-        if (this.state.passphrase != '') {
-            errorMessage += 'Please select a region\n'
-        }
-        if (this.state.retypePassphrase != '') {
-            errorMessage += 'Please select a region\n'
-        }
         return errorMessage
     }
     onSubmit(e) {
@@ -216,8 +207,6 @@ class VolunteerProfileComponent extends React.Component {
                     <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
-                    <div><TextField type="password" name="repassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={this.handleRetypePassphrase} /></div>
                     <div style={countryRegionContainer}>
                         <CountryDropdown
                             value={this.state.country}

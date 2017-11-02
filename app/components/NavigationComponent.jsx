@@ -12,19 +12,28 @@ class NavigationBarComponent extends React.Component {
     constructor(props: NavigationProps) {
         super(props)
         this.state = {
-      
+            loggedInUserBar: false
         }
 
     }
 
     render() {
+        const navBarContainer = {
+            display: 'block',
+            textAlign: 'center'
+        }
+        const navBarItem = {
+            display: 'inline-block',
+            fontSize: '24px',
+            margin: '10px'
+
+        }
         return (
             <Router>
                 <div>
-                    <div >
-                        <Link to='/login'>Login</Link>
-                        <Link to='/signup'>Signup</Link>
-                        <Link to='/profile'></Link>
+                    <div style={navBarContainer} >
+                        <Link style={navBarItem} to='/login'>Login</Link>
+                        <Link style={navBarItem} to='/signup'>Signup</Link>
                     </div>
                     <hr/>
 
