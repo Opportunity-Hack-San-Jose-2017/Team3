@@ -14,18 +14,39 @@ class VolunteerProfileComponent extends React.Component {
     constructor(props) {
         super(props)
         var checkInter = []
-        interests.map( (interest) => {
-            var data = { interest: interest, checked: false }
-            checkInter.push(data)
-        })
         
         if (this.props.location.state) {
+            
+            var volunteerInterests = this.props.location.state.interests.length == 0 ? this.props.location.state.volenteerInterests : this.props.location.state.interests
+            interests.map( (interest) => {
+                var data = {}
+                var interestIndex = volunteerInterests.indexOf(interest)
+                console.log(interestIndex)
+                console.log(interest)
+                console.log(volunteerInterests)
+                if (interestIndex != -1) {
+                    data = { interest: interest, checked: true }
+                }
+                else {
+                    data = { interest: interest, checked: false }
+                }
+                checkInter.push(data)
+            })
+            console.log('if true')
+            console.log(checkInter)
             this.state = {
                 ...this.props.location.state,
                 checkboxInterests: checkInter,
             }
         }
         else {
+            interests.map( (interest) => {
+                var data = {}
+                data = { interest: interest, checked: false }
+                checkInter.push(data)
+            })
+            console.log('if false')
+            console.log(checkInter)
             this.state = {
                 name: '',
                 email: '',
@@ -38,6 +59,7 @@ class VolunteerProfileComponent extends React.Component {
                 checkboxInterests: checkInter,
             }
         }
+        console.log(this.state)
     }
     handleName = (event) => {
         event.preventDefault()
@@ -102,16 +124,16 @@ class VolunteerProfileComponent extends React.Component {
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volenteerInterests = []
+        var volunteerInterests = []
         data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                volenteerInterests.push(interestCheckbox.interest)
+                volunteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            interests: volenteerInterests
+            interests: volunteerInterests
         })
     }
     disableCheckboxes = () => {

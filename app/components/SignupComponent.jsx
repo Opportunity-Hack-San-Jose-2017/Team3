@@ -94,16 +94,16 @@ class SignupComponent extends React.Component {
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volenteerInterests = []
+        var volunteerInterests = []
         data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                volenteerInterests.push(interestCheckbox.interest)
+                volunteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            volenteerInterests: volenteerInterests
+            interests: volunteerInterests
         })
     }
     disableCheckboxes = () => {
