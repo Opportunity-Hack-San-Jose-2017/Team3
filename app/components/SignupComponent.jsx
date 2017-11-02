@@ -85,7 +85,7 @@ class SignupComponent extends React.Component {
         if (!this.state.name) {
             errorMessage += 'Please enter a valid name\n'
         }
-        if (emailPatternReg.test(this.state.email)) {
+        if (!emailPatternReg.test(this.state.email)) {
             errorMessage += 'Please enter a valid email\n'
         }
         if (!this.state.country) {
