@@ -13,9 +13,9 @@ import FacebookLogin from 'react-facebook-login';
 class SignupComponent extends React.Component {
     constructor(props) {
         super(props)
-        var checkInter = []
+        const checkInter = []
         interests.map( (interest) => {
-            var data = { interest: interest, checked: false }
+            const data = { interest: interest, checked: false }
             checkInter.push(data)
         })
 
@@ -31,53 +31,23 @@ class SignupComponent extends React.Component {
             checkboxInterests: checkInter,
         }
     }
-    handleName = (event) => {
+    handleField = (fieldName, event) => {
         event.preventDefault()
         this.setState({
             ...this.state,
-            name: event.target.value
+            [fieldName]: event.target.value
         })
     }
-    handleCountry = (value) => {
-        console.log(value)
+    handleCountry = (event, index, value) => {
         this.setState({
             ...this.state,
             country: value
         })
     }
-    handleRegion = (value) => {
-        console.log(value)
+    handleRegion = (event, index, value) => {
         this.setState({
             ...this.state,
             region: value
-        })
-    }
-    handleEmail = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            email: event.target.value
-        })
-    }
-    handlePhone = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            phone: event.target.value
-        })
-    }
-    handlePassphrase = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            passphrase: event.target.value
-        })
-    }
-    handleRetypePassphrase = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            retypePassphrase: event.target.value
         })
     }
     responseFacebook = (response) => {
@@ -110,35 +80,35 @@ class SignupComponent extends React.Component {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
     validateState = () => {
-        var errorMessage = ''
+        let errorMessage = ''
         let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
-        if (this.state.name.length == 0) {
+        if (!this.state.name) {
             errorMessage += 'Please enter a valid name\n'
         }
         if (emailPatternReg.test(this.state.email)) {
             errorMessage += 'Please enter a valid email\n'
         }
-        if (this.state.country == '') {
+        if (!this.state.country) {
             errorMessage += 'Please select a country\n'
         }
-        if (this.state.region == '') {
+        if (!this.state.region) {
             errorMessage += 'Please select a region\n'
         }
-        if (this.state.passphrase == this.state.retypePassphrase) {
+        if (!this.state.passphrase) {
+            errorMessage += 'Please enter a passphrase\n'
+        }
+        if (!this.state.retypePassphrase) {
+            errorMessage += 'Please retype the passphrase\n'
+        }
+        if (this.state.passphrase !== this.state.retypePassphrase) {
             errorMessage += 'Passphrases do not match\n'
-        }
-        if (this.state.passphrase != '') {
-            errorMessage += 'Please select a region\n'
-        }
-        if (this.state.retypePassphrase != '') {
-            errorMessage += 'Please select a region\n'
         }
         return errorMessage
     }
     onSubmit(e) {
         e.preventDefault();
         let error = this.validateState()
-        if (error.length == 0) {
+        if (!error) {
             registerUser(this.state)
         }
         else {
@@ -148,7 +118,6 @@ class SignupComponent extends React.Component {
     };
 
     render () {
-
         const style = {
             margin: "20px",
             backgroundColor: "#F3F2F0",
@@ -191,16 +160,18 @@ class SignupComponent extends React.Component {
                         callback={this.responseFacebook}
                         style = {checkBoxStyle}
                     />
-                    <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
-                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
-                    <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
-                    <div><TextField type="password" name="repassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={this.handleRetypePassphrase} /></div>
+                    <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
+                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
+                    <div><TextField type="number" floatingLabelText="Phone" name="phone" onChange={(e) => this.handleField('phone', e)} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={(e) => this.handleField('passphrase', e)} /></div>
+                    <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
                     <div style={countryRegionContainer}>
                         <CountryDropdown
                             value={this.state.country}
                             onChange={this.handleCountry} 
                         />
+                    </div>
+                    <div>
                         <RegionDropdown
                             country={this.state.country}
                             value={this.state.region}

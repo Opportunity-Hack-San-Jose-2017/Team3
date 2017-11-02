@@ -4,7 +4,7 @@ import { SignupState, LoginState, VolunteerProfileState } from '../routes/routes
 import Link from './Link'
 
 class NavigationBarComponent extends React.Component {
-    constructor(props: NavigationProps) {
+    constructor(props) {
         super(props)
         this.state = {
       
