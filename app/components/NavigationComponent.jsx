@@ -1,31 +1,48 @@
 import * as React from 'react'
-import {UIRouter, UIView, UISref, UISrefActive, pushStateLocationPlugin} from 'ui-router-react'
-import { SignupState, LoginState, VolunteerProfileState } from '../routes/routes'
-import Link from './Link'
+import LoginComponent from './LoginComponent'
+import SignupComponent from './SignupComponent'
+import VolunteerProfileComponent from './VolunteerProfileComponent'
+import {
+      BrowserRouter as Router,
+      Route,
+      Link
+} from 'react-router-dom'
 
 class NavigationBarComponent extends React.Component {
     constructor(props: NavigationProps) {
         super(props)
         this.state = {
-      
+            loggedInUserBar: false
         }
 
     }
 
     render() {
+        const navBarContainer = {
+            display: 'block',
+            textAlign: 'center'
+        }
+        const navBarItem = {
+            display: 'inline-block',
+            fontSize: '24px',
+            margin: '10px'
+
+        }
         return (
-            <div>
-                <UIRouter plugins={[pushStateLocationPlugin]} states={[LoginState('stupid bloody framework'), SignupState, VolunteerProfileState]}>
-                <div >
-                    <div >
-                        <Link name='login' displayText='Login' />
-                        <Link name='signup' displayText='Signup' />
-                        <Link name='profile' />
+            <Router>
+                <div>
+                    <div style={navBarContainer} >
+                        <Link style={navBarItem} to='/login'>Login</Link>
+                        <Link style={navBarItem} to='/signup'>Signup</Link>
                     </div>
-                    <UIView/>
+                    <hr/>
+
+                    <Route exact path="/" component={LoginComponent}/>
+                    <Route path="/login" component={LoginComponent}/>
+                    <Route path="/signup" component={SignupComponent}/>
+                    <Route path="/profile" component={VolunteerProfileComponent}/>
                 </div>
-                </UIRouter>
-            </div>
+            </Router>
         )
     }
 }

@@ -14,22 +14,52 @@ class VolunteerProfileComponent extends React.Component {
     constructor(props) {
         super(props)
         var checkInter = []
-        interests.map( (interest) => {
-            var data = { interest: interest, checked: false }
-            checkInter.push(data)
-        })
-
-        this.state = {
-            name: '',
-            email: '',
-            country: '',
-            region: '',
-            phone: '',
-            interests: [],
-            passphrase: '',
-            retypePassphrase: '',
-            checkboxInterests: checkInter,
+        
+        if (this.props.location.state) {
+            
+            var volunteerInterests = this.props.location.state.interests.length == 0 ? this.props.location.state.volenteerInterests : this.props.location.state.interests
+            interests.map( (interest) => {
+                var data = {}
+                var interestIndex = volunteerInterests.indexOf(interest)
+                console.log(interestIndex)
+                console.log(interest)
+                console.log(volunteerInterests)
+                if (interestIndex != -1) {
+                    data = { interest: interest, checked: true }
+                }
+                else {
+                    data = { interest: interest, checked: false }
+                }
+                checkInter.push(data)
+            })
+            console.log('if true')
+            console.log(checkInter)
+            this.state = {
+                ...this.props.location.state,
+                checkboxInterests: checkInter,
+            }
         }
+        else {
+            interests.map( (interest) => {
+                var data = {}
+                data = { interest: interest, checked: false }
+                checkInter.push(data)
+            })
+            console.log('if false')
+            console.log(checkInter)
+            this.state = {
+                name: '',
+                email: '',
+                country: '',
+                region: '',
+                phone: '',
+                interests: [],
+                passphrase: '',
+                retypePassphrase: '',
+                checkboxInterests: checkInter,
+            }
+        }
+        console.log(this.state)
     }
     handleName = (event) => {
         event.preventDefault()
@@ -94,16 +124,16 @@ class VolunteerProfileComponent extends React.Component {
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volenteerInterests = []
+        var volunteerInterests = []
         data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                volenteerInterests.push(interestCheckbox.interest)
+                volunteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            interests: volenteerInterests
+            interests: volunteerInterests
         })
     }
     disableCheckboxes = () => {
@@ -122,15 +152,6 @@ class VolunteerProfileComponent extends React.Component {
             errorMessage += 'Please select a country\n'
         }
         if (this.state.region == '') {
-            errorMessage += 'Please select a region\n'
-        }
-        if (this.state.passphrase == this.state.retypePassphrase) {
-            errorMessage += 'Passphrases do not match\n'
-        }
-        if (this.state.passphrase != '') {
-            errorMessage += 'Please select a region\n'
-        }
-        if (this.state.retypePassphrase != '') {
             errorMessage += 'Please select a region\n'
         }
         return errorMessage
@@ -186,8 +207,6 @@ class VolunteerProfileComponent extends React.Component {
                     <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={this.handleName} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
                     <div><TextField type="number" floatingLabelText="Phone"  onChange={this.handlePhone} /></div>
-                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
-                    <div><TextField type="password" name="repassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={this.handleRetypePassphrase} /></div>
                     <div style={countryRegionContainer}>
                         <CountryDropdown
                             value={this.state.country}

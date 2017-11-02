@@ -5,14 +5,21 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { loginUser } from '../api/api'
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Link
+} from 'react-router-dom'
 
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props.params)
         this.state = {
+            ...this.state,
             email: '',
-            passphrase: ''
+            passphrase: '',
+            goToProfile: false
         }
     }
 
@@ -36,9 +43,8 @@ class LoginComponent extends React.Component {
             ...this.state,
             name: response.name,
             email: response.email,
+            goToProfile: true
         })
-        loginUser(this.state)
-        window.location.href = window.location.origin + '/profile'
     }
 
     redirectUrl = () => {
@@ -52,10 +58,20 @@ class LoginComponent extends React.Component {
         }
         return errorMessage
     }
-    onSubmit = (even) => {
+    onSubmit = (event) => {
+        event.preventDefault()
         let errorMsg = this.validateState()
         if (errorMsg.length != 0) {
-            loginUser(this.state)
+            loginUser(this.state).then( (userData) => {
+                this.setState({
+                    ...this.state,
+                    user: userData,
+                    goToProfile: true
+                })
+            }).catch( (error) => {
+                console.log(error)
+                window.alert('Error Logging in please try again')
+            })
         }
         else {
             window.alert(errorMsg)
@@ -80,6 +96,14 @@ class LoginComponent extends React.Component {
         const saveButton = {
             width: '185px',
             fontSize: '26px'
+        }
+        if (this.state.goToProfile) {
+            return (
+                <Redirect to={{
+                    pathname: '/profile',
+                    state: this.state.user
+                }} />
+            )
         }
         return (
             <Paper zDepth={1} style={style}>

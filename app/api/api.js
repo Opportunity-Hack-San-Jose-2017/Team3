@@ -1,5 +1,16 @@
 let loginUser = (userCreds) => {
-
+    return fetch('/loginUser', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userCreds),
+    }).then(response => {
+        return response.json()
+    }).catch(error => {
+        return error
+    })   
 }
 
 let registerUser = (newUser) => {
