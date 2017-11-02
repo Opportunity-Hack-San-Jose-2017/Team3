@@ -13,6 +13,7 @@ import FacebookLogin from 'react-facebook-login';
 class VolunteerProfileComponent extends React.Component {
     constructor(props) {
         super(props)
+        console.log(this.props)
         var checkInter = []
         interests.map( (interest) => {
             var data = { interest: interest, checked: false }

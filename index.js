@@ -16,7 +16,26 @@ app.use(bodyParser.json());
 app.get('/', function (req, res) {
   res.sendFile(path.join(publicDir, '/index.html'));
 });
+app.get('/login', function (req, res) {
+  res.sendFile(path.join(publicDir, '/index.html'));
+});
+app.get('/signup', function (req, res) {
+  res.sendFile(path.join(publicDir, '/index.html'));
+});
+app.get('/profile', function (req, res) {
+  res.sendFile(path.join(publicDir, '/index.html'));
+});
 
+app.post('/loginUser', (req, res) => {
+  db.loginUser(req.body).then(user => {
+      console.log('in index.js')
+      console.log(user)
+      return res.json({user});
+    }).catch( error => {
+        console.log(error)
+        return res.json({error})
+    });
+});
 app.get('/users', (req, res) => {
     db.getAll('user').then(users => {
       return res.json({users});

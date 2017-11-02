@@ -22,12 +22,7 @@ class NavigationBarComponent extends React.Component {
             <Router>
                 <div>
                     <div >
-                        <Link to={{
-                              pathname: '/login',
-                              search: '?sort=name',
-                              hash: '#login',
-                              state: { user: {name: 'my name'} }
-                        }}>Login</Link>
+                        <Link to='/login'>Login</Link>
                         <Link to='/signup'>Signup</Link>
                         <Link to='/profile'></Link>
                     </div>

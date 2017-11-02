@@ -15,14 +15,11 @@ import {
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props.location.state)
-        console.log(this.props.location)
-        console.log(this.props)
         this.state = {
             ...this.state,
             email: '',
             passphrase: '',
-            goToMain: false
+            goToProfile: false
         }
     }
 
@@ -46,7 +43,7 @@ class LoginComponent extends React.Component {
             ...this.state,
             name: response.name,
             email: response.email,
-            goToMain: true
+            goToProfile: true
         })
     }
 
@@ -61,10 +58,23 @@ class LoginComponent extends React.Component {
         }
         return errorMessage
     }
-    onSubmit = (even) => {
+    onSubmit = (event) => {
+        event.preventDefault()
         let errorMsg = this.validateState()
         if (errorMsg.length != 0) {
-            loginUser(this.state)
+            loginUser(this.state).then( (userData) => {
+                console.log('back in component')
+                console.log(userData)
+                if (userData) {
+                    this.setState({
+                        ...this.state,
+                        user: userData,
+                        goToProfile: true
+                    })
+                }
+            }).catch( (error) => {
+                window.alert('Error Logging in please try again')
+            })
         }
         else {
             window.alert(errorMsg)
@@ -90,9 +100,12 @@ class LoginComponent extends React.Component {
             width: '185px',
             fontSize: '26px'
         }
-        if (this.state.goToMain) {
+        if (this.state.goToProfile) {
             return (
-                <Redirect to='/profile' />
+                <Redirect to={{
+                    pathname: '/profile',
+                    state: this.state.user
+                }} />
             )
         }
         return (

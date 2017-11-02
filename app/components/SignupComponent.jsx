@@ -111,11 +111,11 @@ class SignupComponent extends React.Component {
     }
     validateState = () => {
         var errorMessage = ''
-        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
+        let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         if (this.state.name.length == 0) {
             errorMessage += 'Please enter a valid name\n'
         }
-        if (emailPatternReg.test(this.state.email)) {
+        if (!emailPatternReg.test(this.state.email)) {
             errorMessage += 'Please enter a valid email\n'
         }
         if (this.state.country == '') {
@@ -124,14 +124,14 @@ class SignupComponent extends React.Component {
         if (this.state.region == '') {
             errorMessage += 'Please select a region\n'
         }
-        if (this.state.passphrase == this.state.retypePassphrase) {
+        if (this.state.passphrase != this.state.retypePassphrase) {
             errorMessage += 'Passphrases do not match\n'
         }
-        if (this.state.passphrase != '') {
-            errorMessage += 'Please select a region\n'
+        if (this.state.passphrase == '') {
+            errorMessage += 'Please enter valid passphrase\n'
         }
-        if (this.state.retypePassphrase != '') {
-            errorMessage += 'Please select a region\n'
+        if (this.state.retypePassphrase == '') {
+            errorMessage += 'Passwords do not match\n'
         }
         return errorMessage
     }
