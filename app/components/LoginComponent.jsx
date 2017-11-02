@@ -9,8 +9,10 @@ import { loginUser } from '../api/api'
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props.params)
+        console.log(this.props.location.state)
+        console.log(this.state)
         this.state = {
+            ...this.state,
             email: '',
             passphrase: ''
         }
