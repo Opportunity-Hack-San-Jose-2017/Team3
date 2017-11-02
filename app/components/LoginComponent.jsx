@@ -5,16 +5,24 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { loginUser } from '../api/api'
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Link
+} from 'react-router-dom'
 
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
         console.log(this.props.location.state)
-        console.log(this.state)
+        console.log(this.props.location)
+        console.log(this.props)
         this.state = {
             ...this.state,
             email: '',
-            passphrase: ''
+            passphrase: '',
+            goToMain: false
         }
     }
 
@@ -38,9 +46,8 @@ class LoginComponent extends React.Component {
             ...this.state,
             name: response.name,
             email: response.email,
+            goToMain: true
         })
-        loginUser(this.state)
-        window.location.href = window.location.origin + '/profile'
     }
 
     redirectUrl = () => {
@@ -82,6 +89,11 @@ class LoginComponent extends React.Component {
         const saveButton = {
             width: '185px',
             fontSize: '26px'
+        }
+        if (this.state.goToMain) {
+            return (
+                <Redirect to='/profile' />
+            )
         }
         return (
             <Paper zDepth={1} style={style}>

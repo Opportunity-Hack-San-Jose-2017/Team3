@@ -1,6 +1,4 @@
 import * as React from 'react'
-//import {UIRouter, UIView, UISref, UISrefActive, pushStateLocationPlugin} from 'ui-router-react'
-//import { SignupState, LoginState, VolunteerProfileState } from '../routes/routes'
 import LoginComponent from './LoginComponent'
 import SignupComponent from './SignupComponent'
 import VolunteerProfileComponent from './VolunteerProfileComponent'
