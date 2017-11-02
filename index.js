@@ -33,6 +33,16 @@ app.post('/user', (req, res) => {
   });
 });
 
+app.put('/user', (req, res) => {
+  console.log(req.body)
+  db.editOne('user', req.body).then(result => {
+    return res.json(result);
+  }).catch( error => {
+    console.log(error)
+    return res.json(error)
+  });
+});
+
 app.use(express.static(publicDir));
 app.use(errorHandler({
   dumpExceptions: true,
