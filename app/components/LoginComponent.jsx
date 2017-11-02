@@ -63,16 +63,13 @@ class LoginComponent extends React.Component {
         let errorMsg = this.validateState()
         if (errorMsg.length != 0) {
             loginUser(this.state).then( (userData) => {
-                console.log('back in component')
-                console.log(userData)
-                if (userData) {
-                    this.setState({
-                        ...this.state,
-                        user: userData,
-                        goToProfile: true
-                    })
-                }
+                this.setState({
+                    ...this.state,
+                    user: userData,
+                    goToProfile: true
+                })
             }).catch( (error) => {
+                console.log(error)
                 window.alert('Error Logging in please try again')
             })
         }

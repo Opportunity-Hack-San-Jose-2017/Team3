@@ -28,12 +28,10 @@ app.get('/profile', function (req, res) {
 
 app.post('/loginUser', (req, res) => {
   db.loginUser(req.body).then(user => {
-      console.log('in index.js')
-      console.log(user)
-      return res.json({user});
+      return res.json(user);
     }).catch( error => {
         console.log(error)
-        return res.json({error})
+        return res.json(error)
     });
 });
 app.get('/users', (req, res) => {

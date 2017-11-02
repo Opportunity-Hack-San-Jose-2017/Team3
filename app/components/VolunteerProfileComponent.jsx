@@ -13,23 +13,30 @@ import FacebookLogin from 'react-facebook-login';
 class VolunteerProfileComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props)
         var checkInter = []
         interests.map( (interest) => {
             var data = { interest: interest, checked: false }
             checkInter.push(data)
         })
-
-        this.state = {
-            name: '',
-            email: '',
-            country: '',
-            region: '',
-            phone: '',
-            interests: [],
-            passphrase: '',
-            retypePassphrase: '',
-            checkboxInterests: checkInter,
+        
+        if (this.props.location.state) {
+            this.state = {
+                ...this.props.location.state,
+                checkboxInterests: checkInter,
+            }
+        }
+        else {
+            this.state = {
+                name: '',
+                email: '',
+                country: '',
+                region: '',
+                phone: '',
+                interests: [],
+                passphrase: '',
+                retypePassphrase: '',
+                checkboxInterests: checkInter,
+            }
         }
     }
     handleName = (event) => {
