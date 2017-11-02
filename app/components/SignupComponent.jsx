@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector'
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 import { registerUser } from '../api/api'
 
 import FacebookLogin from 'react-facebook-login';
