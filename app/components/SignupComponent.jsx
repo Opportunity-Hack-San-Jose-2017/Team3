@@ -10,6 +10,9 @@ import { registerUser } from '../api/api'
 
 import FacebookLogin from 'react-facebook-login';
 
+require('./SignupComponent.css');
+require('./FacebookButton.css');
+
 class SignupComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -118,91 +121,62 @@ class SignupComponent extends React.Component {
     };
 
     render () {
-        const style = {
-            margin: "20px",
-            backgroundColor: "#F3F2F0",
-            textAlign: 'center'
-        };
-
-        const checkBoxStyle = {
-            marginTop: "20px",
-        };
-
-        const darkStyle = {
-            margin: "20px",
-            backgroundColor: "#252525"
-        }
-        const volunteerDetailsContainer = {
-            display: 'inline-block',
-            width: '100%'
-        }
-        const interestsCheckboxContainer = {
-            display: 'inline-block',
-            width: '360px',
-            textAlign: 'left'
-        }
-        const countryRegionContainer = {
-            margin: '10px',
-        }
-        const saveButton = {
-            width: '185px',
-            fontSize: '26px'
-        }
         return (
-            <Paper zDepth={1} style={style}>
-                <form onSubmit={e => this.onSubmit(e)} className="MyForm">
+            <Paper>
+            <form onSubmit={e => this.onSubmit(e)} className="main">
+                <div className="section">
                     <FacebookLogin
                         appId="749202875279319"
                         autoLoad={false}
-                        textButton="Use Facebook Info"
+                        textButton="&nbsp;&nbsp;&nbsp;&nbsp;Prefill with Facebook&nbsp;&nbsp;&nbsp;&nbsp;"
                         fields="name,email,picture"
                         onClick={this.redirectUrl}
+                        cssClass="uibutton"
                         callback={this.responseFacebook}
-                        style = {checkBoxStyle}
                     />
-                    <div style = {checkBoxStyle}><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
+                    <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
                     <div><TextField type="number" floatingLabelText="Phone" name="phone" onChange={(e) => this.handleField('phone', e)} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={(e) => this.handleField('passphrase', e)} /></div>
                     <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
-                    <div style={countryRegionContainer}>
+                    <div className="countryRegionContainer">
                         <CountryDropdown
                             value={this.state.country}
-                            onChange={this.handleCountry} 
+                            onChange={this.handleCountry}
                         />
                     </div>
                     <div>
                         <RegionDropdown
                             country={this.state.country}
                             value={this.state.region}
-                            onChange={this.handleRegion} 
+                            onChange={this.handleRegion}
                         />
                     </div>
-                    <div style={volunteerDetailsContainer}>
-                        <h3>Please choose at most 3</h3>
-                        <div style={interestsCheckboxContainer}>
-                            <div style = {checkBoxStyle}>
-                                {
-                                    this.state.checkboxInterests.map( (checkInterest, index) => {
-                                        if (this.disableCheckboxes()) {
-                                            return (
-                                                  <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                            )
-                                        }
-                                        else {
-                                            return (
-                                                  <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                            )
+                </div>
+                <div className={`section volunteerDetailsContainer`}>
+                    <h3>Please choose at most 3:</h3>
+                    <div className="interestsCheckboxContainer">
+                        <div className="checkBoxStyle">
+                            {
+                                this.state.checkboxInterests.map( (checkInterest, index) => {
+                                    if (this.disableCheckboxes()) {
+                                        return (
+                                                <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                                <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                        )
 
-                                        }
-                                    })
-                                }
-                            </div>
+                                    }
+                                })
+                            }
                         </div>
                     </div>
-                    <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Save" /></div>
-
-                </form>
+                </div>
+                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
+            </form>
             </Paper>
         )
     }

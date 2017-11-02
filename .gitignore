@@ -49,4 +49,4 @@ build
 # Editor
 .idea
 
-app/bundle.js
+app/bundle

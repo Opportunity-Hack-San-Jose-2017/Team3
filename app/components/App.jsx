@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Header from './Header';
-import NavigationBarComponent from './NavigationComponent' 
+import NavigationBarComponent from './NavigationComponent'
 
 require('./App.css');
 
@@ -23,7 +23,7 @@ export default class App extends React.Component {
       <MuiThemeProvider>
           <div>
               <Header />
-              <NavigationBarComponent />
+              <SignupComponent />
           </div>
       </MuiThemeProvider>
     );

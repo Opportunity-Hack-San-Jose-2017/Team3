@@ -1,0 +1,46 @@
+.section {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    margin-top: 20px;
+}
+
+.volunteerDetailsContainer {
+    margin-top: 60px;
+    text-align: left;
+}
+
+.main {
+    font-family: 'Roboto';
+    margin: 10px;
+    background-color: #F3F2F0;
+    text-align: center;
+}
+
+.checkBoxStyle {
+    margin-top: 10px;
+}
+
+.darkStyle {
+    margin: 10px;
+    background-color: #252525;
+}
+
+.interestsCheckboxContainer {
+    display: inline-block;
+    width: 360px;
+    text-align: left;
+}
+
+.countryRegionContainer {
+    margin: 10px;
+}
+
+.saveButton {
+    width: 185px;
+    font-size: 26px;
+}
+
+.facebook-button {
+
+}

@@ -7,7 +7,7 @@ class NavigationBarComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-      
+
         }
 
     }
@@ -15,9 +15,9 @@ class NavigationBarComponent extends React.Component {
     render() {
         return (
             <div>
-                <UIRouter plugins={[pushStateLocationPlugin]} states={[LoginState('stupid bloody framework'), SignupState, VolunteerProfileState]}>
-                <div >
-                    <div >
+                <UIRouter plugins={[pushStateLocationPlugin]} states={[LoginState('hello keyboard cat'), SignupState, VolunteerProfileState]}>
+                <div>
+                    <div>
                         <Link name='login' displayText='Login' />
                         <Link name='signup' displayText='Signup' />
                         <Link name='profile' />
