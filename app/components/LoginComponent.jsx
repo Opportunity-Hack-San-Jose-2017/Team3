@@ -45,18 +45,19 @@ class LoginComponent extends React.Component {
             email: response.email,
             goToProfile: true
         })
+        loginUser(this.state)
     }
 
     redirectUrl = () => {
 
     }
     validateState = () => {
-        var errorMessage = ''
-        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
-        if (this.state.email.length == 0 || emailPatternReg.test(this.state.email)) {
-            errorMessage += 'Please enter a valid email\n'
+        let errorMessage = ''
+        const emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig;
+        if (!this.state.email || !emailPatternReg.test(this.state.email)) {
+            errorMessage += 'Please enter a valid email\n';
         }
-        return errorMessage
+        return errorMessage;
     }
     onSubmit = (event) => {
         event.preventDefault()
@@ -74,7 +75,7 @@ class LoginComponent extends React.Component {
             })
         }
         else {
-            window.alert(errorMsg)
+            window.alert(errorMsg);
         }
     }
 
@@ -118,7 +119,7 @@ class LoginComponent extends React.Component {
                         style = {checkBoxStyle}
                     />
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
-                    <div><TextField type="passphrase" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
                     <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Login" /></div>
 
                 </form>

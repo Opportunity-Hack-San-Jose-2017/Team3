@@ -6,18 +6,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
-import { registerUser } from '../api/api'
-
-import FacebookLogin from 'react-facebook-login';
+import { getUser, updateUser } from '../api/api'
 
 require('./SignupComponent.css');
-require('./FacebookButton.css');
 
-class SignupComponent extends React.Component {
+class ProfileComponent extends React.Component {
     constructor(props) {
         super(props)
-        const checkInter = interests.map(interest => ({ interest: interest, checked: false }));
-        
+        const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
+
         this.state = {
             name: '',
             email: '',
@@ -27,9 +24,25 @@ class SignupComponent extends React.Component {
             interests: [],
             passphrase: '',
             retypePassphrase: '',
-            checkboxInterests: checkInter,
+            checkboxInterests,
         }
     }
+
+    componentDidMount() {
+        const href = window.location.href;
+        const id = href.substr(href.lastIndexOf('/') + 1);
+        getUser(id).then(response => {
+            const checkboxInterests = this.state.checkboxInterests.map(interest => {
+                if (response.user.volunteerInterests.includes(interest.interest)) {
+                    return { ...interest, checked: true };
+                } 
+                return { ...interest, checked: false };
+            });
+            this.setState({...response.user, checkboxInterests});
+            console.log(response.user);
+        });
+    }
+
     handleField = (fieldName, event) => {
         event.preventDefault()
         this.setState({
@@ -49,38 +62,28 @@ class SignupComponent extends React.Component {
             region: value
         })
     }
-    responseFacebook = (response) => {
-        this.setState({
-            ...this.state,
-            name: response.name,
-            email: response.email,
-        });
-    }
-    redirectUrl = () => {
-
-    }
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volunteerInterests = []
+        var volenteerInterests = []
         data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                volunteerInterests.push(interestCheckbox.interest)
+                volenteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            interests: volunteerInterests
+            volenteerInterests: volenteerInterests
         })
     }
     disableCheckboxes = () => {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
     validateState = () => {
-        var errorMessage = ''
-        let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if (this.state.name.length == 0) {
+        let errorMessage = ''
+        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
+        if (!this.state.name) {
             errorMessage += 'Please enter a valid name\n'
         }
         if (!emailPatternReg.test(this.state.email)) {
@@ -107,7 +110,7 @@ class SignupComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
-            registerUser(this.state)
+            // updateUser(this.state)
         }
         else {
             window.alert(error)
@@ -119,20 +122,11 @@ class SignupComponent extends React.Component {
         return (
             <Paper>
             <form onSubmit={e => this.onSubmit(e)} className="main">
-                {/* <h2>Volunteer</h2> */}
+                <h2>Volunteer Profile</h2>
                 <div className="section">
-                    <FacebookLogin
-                        appId="716006871922374"
-                        autoLoad={false}
-                        textButton="&nbsp;&nbsp;&nbsp;&nbsp;Prefill with Facebook&nbsp;&nbsp;&nbsp;&nbsp;"
-                        fields="name,email,picture"
-                        onClick={this.redirectUrl}
-                        cssClass="uibutton"
-                        callback={this.responseFacebook}
-                    />
                     <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
-                    <div><TextField type="number" floatingLabelText="Phone" name="phone" onChange={(e) => this.handleField('phone', e)} /></div>
+                    <div><TextField type="number" floatingLabelText="Phone" name="phone" value={this.state.phone} onChange={(e) => this.handleField('phone', e)} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={(e) => this.handleField('passphrase', e)} /></div>
                     <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
                     <div className="countryRegionContainer">
@@ -154,15 +148,17 @@ class SignupComponent extends React.Component {
                     <div className="interestsCheckboxContainer">
                         <div className="checkBoxStyle">
                             {
-                                this.state.checkboxInterests.map( (checkInterest, index) => {
+                                this.state.checkboxInterests.map((checkInterest, index) => {
                                     if (this.disableCheckboxes()) {
                                         return (
-                                                <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                            <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked}
+                                                onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
                                         )
                                     }
                                     else {
                                         return (
-                                                <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                            <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest}
+                                                checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
                                         )
 
                                     }
@@ -171,7 +167,7 @@ class SignupComponent extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
+                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>
             </Paper>
         )
@@ -179,4 +175,4 @@ class SignupComponent extends React.Component {
 }
 
 
-export default SignupComponent
+export default ProfileComponent

@@ -5,15 +5,14 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const errorHandler = require('errorhandler');
-const methodOverride = require('method-override');
 const db = require('./lib/db');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
-const publicDir = process.argv[2] || __dirname + '/app';
+const publicDir = __dirname + '/app';
 
 app.use(bodyParser.json());
 
-app.get(['/', '/signup', '/login'], function (req, res) {
+app.get(['/', '/signup', '/login', '/profile/:id'], function (req, res) {
   res.sendFile(path.join(publicDir, '/index.html'));
 });
 app.get('/login', function (req, res) {
@@ -40,19 +39,25 @@ app.get('/users', (req, res) => {
     });
 });
 
+app.get('/user/:id', (req, res) => {
+    db.get('user', req.params.id).then(user => {
+      return res.json({user});
+    });
+});
+
 app.post('/user', (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   db.insertOne('user', req.body).then(result => {
     return res.json(result);
   }).catch( error => {
     console.log(error)
-    return res.json(error)
+    return res.status(422).json(error)
   });
 });
 
 app.put('/user', (req, res) => {
   console.log(req.body)
-  db.editOne('user', req.body).then(result => {
+  db.updateOne('user', req.body).then(result => {
     return res.json(result);
   }).catch( error => {
     console.log(error)

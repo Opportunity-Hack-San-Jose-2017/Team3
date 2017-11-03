@@ -1,10 +1,13 @@
 import React from 'react';
-import SignupComponent from './SignupComponent';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import Header from './Header';
-import NavigationBarComponent from './NavigationComponent' 
+import SignupComponent from './SignupComponent';
+import LoginComponent from './LoginComponent';
+import ProfileComponent from './ProfileComponent';
 
 require('./App.css');
 
@@ -21,11 +24,19 @@ export default class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider>
-          <div>
+        <BrowserRouter>
+            <div>
               <Header />
-              <NavigationBarComponent />
-          </div>
+              <Switch>
+                <Route exact path='/' component={SignupComponent}/>
+                <Route path='/signup' component={SignupComponent}/>
+                <Route path='/login' component={LoginComponent}/>
+                <Route path='/profile' component={ProfileComponent}/>
+              </Switch>
+            </div>
+          </BrowserRouter>
       </MuiThemeProvider>
     );
   }
 }
+
