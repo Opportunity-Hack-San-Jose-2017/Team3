@@ -13,7 +13,7 @@ const publicDir = process.argv[2] || __dirname + '/app';
 
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+app.get(['/', '/signup', '/login'], function (req, res) {
   res.sendFile(path.join(publicDir, '/index.html'));
 });
 app.get('/login', function (req, res) {

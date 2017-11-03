@@ -9,15 +9,24 @@ import {
 } from 'react-router-dom'
 
 class NavigationBarComponent extends React.Component {
-    constructor(props: NavigationProps) {
+    constructor(props) {
         super(props)
         this.state = {
             loggedInUserBar: false
         }
 
     }
-
-    render() {
+    loginNavigationBar = () => {
+        this.setState({
+            loggedInUserBar: true
+        })
+    }
+    logoutNavigationBar = () => {
+        this.setState({
+            loggedInUserBar: false
+        })
+    }
+    getNavigationBar = () => {
         const navBarContainer = {
             display: 'block',
             textAlign: 'center'
@@ -28,13 +37,29 @@ class NavigationBarComponent extends React.Component {
             margin: '10px'
 
         }
+        if (this.state.loggedInUserBar) {
+            return (
+                <div style={navBarContainer} >
+                    <Link style={navBarItem} to='/login'>Logout</Link>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div style={navBarContainer} >
+                    <Link style={navBarItem} to='/login'>Login</Link>
+                    <Link style={navBarItem} to='/signup'>Signup</Link>
+                </div>
+            )
+        }
+    }
+
+    render() {
+
         return (
             <Router>
                 <div>
-                    <div style={navBarContainer} >
-                        <Link style={navBarItem} to='/login'>Login</Link>
-                        <Link style={navBarItem} to='/signup'>Signup</Link>
-                    </div>
+                    {this.getNavigationBar()}
                     <hr/>
 
                     <Route exact path="/" component={LoginComponent}/>
