@@ -3,7 +3,7 @@ let loginUser = (userCreds) => {
 }
 
 let registerUser = (newUser) => {
-     var uploadData = {
+     const uploadData = {
           ...newUser
       }
       delete uploadData.checkboxInterests
@@ -20,6 +20,7 @@ let registerUser = (newUser) => {
           return console.log(response);
         } else {
           window.alert('Successfully signed up')
+          window.location.href = '/login';
           return console.log(response);
         }
       }).catch(error => {
@@ -28,7 +29,44 @@ let registerUser = (newUser) => {
       })
 }
 
+let getUser = (id) => {
+    return new Promise((resolve, reject) => {
+        fetch(`/user/${id}`, {
+            method: 'GET'
+        }).then(response => {
+            return resolve(response.json());
+        }).catch(error => {
+            window.alert('Error retrieving user');
+            console.log(error);
+            return reject(error);
+        });
+    });
+}
+
+let updateUser = (newUser) => {
+      const uploadData = {
+          ...newUser
+      }
+      delete uploadData.checkboxInterests
+      fetch('/user', {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(uploadData),
+      }).then(response => {
+          window.alert('Successfully signed up');
+          window.location.href = '/login';
+          return console.log(response);
+      }).catch(error => {
+          window.alert('Error signing up');
+          return console.log(error);
+      })   
+}
 export {
     loginUser,
-    registerUser
-}
+    registerUser,
+    getUser,
+    updateUser
+};

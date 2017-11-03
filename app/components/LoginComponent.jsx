@@ -9,7 +9,6 @@ import { loginUser } from '../api/api'
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(this.props.params)
         this.state = {
             email: '',
             passphrase: ''
@@ -38,27 +37,29 @@ class LoginComponent extends React.Component {
             email: response.email,
         })
         loginUser(this.state)
-        window.location.href = window.location.origin + '/profile'
+        window.location.href = '/profile'
     }
 
     redirectUrl = () => {
 
     }
     validateState = () => {
-        var errorMessage = ''
-        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
-        if (this.state.email.length == 0 || emailPatternReg.test(this.state.email)) {
-            errorMessage += 'Please enter a valid email\n'
+        let errorMessage = ''
+        const emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig;
+        if (!this.state.email || !emailPatternReg.test(this.state.email)) {
+            errorMessage += 'Please enter a valid email\n';
         }
-        return errorMessage
+        return errorMessage;
     }
-    onSubmit = (even) => {
-        let errorMsg = this.validateState()
-        if (errorMsg.length != 0) {
-            loginUser(this.state)
+    onSubmit = (e) => {
+        e.preventDefault();
+        let errorMsg = this.validateState();
+        if (!errorMsg) {
+            loginUser(this.state);
+            window.location.href = '/profile/59fbffc6319f2d19002a9f85'; // for testing
         }
         else {
-            window.alert(errorMsg)
+            window.alert(errorMsg);
         }
     }
 
@@ -94,7 +95,7 @@ class LoginComponent extends React.Component {
                         style = {checkBoxStyle}
                     />
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
-                    <div><TextField type="passphrase" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
                     <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Login" /></div>
 
                 </form>

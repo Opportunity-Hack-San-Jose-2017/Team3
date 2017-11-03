@@ -1,7 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
-import NavigationComponent from './NavigationComponent';
+import { Link } from 'react-router-dom'
 
 require('./Header.css');
 
@@ -18,19 +18,11 @@ export default class Header extends React.Component {
   state = {
   };
 
-  handleLogin(e) {
-    window.location.href = "/login";
-  }
-
-  handleSignup(e) {
-    window.location.href = "/signup";
-  }
-
   render() {
     const rightButtons = (
       <div>
-        <FlatButton label="Login" className="buttonStyle" onClick={(e) => this.handleLogin(e)} />
-        <FlatButton label="Sign Up" className="buttonStyle" onClick={(e) => this.handleSignup(e)} />
+        <Link to='/login'><FlatButton label="Login" className="buttonStyle" /></Link>
+        <Link to='/signup'><FlatButton label="Sign Up" className="buttonStyle" /></Link>
       </div>
     );
     return (
