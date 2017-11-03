@@ -29,7 +29,7 @@ app.post('/user', (req, res) => {
     return res.json(result);
   }).catch( error => {
     console.log(error)
-    return res.json(error)
+    return res.status(422).json(error)
   });
 });
 
