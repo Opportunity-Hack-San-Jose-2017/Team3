@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import { Redirect } from 'react-router-dom'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 import { getUser, updateUser } from '../api/api'
 
@@ -13,24 +14,54 @@ require('./SignupComponent.css');
 class ProfileComponent extends React.Component {
     constructor(props) {
         super(props)
-        const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
+        //const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
+        var checkInter = []
+        console.log('-----------HERE-----------')
+        console.log(this.props.location)
 
-        this.state = {
-            name: '',
-            email: '',
-            country: '',
-            region: '',
-            phone: '',
-            interests: [],
-            passphrase: '',
-            retypePassphrase: '',
-            checkboxInterests,
+        if (this.props.location.state) {
+            
+            var volunteerInterests = this.props.location.state.userData.interests == 0 ? this.props.location.state.userData.volenteerInterests : this.props.location.state.userData.interests
+            interests.map( (interest) => {
+                var data = {}
+                var interestIndex = volunteerInterests.indexOf(interest)
+                if (interestIndex != -1) {
+                    data = { interest: interest, checked: true }
+                }
+                else {
+                    data = { interest: interest, checked: false }
+                }
+                checkInter.push(data)
+            })
+            this.state = {
+                ...this.props.location.state.userData,
+                checkboxInterests: checkInter,
+            }
+        }
+        else {
+            interests.map( (interest) => {
+                var data = {}
+                data = { interest: interest, checked: false }
+                checkInter.push(data)
+            })
+            this.state = {
+                name: '',
+                email: '',
+                country: '',
+                region: '',
+                phone: '',
+                interests: [],
+                passphrase: '',
+                retypePassphrase: '',
+                checkboxInterests: checkInter,
+            }
         }
     }
 
     componentDidMount() {
         const href = window.location.href;
         const id = href.substr(href.lastIndexOf('/') + 1);
+        /*
         getUser(id).then(response => {
             const checkboxInterests = this.state.checkboxInterests.map(interest => {
                 if (response.user.volunteerInterests.includes(interest.interest)) {
@@ -41,6 +72,7 @@ class ProfileComponent extends React.Component {
             this.setState({...response.user, checkboxInterests});
             console.log(response.user);
         });
+         */
     }
 
     handleField = (fieldName, event) => {
@@ -82,7 +114,7 @@ class ProfileComponent extends React.Component {
     }
     validateState = () => {
         let errorMessage = ''
-        let emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig
+        let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         if (!this.state.name) {
             errorMessage += 'Please enter a valid name\n'
         }
@@ -110,7 +142,8 @@ class ProfileComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
-            // updateUser(this.state)
+            updateUser(this.state)
+            window.alert('Thank you for editing your account information')    
         }
         else {
             window.alert(error)

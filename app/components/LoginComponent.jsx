@@ -19,6 +19,7 @@ class LoginComponent extends React.Component {
             ...this.state,
             email: '',
             passphrase: '',
+            facebookLogin: false,
             goToProfile: false
         }
     }
@@ -41,6 +42,7 @@ class LoginComponent extends React.Component {
     responseFacebook = (response) => {
         this.setState({
             ...this.state,
+            facebookLogin: true,
             name: response.name,
             email: response.email,
             goToProfile: true
@@ -51,32 +53,25 @@ class LoginComponent extends React.Component {
     redirectUrl = () => {
 
     }
-    validateState = () => {
-        let errorMessage = ''
-        const emailPatternReg = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/ig;
-        if (!this.state.email || !emailPatternReg.test(this.state.email)) {
-            errorMessage += 'Please enter a valid email\n';
-        }
-        return errorMessage;
-    }
     onSubmit = (event) => {
         event.preventDefault()
-        let errorMsg = this.validateState()
-        if (errorMsg.length != 0) {
-            loginUser(this.state).then( (userData) => {
-                this.setState({
-                    ...this.state,
-                    user: userData,
-                    goToProfile: true
-                })
-            }).catch( (error) => {
-                console.log(error)
-                window.alert('Error Logging in please try again')
+        this.handleLoggingUser()
+    }
+
+    handleLoggingUser = () => {
+        loginUser(this.state).then( (userData) => {
+            console.log('LOGIN passssed')
+            this.setState({
+                ...this.state,
+                user: userData,
+                goToProfile: true
             })
-        }
-        else {
-            window.alert(errorMsg);
-        }
+        }).catch( (error) => {
+            console.log('LOGIN ERROR?????')
+            console.log(error)
+            window.alert('Error logging in please try again')
+        })
+
     }
 
     render() {
@@ -99,11 +94,16 @@ class LoginComponent extends React.Component {
             fontSize: '26px'
         }
         if (this.state.goToProfile) {
+            let userData = this.state.user
+            let profileComponentDataAndNavBarFunctions = {
+                pathname: '/profile',
+                state: {
+                    logoutNavBar: this.props.location.state,
+                    userData
+                }
+            }
             return (
-                <Redirect to={{
-                    pathname: '/profile',
-                    state: this.state.user
-                }} />
+                <Redirect to={profileComponentDataAndNavBarFunctions} />
             )
         }
         return (

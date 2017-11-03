@@ -9,6 +9,7 @@ let loginUser = (userCreds) => {
     }).then(response => {
         return response.json()
     }).catch(error => {
+        console.log(error)
         return error
     })   
 }
@@ -60,18 +61,16 @@ let updateUser = (newUser) => {
       }
       delete uploadData.checkboxInterests
       fetch('/user', {
-          method: 'POST',
+          method: 'PUT',
           headers: {
               'Accept': 'application/json, text/plain, */*',
               'Content-Type': 'application/json'
           },
           body: JSON.stringify(uploadData),
       }).then(response => {
-          window.alert('Successfully signed up');
           window.location.href = '/login';
           return console.log(response);
       }).catch(error => {
-          window.alert('Error signing up');
           return console.log(error);
       })   
 }

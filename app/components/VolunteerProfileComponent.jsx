@@ -21,9 +21,6 @@ class VolunteerProfileComponent extends React.Component {
             interests.map( (interest) => {
                 var data = {}
                 var interestIndex = volunteerInterests.indexOf(interest)
-                console.log(interestIndex)
-                console.log(interest)
-                console.log(volunteerInterests)
                 if (interestIndex != -1) {
                     data = { interest: interest, checked: true }
                 }
@@ -32,8 +29,6 @@ class VolunteerProfileComponent extends React.Component {
                 }
                 checkInter.push(data)
             })
-            console.log('if true')
-            console.log(checkInter)
             this.state = {
                 ...this.props.location.state,
                 checkboxInterests: checkInter,
@@ -45,8 +40,6 @@ class VolunteerProfileComponent extends React.Component {
                 data = { interest: interest, checked: false }
                 checkInter.push(data)
             })
-            console.log('if false')
-            console.log(checkInter)
             this.state = {
                 name: '',
                 email: '',
@@ -59,7 +52,6 @@ class VolunteerProfileComponent extends React.Component {
                 checkboxInterests: checkInter,
             }
         }
-        console.log(this.state)
     }
     handleName = (event) => {
         event.preventDefault()

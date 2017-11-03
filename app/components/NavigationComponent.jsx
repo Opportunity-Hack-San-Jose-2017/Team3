@@ -38,16 +38,23 @@ class NavigationBarComponent extends React.Component {
 
         }
         if (this.state.loggedInUserBar) {
+            let passLoginFunctions = {
+                pathname: '/login',
+                state: {
+                    loginNavigationBar,
+                    logoutNavigationBar
+                }
+            }
             return (
                 <div style={navBarContainer} >
-                    <Link style={navBarItem} to='/login'>Logout</Link>
+                    <Link style={navBarItem} to={passLoginFunctions}>Logout</Link>
                 </div>
             )
         }
         else {
             return (
                 <div style={navBarContainer} >
-                    <Link style={navBarItem} to='/login'>Login</Link>
+                    <Link style={navBarItem} to={passLoginFunctions}>Login</Link>
                     <Link style={navBarItem} to='/signup'>Signup</Link>
                 </div>
             )
