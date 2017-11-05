@@ -1,0 +1,1 @@
+mongoimport --host ds129023.mlab.com --port 29023 --db heroku_c1gkrdmp --username givelight --password xyz --collection users --file users.json --jsonArray
