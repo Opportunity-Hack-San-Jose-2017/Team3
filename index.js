@@ -12,18 +12,10 @@ const publicDir = __dirname + '/app';
 
 app.use(bodyParser.json());
 
-app.get(['/', '/signup', '/login', '/profile/:id'], function (req, res) {
+app.get(['/', '/signup', '/login', '/profile'], function (req, res) {
   res.sendFile(path.join(publicDir, '/index.html'));
 });
-app.get('/login', function (req, res) {
-  res.sendFile(path.join(publicDir, '/index.html'));
-});
-app.get('/signup', function (req, res) {
-  res.sendFile(path.join(publicDir, '/index.html'));
-});
-app.get('/profile', function (req, res) {
-  res.sendFile(path.join(publicDir, '/index.html'));
-});
+
 
 app.post('/loginUser', (req, res) => {
   db.loginUser(req.body).then(user => {
