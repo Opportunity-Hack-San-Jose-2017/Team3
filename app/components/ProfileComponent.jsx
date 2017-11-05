@@ -59,8 +59,8 @@ class ProfileComponent extends React.Component {
     }
 
     componentDidMount() {
-        const href = window.location.href;
-        const id = href.substr(href.lastIndexOf('/') + 1);
+        //const href = window.location.href;
+        //const id = href.substr(href.lastIndexOf('/') + 1);
         /*
         getUser(id).then(response => {
             const checkboxInterests = this.state.checkboxInterests.map(interest => {
@@ -142,14 +142,23 @@ class ProfileComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
-            updateUser(this.state)
-            window.alert('Thank you for editing your account information')    
+            this.handleUpdateProfile()
         }
         else {
             window.alert(error)
         }
 
-    };
+    }
+    handleUpdateProfile = () => {
+        updateUser(this.state).then( (response) => {
+            window.alert('Thank you for editing your account information')    
+
+        }).catch( (error) => {
+            console.log(error)
+            window.alert('failed update')
+        })
+
+    }
 
     render () {
         return (
