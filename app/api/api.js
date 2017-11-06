@@ -32,15 +32,15 @@ let registerUser = (newUser) => {
       }).then(response => {
         if(response.status == 422) {
           window.alert('Email ID already exist. Try Login')
-          return console.log(response);
+          return response
         } else {
           window.alert('Successfully signed up')
           window.location.href = '/login';
-          return console.log(response);
+          return response
         }
       }).catch(error => {
           window.alert('Error signing up')
-          return console.log(error)
+          return error
       })
 }
 
@@ -72,8 +72,7 @@ let updateUser = (newUser) => {
           },
           body: JSON.stringify(uploadData),
       }).then(response => {
-          //window.location.href = '/login';
-          return console.log(response.json());
+          return response.json()
       }).catch(error => {
           console.log(error)
           return console.log(error);

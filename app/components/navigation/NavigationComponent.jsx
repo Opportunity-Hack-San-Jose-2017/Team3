@@ -11,11 +11,6 @@ import ProfileComponent from '../profile/ProfileComponent';
 
 require('./NavigationComponent.css');
 
-var mystyle = {
-    margin: "0px",
-    backgroundColor: "#F3F2F0"
-}
-
 class NavigationComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +18,6 @@ class NavigationComponent extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
         <BrowserRouter>
             <div>
               <Header />
@@ -34,8 +28,7 @@ class NavigationComponent extends React.Component {
                 <Route path='/profile' component={ProfileComponent}/>
               </Switch>
             </div>
-          </BrowserRouter>
-      </MuiThemeProvider>
+        </BrowserRouter>
     );
   }
 }
