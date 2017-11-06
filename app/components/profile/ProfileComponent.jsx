@@ -16,7 +16,6 @@ class ProfileComponent extends React.Component {
         super(props)
         //const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
         var checkInter = []
-        console.log(this.props.location.state.userData)
         if (this.props.location.state) {
             
             var volunteerInterests = this.props.location.state.userData.interests == 0 ? this.props.location.state.userData.volenteerInterests : this.props.location.state.userData.interests

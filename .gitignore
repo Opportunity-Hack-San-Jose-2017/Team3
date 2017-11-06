@@ -3,7 +3,6 @@ logs
 *.log
 npm-debug.log*
 config/projectInfoData.js
-config/secret.json
 # Runtime data
 pids
 *.pid
