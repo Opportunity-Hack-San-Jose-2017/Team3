@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { interests } from '../models/interests'
 import  Checkbox from 'material-ui/Checkbox'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -7,9 +6,10 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { Redirect } from 'react-router-dom'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
-import { getUser, updateUser } from '../api/api'
+import { getUser, updateUser } from '../../api/api'
+import { interests } from '../../models/interests'
 
-require('./SignupComponent.css');
+require('../signup/SignupComponent.css');
 
 class ProfileComponent extends React.Component {
     constructor(props) {

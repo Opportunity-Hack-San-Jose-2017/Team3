@@ -1,17 +1,18 @@
 import * as React from 'react'
-import { interests } from '../models/interests'
 import  Checkbox from 'material-ui/Checkbox'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
-import { registerUser } from '../api/api'
-
 import FacebookLogin from 'react-facebook-login';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
+
+import { registerUser } from '../../api/api'
+import { interests } from '../../models/interests'
+
 
 require('./SignupComponent.css');
-require('./FacebookButton.css');
+require('../facebook/FacebookButton.css');
 
 class SignupComponent extends React.Component {
     constructor(props) {

@@ -4,13 +4,15 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { loginUser } from '../api/api'
+import { loginUser } from '../../api/api'
 import {
     BrowserRouter as Router,
     Redirect,
     Route,
     Link
 } from 'react-router-dom'
+require('./LoginComponent.css');
+require('../facebook/FacebookButton.css');
 
 class LoginComponent extends React.Component {
     constructor(props) {
@@ -24,18 +26,11 @@ class LoginComponent extends React.Component {
         }
     }
 
-    handleEmail = (event) => {
+    handleField = (event, fieldName) => {
         event.preventDefault()
         this.setState({
             ...this.state,
-            email: event.target.value
-        })
-    }
-    handlePassphrase = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            passphrase: event.target.value
+            [fieldName]: event.target.value
         })
     }
 
@@ -59,40 +54,30 @@ class LoginComponent extends React.Component {
     }
 
     handleLoggingUser = () => {
-        loginUser(this.state).then( (userData) => {
-            console.log('LOGIN passssed')
-            this.setState({
-                ...this.state,
-                user: userData,
-                goToProfile: true
-            })
+        loginUser(this.state).then( (response) => {
+            if (!response['error']) {
+                this.setState({
+                    ...this.state,
+                    user: userData,
+                    goToProfile: true
+                })
+            }
+            else {
+                window.alert('Error logging in please try again')
+                this.setState({
+                    ...this.state,
+                    email: '',
+                    passphrase: ''
+    
+                })
+            }
         }).catch( (error) => {
-            console.log('LOGIN ERROR?????')
-            console.log(error)
             window.alert('Error logging in please try again')
         })
 
     }
 
     render() {
-        const style = {
-            margin: "20px",
-            backgroundColor: "#F3F2F0",
-            textAlign: 'center'
-        }
-
-        const checkBoxStyle = {
-            marginTop: "20px",
-        }
-
-        const darkStyle = {
-            margin: "20px",
-            backgroundColor: "#252525"
-        }
-        const saveButton = {
-            width: '185px',
-            fontSize: '26px'
-        }
         if (this.state.goToProfile) {
             let userData = this.state.user
             let profileComponentDataAndNavBarFunctions = {
@@ -107,7 +92,7 @@ class LoginComponent extends React.Component {
             )
         }
         return (
-            <Paper zDepth={1} style={style}>
+            <Paper zDepth={1} className="paperStyle">
                 <form onSubmit={this.onSubmit} className="LoginForm">
                     <FacebookLogin
                         appId="749202875279319"
@@ -116,11 +101,10 @@ class LoginComponent extends React.Component {
                         fields="name,email,picture"
                         onClick={this.redirectUrl}
                         callback={this.responseFacebook}
-                        style = {checkBoxStyle}
                     />
-                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={this.handleEmail} /></div>
-                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={this.handlePassphrase} /></div>
-                    <div><RaisedButton style={darkStyle, saveButton} type="submit" label="Login" /></div>
+                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
+                    <div><RaisedButton className="darkStyle saveButton"  type="submit" label="Login" /></div>
 
                 </form>
             </Paper>
