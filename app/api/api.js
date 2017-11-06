@@ -63,7 +63,8 @@ let updateUser = (newUser) => {
           ...newUser
       }
       delete uploadData.checkboxInterests
-      fetch('/user', {
+      delete uploadData.retypePassphrase
+      return fetch('/user', {
           method: 'PUT',
           headers: {
               'Accept': 'application/json, text/plain, */*',
@@ -71,9 +72,10 @@ let updateUser = (newUser) => {
           },
           body: JSON.stringify(uploadData),
       }).then(response => {
-          window.location.href = '/login';
-          return console.log(response);
+          //window.location.href = '/login';
+          return console.log(response.json());
       }).catch(error => {
+          console.log(error)
           return console.log(error);
       })   
 }
