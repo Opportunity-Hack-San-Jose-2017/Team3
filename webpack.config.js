@@ -5,7 +5,6 @@ const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 module.exports = {
   devServer: {
     historyApiFallback: true,
-    hot: true,
     inline: true,
     progress: true,
     contentBase: './app',
