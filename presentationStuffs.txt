@@ -1,8 +1,0 @@
-team name; Give light team
-NPO name; Give light
-mentor name; Anu Ganesan
-problem statement; Volenteers sign up and data goes to email and spreadsheet, then organizers use that spreadsheet to look up volenteers for events from that spreadsheet. There is no digitised history to easily view nor centralized data for accessing for future events 
-proposed solution; Site for registerring new volenteers gathering their facebook info and interests for another project to search through and easily find possible volenteers
-project plan for the week; Connect projects to the main site www.givelight.org and have them redirect back to main site once done
-optional demo; 
-any questions
