@@ -55,10 +55,11 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then( (response) => {
+            console.log(response)
             if (!response['error']) {
                 this.setState({
                     ...this.state,
-                    user: userData,
+                    user: response['responseData'],
                     goToProfile: true
                 })
             }

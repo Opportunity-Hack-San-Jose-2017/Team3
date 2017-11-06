@@ -7,9 +7,10 @@ let loginUser = (userCreds) => {
         },
         body: JSON.stringify(userCreds),
     }).then(response => {
+        
         return response.json()
     }).catch(error => {
-        console.log(error)
+        
         return error
     })   
 }
@@ -19,6 +20,8 @@ let registerUser = (newUser) => {
           ...newUser
       }
       delete uploadData.checkboxInterests
+      delete uploadData.retypePassphrase
+
       fetch('/user', {
           method: 'POST',
           headers: {
