@@ -14,6 +14,8 @@ import {
 require('./LoginComponent.css');
 require('../facebook/FacebookButton.css');
 
+var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
+
 class LoginComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -55,7 +57,6 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then( (response) => {
-            console.log(response)
             if (!response['error']) {
                 this.setState({
                     ...this.state,
@@ -96,7 +97,7 @@ class LoginComponent extends React.Component {
             <Paper zDepth={1} className="paperStyle">
                 <form onSubmit={this.onSubmit} className="LoginForm">
                     <FacebookLogin
-                        appId="749202875279319"
+                        appId={facebookAppID}
                         autoLoad={false}
                         textButton="Login With Facebook"
                         fields="name,email,picture"

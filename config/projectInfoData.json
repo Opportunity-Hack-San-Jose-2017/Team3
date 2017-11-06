@@ -1,0 +1,10 @@
+{
+    "facebookAppID": "749202875279319",
+    "singupEmailNotification": "",
+    "apiEmailKey": "",
+    
+    "mongoData": {
+        "localURL": "mongodb://localhost:27017/heroku_c1gkrdmp",
+        "productionURL": "mongodb://givelight:__passwordgoeshere__@ds129023.mlab.com:29023/heroku_c1gkrdmp"
+    }
+}
