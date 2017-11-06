@@ -1,0 +1,10 @@
+{
+    "facebookAppID": "",
+    "singupEmailNotification": "",
+    "apiEmailKey": "",
+    
+    "mongoData": {
+        "localURL": "",
+        "productionURL": ""
+    }
+}
