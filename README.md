@@ -22,6 +22,7 @@ npm run build
 
 #### Step 3: Launch
 ```
+mongod
 npm start
 ```
 
