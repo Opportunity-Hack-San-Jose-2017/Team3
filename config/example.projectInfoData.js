@@ -2,7 +2,7 @@ const FacebookData = {
     appID: ''
 }
 const Emails = {
-    giveLightSingupEmail: '',
+    singupEmailNotification: '',
     emailKey: ''
 }
 const MongoDB = {
@@ -12,5 +12,7 @@ const MongoDB = {
 }
 
 export {
-    FacebookData
+    FacebookData,
+    Emails,
+    MongoDB,
 }
