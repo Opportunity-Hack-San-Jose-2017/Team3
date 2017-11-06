@@ -7,9 +7,10 @@ let loginUser = (userCreds) => {
         },
         body: JSON.stringify(userCreds),
     }).then(response => {
+        
         return response.json()
     }).catch(error => {
-        console.log(error)
+        
         return error
     })   
 }
@@ -19,6 +20,8 @@ let registerUser = (newUser) => {
           ...newUser
       }
       delete uploadData.checkboxInterests
+      delete uploadData.retypePassphrase
+
       fetch('/user', {
           method: 'POST',
           headers: {
@@ -29,15 +32,15 @@ let registerUser = (newUser) => {
       }).then(response => {
         if(response.status == 422) {
           window.alert('Email ID already exist. Try Login')
-          return console.log(response);
+          return response
         } else {
           window.alert('Successfully signed up')
           window.location.href = '/login';
-          return console.log(response);
+          return response
         }
       }).catch(error => {
           window.alert('Error signing up')
-          return console.log(error)
+          return error
       })
 }
 
@@ -60,7 +63,8 @@ let updateUser = (newUser) => {
           ...newUser
       }
       delete uploadData.checkboxInterests
-      fetch('/user', {
+      delete uploadData.retypePassphrase
+      return fetch('/user', {
           method: 'PUT',
           headers: {
               'Accept': 'application/json, text/plain, */*',
@@ -68,9 +72,9 @@ let updateUser = (newUser) => {
           },
           body: JSON.stringify(uploadData),
       }).then(response => {
-          window.location.href = '/login';
-          return console.log(response);
+          return response.json()
       }).catch(error => {
+          console.log(error)
           return console.log(error);
       })   
 }

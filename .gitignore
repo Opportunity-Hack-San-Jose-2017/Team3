@@ -2,7 +2,7 @@
 logs
 *.log
 npm-debug.log*
-
+config/projectInfoData.js
 # Runtime data
 pids
 *.pid

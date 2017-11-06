@@ -1,80 +1,38 @@
 import * as React from 'react'
-import { interests } from '../models/interests'
 import  Checkbox from 'material-ui/Checkbox'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import { Redirect } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
-import { getUser, updateUser } from '../api/api'
+
+import { registerUser } from '../../api/api'
+import { interests } from '../../models/interests'
+
 
 require('./SignupComponent.css');
+require('../facebook/FacebookButton.css');
 
-class ProfileComponent extends React.Component {
+var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
+
+class SignupComponent extends React.Component {
     constructor(props) {
         super(props)
-        //const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
-        var checkInter = []
-        console.log('-----------HERE-----------')
-        console.log(this.props.location)
-
-        if (this.props.location.state) {
-            
-            var volunteerInterests = this.props.location.state.userData.interests == 0 ? this.props.location.state.userData.volenteerInterests : this.props.location.state.userData.interests
-            interests.map( (interest) => {
-                var data = {}
-                var interestIndex = volunteerInterests.indexOf(interest)
-                if (interestIndex != -1) {
-                    data = { interest: interest, checked: true }
-                }
-                else {
-                    data = { interest: interest, checked: false }
-                }
-                checkInter.push(data)
-            })
-            this.state = {
-                ...this.props.location.state.userData,
-                checkboxInterests: checkInter,
-            }
-        }
-        else {
-            interests.map( (interest) => {
-                var data = {}
-                data = { interest: interest, checked: false }
-                checkInter.push(data)
-            })
-            this.state = {
-                name: '',
-                email: '',
-                country: '',
-                region: '',
-                phone: '',
-                interests: [],
-                passphrase: '',
-                retypePassphrase: '',
-                checkboxInterests: checkInter,
-            }
+        const checkInter = interests.map(interest => ({ interest: interest, checked: false }));
+        
+        this.state = {
+            name: '',
+            email: '',
+            country: '',
+            region: '',
+            phone: '',
+            interests: [],
+            passphrase: '',
+            retypePassphrase: '',
+            checkboxInterests: checkInter,
         }
     }
-
-    componentDidMount() {
-        const href = window.location.href;
-        const id = href.substr(href.lastIndexOf('/') + 1);
-        /*
-        getUser(id).then(response => {
-            const checkboxInterests = this.state.checkboxInterests.map(interest => {
-                if (response.user.volunteerInterests.includes(interest.interest)) {
-                    return { ...interest, checked: true };
-                } 
-                return { ...interest, checked: false };
-            });
-            this.setState({...response.user, checkboxInterests});
-            console.log(response.user);
-        });
-         */
-    }
-
     handleField = (fieldName, event) => {
         event.preventDefault()
         this.setState({
@@ -94,28 +52,38 @@ class ProfileComponent extends React.Component {
             region: value
         })
     }
+    responseFacebook = (response) => {
+        this.setState({
+            ...this.state,
+            name: response.name,
+            email: response.email,
+        });
+    }
+    redirectUrl = () => {
+
+    }
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
-        var volenteerInterests = []
+        var volunteerInterests = []
         data.map( interestCheckbox => {
             if (interestCheckbox.checked) {
-                volenteerInterests.push(interestCheckbox.interest)
+                volunteerInterests.push(interestCheckbox.interest)
             }
         })
         this.setState({
             ...this.state,
             checkboxInterests: data,
-            volenteerInterests: volenteerInterests
+            interests: volunteerInterests
         })
     }
     disableCheckboxes = () => {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
     validateState = () => {
-        let errorMessage = ''
+        var errorMessage = ''
         let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if (!this.state.name) {
+        if (this.state.name.length == 0) {
             errorMessage += 'Please enter a valid name\n'
         }
         if (!emailPatternReg.test(this.state.email)) {
@@ -142,8 +110,7 @@ class ProfileComponent extends React.Component {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
-            updateUser(this.state)
-            window.alert('Thank you for editing your account information')    
+            registerUser(this.state)
         }
         else {
             window.alert(error)
@@ -155,11 +122,20 @@ class ProfileComponent extends React.Component {
         return (
             <Paper>
             <form onSubmit={e => this.onSubmit(e)} className="main">
-                <h2>Volunteer Profile</h2>
+                {/* <h2>Volunteer</h2> */}
                 <div className="section">
+                    <FacebookLogin
+                        appId={facebookAppID}
+                        autoLoad={false}
+                        textButton="&nbsp;&nbsp;&nbsp;&nbsp;Prefill with Facebook&nbsp;&nbsp;&nbsp;&nbsp;"
+                        fields="name,email,picture"
+                        onClick={this.redirectUrl}
+                        cssClass="uibutton"
+                        callback={this.responseFacebook}
+                    />
                     <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
-                    <div><TextField type="number" floatingLabelText="Phone" name="phone" value={this.state.phone} onChange={(e) => this.handleField('phone', e)} /></div>
+                    <div><TextField type="number" floatingLabelText="Phone" name="phone" onChange={(e) => this.handleField('phone', e)} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={(e) => this.handleField('passphrase', e)} /></div>
                     <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
                     <div className="countryRegionContainer">
@@ -181,17 +157,15 @@ class ProfileComponent extends React.Component {
                     <div className="interestsCheckboxContainer">
                         <div className="checkBoxStyle">
                             {
-                                this.state.checkboxInterests.map((checkInterest, index) => {
+                                this.state.checkboxInterests.map( (checkInterest, index) => {
                                     if (this.disableCheckboxes()) {
                                         return (
-                                            <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked}
-                                                onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                                <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
                                         )
                                     }
                                     else {
                                         return (
-                                            <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest}
-                                                checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
+                                                <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
                                         )
 
                                     }
@@ -200,7 +174,7 @@ class ProfileComponent extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
+                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
             </form>
             </Paper>
         )
@@ -208,4 +182,4 @@ class ProfileComponent extends React.Component {
 }
 
 
-export default ProfileComponent
+export default SignupComponent

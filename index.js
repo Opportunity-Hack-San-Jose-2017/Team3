@@ -38,7 +38,6 @@ app.get('/user/:id', (req, res) => {
 });
 
 app.post('/user', (req, res) => {
-  console.log(req.body);
   db.insertOne('user', req.body).then(result => {
     return res.json(result);
   }).catch( error => {
