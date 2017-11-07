@@ -5,6 +5,10 @@
     margin-top: 20px;
 }
 
+.skillsInputStyle {
+    width: 100%
+}
+
 .volunteerDetailsContainer {
     margin-top: 60px;
     text-align: left;
