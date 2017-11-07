@@ -48,8 +48,9 @@ class ProfileComponent extends React.Component {
                 region: '',
                 phone: '',
                 interests: [],
-                passphrase: '',
-                retypePassphrase: '',
+                oldPassphrase: '',
+                newPassphrase: '',
+                retypeNewPassphrase: '',
                 checkboxInterests: checkInter,
             }
         }
@@ -124,6 +125,7 @@ class ProfileComponent extends React.Component {
         if (!this.state.region) {
             errorMessage += 'Please select a region\n'
         }
+            /*
         if (!this.state.passphrase) {
             errorMessage += 'Please enter a passphrase\n'
         }
@@ -133,6 +135,7 @@ class ProfileComponent extends React.Component {
         if (this.state.passphrase !== this.state.retypePassphrase) {
             errorMessage += 'Passphrases do not match\n'
         }
+             */
         return errorMessage
     }
     onSubmit(e) {
@@ -166,8 +169,9 @@ class ProfileComponent extends React.Component {
                     <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
                     <div><TextField type="number" floatingLabelText="Phone" name="phone" value={this.state.phone} onChange={(e) => this.handleField('phone', e)} /></div>
-                    <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={(e) => this.handleField('passphrase', e)} /></div>
-                    <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.oldPassphrase} floatingLabelText="Coming soon Old Passphrase" onChange={(e) => this.handleField('oldPassphrase', e)} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.newPassphrase} floatingLabelText="Coming soon New Passphrase" onChange={(e) => this.handleField('newPassphrase', e)} /></div>
+                    <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Coming soon Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
                     <div className="countryRegionContainer">
                         <CountryDropdown
                             value={this.state.country}
