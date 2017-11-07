@@ -183,7 +183,7 @@ class SignupComponent extends React.Component {
                             }
                         </div>
                     </div>
-                    <div className="skillsInputStyle"><TextField type="text" name="name" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
+                    <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
             </form>

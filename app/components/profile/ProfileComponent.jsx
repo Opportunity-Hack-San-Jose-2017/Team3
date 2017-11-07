@@ -17,8 +17,7 @@ class ProfileComponent extends React.Component {
         var checkInter = []
 
         if (this.props.location.state) {
-            
-            var volunteerInterests = this.props.location.state.userData.interests == 0 ? this.props.location.state.userData.volenteerInterests : this.props.location.state.userData.interests
+            var volunteerInterests = this.props.location.state.userData.interests 
 
             interests.map( (interest) => {
                 var data = {}
@@ -221,7 +220,7 @@ class ProfileComponent extends React.Component {
                             }
                         </div>
                     </div>
-                    <div className="skillsInputStyle"><TextField type="text" name="name" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
+                    <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>
