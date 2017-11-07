@@ -14,11 +14,12 @@ require('../signup/SignupComponent.css');
 class ProfileComponent extends React.Component {
     constructor(props) {
         super(props)
-        //const checkboxInterests = interests.map(interest => ({ interest, checked: false }));
         var checkInter = []
+
         if (this.props.location.state) {
             
             var volunteerInterests = this.props.location.state.userData.interests == 0 ? this.props.location.state.userData.volenteerInterests : this.props.location.state.userData.interests
+
             interests.map( (interest) => {
                 var data = {}
                 var interestIndex = volunteerInterests.indexOf(interest)
@@ -30,8 +31,10 @@ class ProfileComponent extends React.Component {
                 }
                 checkInter.push(data)
             })
+            let skills = this.props.location.state.userData.skills
             this.state = {
                 ...this.props.location.state.userData,
+                skillsInput: skills.join(', '),
                 checkboxInterests: checkInter,
             }
         }
@@ -48,6 +51,8 @@ class ProfileComponent extends React.Component {
                 region: '',
                 phone: '',
                 interests: [],
+                skills: [],
+                skillsInput: '',
                 oldPassphrase: '',
                 newPassphrase: '',
                 retypeNewPassphrase: '',
@@ -107,6 +112,14 @@ class ProfileComponent extends React.Component {
             interests: volunteerInterests
         })
     }
+    handleSkillsInput = (event) => {
+        event.preventDefault()
+        this.setState({
+            ...this.state,
+            skillsInput: event.target.value,
+            skills: event.target.value.split(/[ ,]+/)
+        })
+    }
     disableCheckboxes = () => {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
     }
@@ -138,6 +151,7 @@ class ProfileComponent extends React.Component {
              */
         return errorMessage
     }
+    
     onSubmit(e) {
         e.preventDefault();
         let error = this.validateState()
@@ -152,12 +166,10 @@ class ProfileComponent extends React.Component {
     handleUpdateProfile = () => {
         updateUser(this.state).then( (response) => {
             window.alert('Thank you for editing your account information')    
-
         }).catch( (error) => {
             console.log(error)
             window.alert('failed update')
         })
-
     }
 
     render () {
@@ -209,6 +221,7 @@ class ProfileComponent extends React.Component {
                             }
                         </div>
                     </div>
+                    <div className="skillsInputStyle"><TextField type="text" name="name" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>

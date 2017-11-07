@@ -28,6 +28,8 @@ class SignupComponent extends React.Component {
             region: '',
             phone: '',
             interests: [],
+            skills: [],
+            skillsInput: '',
             passphrase: '',
             retypePassphrase: '',
             checkboxInterests: checkInter,
@@ -50,6 +52,14 @@ class SignupComponent extends React.Component {
         this.setState({
             ...this.state,
             region: value
+        })
+    }
+    handleSkillsInput = (event) => {
+        event.preventDefault()
+        this.setState({
+            ...this.state,
+            skillsInput: event.target.value,
+            skills: event.target.value.split(/[ ,]+/)
         })
     }
     responseFacebook = (response) => {
@@ -173,6 +183,7 @@ class SignupComponent extends React.Component {
                             }
                         </div>
                     </div>
+                    <div className="skillsInputStyle"><TextField type="text" name="name" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
             </form>
