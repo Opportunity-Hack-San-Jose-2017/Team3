@@ -56,16 +56,17 @@ class LoginComponent extends React.Component {
     }
 
     handleLoggingUser = () => {
-        loginUser(this.state).then( (response) => {
-            if (!response['error']) {
+        loginUser(this.state).then(user => {
+            console.log('user', user);
+            if (user) {
                 this.setState({
                     ...this.state,
-                    user: response['responseData'],
+                    user,
                     goToProfile: true
-                })
+                });
             }
             else {
-                window.alert('Error logging in please try again')
+                window.alert('Error logging in please try again');
                 this.setState({
                     ...this.state,
                     email: '',
@@ -74,7 +75,7 @@ class LoginComponent extends React.Component {
                 })
             }
         }).catch( (error) => {
-            window.alert('Error logging in please try again')
+            window.alert('Error logging in please try again');
         })
 
     }

@@ -31,3 +31,12 @@ URL: http://localhost:3000/
 
 ## Live Demo
 https://givelight.herokuapp.com/
+
+## Admin user setup
+Admin users have the ability to perform adiminstrative actions such as view the list of all users.
+To add an admin user:
+1. Connect to the database with a tool such as robomongo https://robomongo.org/
+2. Open the 'user' collection
+3. Add the 'isAdmin' property to the user you want to promote to adminstrator and set its value to true.
+
+On the next login that user will have admin priviledges.
