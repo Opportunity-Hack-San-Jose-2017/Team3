@@ -11,6 +11,7 @@ import { registerUser } from '../../api/api'
 import { interests } from '../../models/interests'
 
 
+require('../sharedCss.css');
 require('./SignupComponent.css');
 require('../facebook/FacebookButton.css');
 
@@ -116,7 +117,7 @@ class SignupComponent extends React.Component {
         }
         return errorMessage
     }
-    onSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
@@ -132,7 +133,6 @@ class SignupComponent extends React.Component {
         return (
             <Paper>
             <form onSubmit={e => this.onSubmit(e)} className="main">
-                {/* <h2>Volunteer</h2> */}
                 <div className="section">
                     <FacebookLogin
                         appId={facebookAppID}
@@ -185,7 +185,7 @@ class SignupComponent extends React.Component {
                     </div>
                     <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
-                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
+                <div><button className="giveLightButton" onClick={this.handleSubmit} >sign up</button></div>
             </form>
             </Paper>
         )

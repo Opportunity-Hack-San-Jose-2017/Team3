@@ -12,6 +12,7 @@ import {
     Link
 } from 'react-router-dom'
 require('./LoginComponent.css');
+require('../sharedCss.css');
 require('../facebook/FacebookButton.css');
 
 var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
@@ -106,7 +107,7 @@ class LoginComponent extends React.Component {
                     />
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
-                    <div><RaisedButton className="darkStyle saveButton"  type="submit" label="Login" /></div>
+                    <div><RaisedButton className="saveButton"  type="submit" label="Login" /></div>
 
                 </form>
             </Paper>
