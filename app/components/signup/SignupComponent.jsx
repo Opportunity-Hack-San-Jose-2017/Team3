@@ -185,7 +185,7 @@ class SignupComponent extends React.Component {
                     </div>
                     <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
-                <div><button className="giveLightButton" onClick={this.handleSubmit} >sign up</button></div>
+                <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
             </form>
             </Paper>
         )

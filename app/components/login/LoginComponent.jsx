@@ -51,7 +51,7 @@ class LoginComponent extends React.Component {
     redirectUrl = () => {
 
     }
-    onSubmit = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault()
         this.handleLoggingUser()
     }
@@ -107,7 +107,8 @@ class LoginComponent extends React.Component {
                     />
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
-                    <div><RaisedButton className="saveButton"  type="submit" label="Login" /></div>
+                    <div><button className="giveLightButton" onClick={e => this.handleSubmit(e)} >login</button></div>
+
 
                 </form>
             </Paper>
