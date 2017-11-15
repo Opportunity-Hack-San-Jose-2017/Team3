@@ -1,6 +1,6 @@
 import * as React from 'react'
 import FacebookLogin from 'react-facebook-login'
-import Paper from 'material-ui/Paper';
+import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -11,8 +11,8 @@ import {
     Route,
     Link
 } from 'react-router-dom'
-require('./LoginComponent.css');
-require('../facebook/FacebookButton.css');
+require('./LoginComponent.css')
+require('../facebook/FacebookButton.css')
 
 var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
 
@@ -56,11 +56,11 @@ class LoginComponent extends React.Component {
     }
 
     handleLoggingUser = () => {
-        loginUser(this.state).then( (response) => {
-            if (!response['error']) {
+        loginUser(this.state).then(user => {
+            if (user) {
                 this.setState({
                     ...this.state,
-                    user: response['responseData'],
+                    user,
                     goToProfile: true
                 })
             }
