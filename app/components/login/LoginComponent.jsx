@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import { loginUser } from '../../api/api'
 import {
     BrowserRouter as Router,
@@ -42,10 +43,9 @@ class LoginComponent extends React.Component {
             ...this.state,
             facebookLogin: true,
             name: response.name,
-            email: response.email,
-            goToProfile: true
+            email: response.email
         })
-        loginUser(this.state)
+        this.handleLoggingUser()
     }
 
     redirectUrl = () => {
@@ -58,6 +58,7 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then( (response) => {
+            console.log("handle logging user in login component",response)
             if (!response['error']) {
                 this.setState({
                     ...this.state,
@@ -80,6 +81,10 @@ class LoginComponent extends React.Component {
 
     }
 
+    goBacktoGiveLightMain = (event) => {
+        window.location = 'http://www.givelight.org'
+    }
+
     render() {
         if (this.state.goToProfile) {
             let userData = this.state.user
@@ -96,6 +101,7 @@ class LoginComponent extends React.Component {
         }
         return (
             <Paper zDepth={1} className="paperStyle">
+                <GiveLightLogoComponent />
                 <form onSubmit={this.onSubmit} className="LoginForm">
                     <FacebookLogin
                         appId={facebookAppID}
@@ -108,8 +114,6 @@ class LoginComponent extends React.Component {
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
                     <div><button className="giveLightButton" onClick={e => this.handleSubmit(e)} >login</button></div>
-
-
                 </form>
             </Paper>
         )

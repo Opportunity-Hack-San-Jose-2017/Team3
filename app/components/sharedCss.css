@@ -1,0 +1,14 @@
+
+.darkStyle {
+    margin: 10px;
+    background-color: #252525;
+}
+
+.giveLightButton {
+    width: 185px;
+    font-size: 26px;
+    color: white;
+    background-color: #e0b300;
+    margin: 10px;
+    text-transform: uppercase;
+}

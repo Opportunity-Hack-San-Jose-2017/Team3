@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FacebookLogin from 'react-facebook-login';
+import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 import { registerUser } from '../../api/api'
@@ -132,6 +133,7 @@ class SignupComponent extends React.Component {
     render () {
         return (
             <Paper>
+            <GiveLightLogoComponent />
             <form onSubmit={e => this.onSubmit(e)} className="main">
                 <div className="section">
                     <FacebookLogin
