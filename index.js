@@ -21,67 +21,67 @@ app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: fals
 auth.init(app);
 
 app.get(['/', '/signup', '/login', '/profile'], (req, res) => {
-  res.sendFile(path.join(publicDir, '/index.html'));
+    res.sendFile(path.join(publicDir, '/index.html'));
 });
 
 app.post('/api/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err || !user) {
-      console.log('error with login:', err, user);
-        return res.end();
-    }
-    req.login(user, () => {
-      return res.json(user);
-    });
-  })(req, res, next);
+    passport.authenticate('local', (err, user, info) => {
+        if (err || !user) {
+            console.log('error with login:', err, user);
+            return res.end();
+        }
+        req.login(user, () => {
+            return res.json(user);
+        });
+    })(req, res, next);
 });
 
 app.get('/api/users', (req, res) => {
-  if (auth.isAdmin(req)) {
-    db.getAll('user').then(users => {
-      return res.json({users});
-    });
-  } else {
-    return res.json({error: 'You do not have permission to access this resource'});
-  }
+    if (auth.isAdmin(req)) {
+        db.getAll('user').then(users => {
+            return res.json({ users });
+        });
+    } else {
+        return res.json({ error: 'You do not have permission to access this resource' });
+    }
 });
 
 app.get('/api/user/:id', (req, res) => {
-  if (req.isAuthenticated()) {
-    db.getById('user', req.params.id).then(user => {
-      return res.json({user});
-    });
-  } else {
-    return res.json({error: 'Not authenticated'});
-  }
+    if (req.isAuthenticated()) {
+        db.getById('user', req.params.id).then(user => {
+            return res.json({ user });
+        });
+    } else {
+        return res.json({ error: 'Not authenticated' });
+    }
 });
 
 app.post('/api/user', (req, res) => {
     db.insertOne('user', req.body).then(result => {
-      return res.json(result);
-    }).catch( error => {
-      console.log(error)
-      return res.status(422).json(error)
+        return res.json(result);
+    }).catch(error => {
+        console.log(error)
+        return res.status(422).json(error)
     });
 });
 
 app.put('/api/user', (req, res) => {
-  if (req.isAuthenticated()) {
-    db.updateOne('user', req.body).then(result => {
-      return res.json(result);
-    }).catch( error => {
-      console.log(error)
-      return res.json(error)
-    });
-  } else {
-    return res.json({error: 'Not authenticated'});
-  }
+    if (req.isAuthenticated()) {
+        db.updateOne('user', req.body).then(result => {
+            return res.json(result);
+        }).catch(error => {
+            console.log(error)
+            return res.json(error)
+        });
+    } else {
+        return res.json({ error: 'Not authenticated' });
+    }
 });
 
 app.use(express.static(publicDir));
 app.use(errorHandler({
-  dumpExceptions: true,
-  showStack: true
+    dumpExceptions: true,
+    showStack: true
 }));
 
 console.log('Simple static server showing %s listening at port %s', publicDir, port);
