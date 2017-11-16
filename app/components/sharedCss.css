@@ -5,10 +5,15 @@
 }
 
 .giveLightButton {
-    width: 185px;
-    font-size: 26px;
+    font-size: .8em;
+    padding: 10px 23px 10px 23px;
     color: white;
     background-color: #e0b300;
     margin: 10px;
     text-transform: uppercase;
+    transition: background-color 0.5s ease;
+}
+
+.giveLightButton:hover {
+    background-color: black;
 }
