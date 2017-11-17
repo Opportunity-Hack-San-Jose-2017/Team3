@@ -18,7 +18,6 @@ class ProfileComponent extends React.Component {
         var checkInter = []
 
         if (this.props.location.state) {
-            console.log(this.props.location.state.userData)
             var volunteerInterests = this.props.location.state.userData.interests 
 
             interests.map( (interest) => {

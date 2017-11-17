@@ -60,6 +60,7 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then(user => {
+            console.log(user)
             if (user) {
                 this.setState({
                     ...this.state,

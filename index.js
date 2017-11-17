@@ -25,15 +25,23 @@ app.get(['/', '/signup', '/login', '/profile'], (req, res) => {
 });
 
 app.post('/api/login', (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err || !user) {
-            console.log('error with login:', err, user);
-            return res.end();
-        }
-        req.login(user, () => {
-            return res.json(user);
-        });
-    })(req, res, next);
+    auth.login(req.body).then( response => {
+        return res.json(response);
+    }).catch(error => {
+        console.log("fucking error", error)
+        return res.json(error)
+    })
+    //why use this on login?
+    // passport.authenticate('local', (err, user, info) => {
+    //     console.log(err)
+    //     console.log(user)
+    //     console.log(info)
+    //     if (err || user) {
+    //         console.log('error with login:', err, user);
+    //         return res.end();
+    //     }
+        
+    // })(req, res, next);
 });
 
 app.get('/api/users', (req, res) => {
