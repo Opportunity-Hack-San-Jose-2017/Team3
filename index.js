@@ -56,6 +56,21 @@ app.get('/api/user/:id', (req, res) => {
     }
 });
 
+app.get('/api/user/exportData', (req, res) => {
+    console.log("index js call api user export data path")
+    if (req.isAuthenticated()) {
+        db.exportUserData().then(responseExportUserData => {
+            console.log("index node server export user data returning")
+            console.log(responseExportUserData)
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+            res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
+            return res.end(responseExportUserData, 'binary')  
+        })
+    } else {
+        return res.json({ error: 'Not authenticated' });
+    }
+});
+
 app.post('/api/user', (req, res) => {
     db.insertOne('user', req.body).then(result => {
         return res.json(result);

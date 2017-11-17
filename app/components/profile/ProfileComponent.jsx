@@ -1,9 +1,10 @@
 import * as React from 'react'
 import  Checkbox from 'material-ui/Checkbox'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+import Paper from 'material-ui/Paper'
+import AdminPanelComponent from '../admin/AdminPanelComponent'
 import { Redirect } from 'react-router-dom'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 import { getUser, updateUser } from '../../api/api'
@@ -224,6 +225,7 @@ class ProfileComponent extends React.Component {
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>
+            <AdminPanelComponent />
             </Paper>
         )
     }

@@ -76,7 +76,6 @@ class LoginComponent extends React.Component {
         }).catch( (error) => {
             window.alert('Error logging in please try again')
         })
-
     }
 
     render() {

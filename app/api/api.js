@@ -4,12 +4,25 @@ const DefaultHeaders = {
 }
 
 const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) => {
-    return fetch(path, {
-        method: method,
-        headers: headers,
-        credentials: 'include',
-        body: JSON.stringify(uploadData),
-    })
+    console.log(method === 'GET')
+    if (method === 'GET') {
+        console.log("is a get request")
+        return fetch(path, {
+            method: method,
+            headers: headers,
+            credentials: 'include'
+        })
+    }
+    else {
+        console.log("NOT a get request")
+        return fetch(path, {
+            method: method,
+            headers: headers,
+            credentials: 'include',
+            body: JSON.stringify(uploadData),
+        })
+    }
+    
 }
 
 const loginUser = (userCreds) => {
@@ -67,6 +80,11 @@ const getUser = (id) => {
         })
 }
 
+const exportUserData  = () => {
+    console.log("export user data in api js called")
+    return makeRequest({}, 'GET', '/api/user/exportData')
+} 
+
 const cleanupData = (uploadData) => {
     delete uploadData.checkboxInterests
     delete uploadData.retypePassphrase
@@ -92,4 +110,5 @@ export {
     registerUser,
     getUser,
     updateUser,
+    exportUserData,
 }
