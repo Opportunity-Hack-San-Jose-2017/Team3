@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import { loginUser } from '../../api/api'
 import {
     BrowserRouter as Router,
@@ -11,8 +12,11 @@ import {
     Route,
     Link
 } from 'react-router-dom'
-require('./LoginComponent.css')
-require('../facebook/FacebookButton.css')
+
+require('./LoginComponent.css');
+require('../sharedCss.css');
+require('../facebook/FacebookButton.css');
+
 
 var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
 
@@ -41,22 +45,22 @@ class LoginComponent extends React.Component {
             ...this.state,
             facebookLogin: true,
             name: response.name,
-            email: response.email,
-            goToProfile: true
+            email: response.email
         })
-        loginUser(this.state)
+        this.handleLoggingUser()
     }
 
     redirectUrl = () => {
 
     }
-    onSubmit = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault()
         this.handleLoggingUser()
     }
 
     handleLoggingUser = () => {
         loginUser(this.state).then(user => {
+            console.log(user)
             if (user) {
                 this.setState({
                     ...this.state,
@@ -78,6 +82,10 @@ class LoginComponent extends React.Component {
         })
     }
 
+    goBacktoGiveLightMain = (event) => {
+        window.location = 'http://www.givelight.org'
+    }
+
     render() {
         if (this.state.goToProfile) {
             let userData = this.state.user
@@ -94,6 +102,7 @@ class LoginComponent extends React.Component {
         }
         return (
             <Paper zDepth={1} className="paperStyle">
+                <GiveLightLogoComponent />
                 <form onSubmit={this.onSubmit} className="LoginForm">
                     <FacebookLogin
                         appId={facebookAppID}
@@ -105,8 +114,7 @@ class LoginComponent extends React.Component {
                     />
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
-                    <div><RaisedButton className="darkStyle saveButton"  type="submit" label="Login" /></div>
-
+                    <div><button className="giveLightButton" onClick={e => this.handleSubmit(e)} >login</button></div>
                 </form>
             </Paper>
         )

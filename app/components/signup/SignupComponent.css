@@ -1,3 +1,4 @@
+
 .section {
     display: inline-block;
     width: 50%;
@@ -6,7 +7,7 @@
 }
 
 .skillsInputStyle {
-    width: 100%
+    width: 100%;
 }
 
 .volunteerDetailsContainer {
@@ -15,8 +16,10 @@
 }
 
 .main {
+    display: inline-block;
     font-family: 'Roboto';
     margin: 10px;
+    width: 800px;
     background-color: #F3F2F0;
     text-align: center;
 }
@@ -25,10 +28,6 @@
     margin-top: 10px;
 }
 
-.darkStyle {
-    margin: 10px;
-    background-color: #252525;
-}
 
 .interestsCheckboxContainer {
     display: inline-block;
@@ -38,9 +37,4 @@
 
 .countryRegionContainer {
     margin: 10px;
-}
-
-.saveButton {
-    width: 185px;
-    font-size: 26px;
 }

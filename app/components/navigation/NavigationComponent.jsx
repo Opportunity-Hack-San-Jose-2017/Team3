@@ -18,6 +18,7 @@ class NavigationComponent extends React.Component {
 
   render() {
     return (
+      <div>
         <BrowserRouter>
             <div>
               <Header />
@@ -27,8 +28,11 @@ class NavigationComponent extends React.Component {
                 <Route path='/login' component={LoginComponent}/>
                 <Route path='/profile' component={ProfileComponent}/>
               </Switch>
+            
             </div>
         </BrowserRouter>
+        
+      </div>
     );
   }
 }
