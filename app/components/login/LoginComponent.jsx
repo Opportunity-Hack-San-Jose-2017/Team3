@@ -12,14 +12,11 @@ import {
     Route,
     Link
 } from 'react-router-dom'
-<<<<<<< HEAD
-require('./LoginComponent.css')
-require('../facebook/FacebookButton.css')
-=======
+
 require('./LoginComponent.css');
 require('../sharedCss.css');
 require('../facebook/FacebookButton.css');
->>>>>>> better-ui
+
 
 var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
 
