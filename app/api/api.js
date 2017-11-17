@@ -4,8 +4,9 @@ const DefaultHeaders = {
 }
 
 const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) => {
-    console.log(method === 'GET')
-    if (method === 'GET') {
+    console.log(method)
+    console.log(method == 'GET')
+    if (method == 'GET') {
         console.log("is a get request")
         return fetch(path, {
             method: method,
@@ -82,7 +83,11 @@ const getUser = (id) => {
 
 const exportUserData  = () => {
     console.log("export user data in api js called")
-    return makeRequest({}, 'GET', '/api/user/exportData')
+    const headers = {
+        'Content-Type': 'application/vnd.openxmlformats',
+        'Content-Disposition': 'attachment; filename=UserData.xlsx'
+    }
+    return makeRequest({}, 'GET', '/api/admin/user/exportData', headers)
 } 
 
 const cleanupData = (uploadData) => {

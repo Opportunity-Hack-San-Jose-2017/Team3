@@ -11,9 +11,7 @@ class AdminPanelComponent extends React.Component {
     }
 
     handleGettingData = (event) => {
-
         event.preventDefault()
-        console.log("call that fucking api")
         exportUserData().then(data => {
             console.log("admin panel component response")
             console.log(data)

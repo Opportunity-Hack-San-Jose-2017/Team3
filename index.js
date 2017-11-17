@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
+const nodeExcel = require('excel-export')
 
 const app = express();
 const db = require('./lib/db');
@@ -60,23 +61,30 @@ app.get('/api/user/:id', (req, res) => {
             return res.json({ user });
         });
     } else {
-        return res.json({ error: 'Not authenticated' });
+        return res.json({ error: 'Not authenticated....' });
     }
 });
 
-app.get('/api/user/exportData', (req, res) => {
+app.get('/api/admin/user/exportData', (req, res) => {
     console.log("index js call api user export data path")
-    if (req.isAuthenticated()) {
-        db.exportUserData().then(responseExportUserData => {
-            console.log("index node server export user data returning")
-            console.log(responseExportUserData)
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats')
-            res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
-            return res.end(responseExportUserData, 'binary')  
-        })
-    } else {
-        return res.json({ error: 'Not authenticated' });
-    }
+    db.getAll('user').then((results) => {
+        console.log(Object.keys(results[0]))
+        var headers = Object.keys(results[0])
+        var conf ={}
+        //conf.stylesXmlFile = "./styles.xml"
+        conf.name = "UserData"
+        conf.cols = headers
+        conf.rows = results
+        var sheet = nodeExcel.execute(conf)
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+        res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
+        console.log("the sheet is ")
+        console.log(typeof(sheet))
+        return res.end(sheet, 'binary')
+    }).catch((error) => {
+        console.log(error)
+        return reject(error)
+    })
 });
 
 app.post('/api/user', (req, res) => {
