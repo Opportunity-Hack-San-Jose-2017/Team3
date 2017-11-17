@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import { Redirect } from 'react-router-dom'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 import { getUser, updateUser } from '../../api/api'
@@ -17,6 +18,7 @@ class ProfileComponent extends React.Component {
         var checkInter = []
 
         if (this.props.location.state) {
+            console.log(this.props.location.state.userData)
             var volunteerInterests = this.props.location.state.userData.interests 
 
             interests.map( (interest) => {
@@ -174,6 +176,7 @@ class ProfileComponent extends React.Component {
     render () {
         return (
             <Paper>
+            <GiveLightLogoComponent />
             <form onSubmit={e => this.onSubmit(e)} className="main">
                 <h2>Volunteer Profile</h2>
                 <div className="section">
@@ -198,7 +201,7 @@ class ProfileComponent extends React.Component {
                     </div>
                 </div>
                 <div className={`section volunteerDetailsContainer`}>
-                    <h3>Please choose at most 3:</h3>
+                    <h3>Choose 3 Interests</h3>
                     <div className="interestsCheckboxContainer">
                         <div className="checkBoxStyle">
                             {

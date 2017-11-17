@@ -5,12 +5,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FacebookLogin from 'react-facebook-login';
+import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 import { registerUser } from '../../api/api'
 import { interests } from '../../models/interests'
 
 
+require('../sharedCss.css');
 require('./SignupComponent.css');
 require('../facebook/FacebookButton.css');
 
@@ -116,7 +118,7 @@ class SignupComponent extends React.Component {
         }
         return errorMessage
     }
-    onSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
         let error = this.validateState()
         if (!error) {
@@ -131,8 +133,8 @@ class SignupComponent extends React.Component {
     render () {
         return (
             <Paper>
+            <GiveLightLogoComponent />
             <form onSubmit={e => this.onSubmit(e)} className="main">
-                {/* <h2>Volunteer</h2> */}
                 <div className="section">
                     <FacebookLogin
                         appId={facebookAppID}
@@ -185,7 +187,7 @@ class SignupComponent extends React.Component {
                     </div>
                     <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
-                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Sign Up" /></div>
+                <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
             </form>
             </Paper>
         )
