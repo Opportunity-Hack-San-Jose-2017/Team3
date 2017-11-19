@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const db = require('./lib/db');
 const auth = require('./lib/auth');
+const mailer = require('./lib/mailer');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const publicDir = __dirname + '/app';
@@ -65,6 +66,9 @@ app.get('/api/user/:id', (req, res) => {
 
 app.post('/api/user', (req, res) => {
     db.insertOne('user', req.body).then(result => {
+        var userRecord = req.body;
+        userRecord.recordType = "New User";
+        mailer.notifyAdmin(userRecord);
         return res.json(result);
     }).catch(error => {
         console.log(error)
@@ -75,6 +79,9 @@ app.post('/api/user', (req, res) => {
 app.put('/api/user', (req, res) => {
     if (req.isAuthenticated()) {
         db.updateOne('user', req.body).then(result => {
+            var userRecord = req.body;
+            userRecord.recordType = "User Profile Update";
+            mailer.notifyAdmin(userRecord);
             return res.json(result);
         }).catch(error => {
             console.log(error)
