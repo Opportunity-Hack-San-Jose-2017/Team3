@@ -20,28 +20,27 @@ app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 auth.init(app);
 
-app.get(['/', '/signup', '/login', '/profile'], (req, res) => {
+app.get(['/', '/signup', '/login', '/profile/:id'], (req, res) => {
     res.sendFile(path.join(publicDir, '/index.html'));
 });
 
 app.post('/api/login', (req, res, next) => {
-    auth.login(req.body).then( response => {
-        return res.json(response);
-    }).catch(error => {
-        console.log("fucking error", error)
-        return res.json(error)
-    })
-    //why use this on login?
-    // passport.authenticate('local', (err, user, info) => {
-    //     console.log(err)
-    //     console.log(user)
-    //     console.log(info)
-    //     if (err || user) {
-    //         console.log('error with login:', err, user);
-    //         return res.end();
-    //     }
-        
-    // })(req, res, next);
+    if (req.body.facebookLogin) {
+        // TODO: This is completely unsecure and temporary... need to replace react-facebook-login with https://github.com/jaredhanson/passport-facebook
+        req.user = req.body;
+        return res.json(req.user);
+    } else {
+        // See: https://github.com/jaredhanson/passport-local
+        passport.authenticate('local', (err, user, info) => {
+            if (err || !user) {
+                console.log('error with login:', err, user);
+                return res.end();
+            }
+            req.login(user, () => {
+                return res.json(user);
+            });
+        })(req, res, next);
+    }
 });
 
 app.get('/api/users', (req, res) => {

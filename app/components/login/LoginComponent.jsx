@@ -21,28 +21,22 @@ require('../facebook/FacebookButton.css');
 var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
 
 class LoginComponent extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            ...this.state,
-            email: '',
-            passphrase: '',
-            facebookLogin: false,
-            goToProfile: false
-        }
+    state = {
+        email: '',
+        passphrase: '',
+        facebookLogin: false,
+        goToProfile: false
     }
 
     handleField = (event, fieldName) => {
         event.preventDefault()
         this.setState({
-            ...this.state,
             [fieldName]: event.target.value
         })
     }
 
     responseFacebook = (response) => {
         this.setState({
-            ...this.state,
             facebookLogin: true,
             name: response.name,
             email: response.email
@@ -60,10 +54,8 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then(user => {
-            console.log(user)
             if (user) {
                 this.setState({
-                    ...this.state,
                     user,
                     goToProfile: true
                 })
@@ -71,13 +63,13 @@ class LoginComponent extends React.Component {
             else {
                 window.alert('Error logging in please try again')
                 this.setState({
-                    ...this.state,
                     email: '',
                     passphrase: ''
     
                 })
             }
         }).catch( (error) => {
+            console.log('Error in login', error)
             window.alert('Error logging in please try again')
         })
 
@@ -88,10 +80,10 @@ class LoginComponent extends React.Component {
     }
 
     render() {
-        if (this.state.goToProfile) {
+        if (this.state.goToProfile && this.state.user) {
             let userData = this.state.user
             let profileComponentDataAndNavBarFunctions = {
-                pathname: '/profile',
+                pathname: `/profile/${userData._id}`,
                 state: {
                     logoutNavBar: this.props.location.state,
                     userData

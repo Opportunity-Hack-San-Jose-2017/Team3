@@ -3,7 +3,7 @@ const DefaultHeaders = {
     'Content-Type': 'application/json',
 }
 
-const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) => {
+const makeRequest = (uploadData = undefined, method, path, headers = DefaultHeaders) => {
     return fetch(path, {
         method: method,
         headers: headers,
@@ -43,28 +43,15 @@ const registerUser = (newUser) => {
 }
 
 const getUser = (id) => {
-    //TODO:001: By default fetch returns a promise, should it be just return fetch(...
-    /*
     return new Promise((resolve, reject) => {
-        fetch(`/user/${id}`, {
-            method: 'GET'
-        }).then(response => {
+        return makeRequest(undefined, 'GET', `/api/user/${id}`).then(response => {
             return resolve(response.json())
         }).catch(error => {
             window.alert('Error retrieving user')
             console.log(error)
             return reject(error)
         })
-    })
-    */
-    makeRequest({}, 'GET', `/api/user/${id}`)
-        .then(response => {
-            return response.json()
-        }).catch(error => {
-            window.alert('Error retrieving user')
-            console.log(error)
-            return error
-        })
+    }) 
 }
 
 const cleanupData = (uploadData) => {

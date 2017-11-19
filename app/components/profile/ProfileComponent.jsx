@@ -13,69 +13,40 @@ import { interests } from '../../models/interests'
 require('../signup/SignupComponent.css');
 
 class ProfileComponent extends React.Component {
-    constructor(props) {
-        super(props)
-        var checkInter = []
-
-        if (this.props.location.state) {
-            var volunteerInterests = this.props.location.state.userData.interests 
-
-            interests.map( (interest) => {
-                var data = {}
-                var interestIndex = volunteerInterests.indexOf(interest)
-                if (interestIndex != -1) {
-                    data = { interest: interest, checked: true }
-                }
-                else {
-                    data = { interest: interest, checked: false }
-                }
-                checkInter.push(data)
-            })
-            let skills = this.props.location.state.userData.skills
-            this.state = {
-                ...this.props.location.state.userData,
-                skillsInput: skills.join(', '),
-                checkboxInterests: checkInter,
-            }
-        }
-        else {
-            interests.map( (interest) => {
-                var data = {}
-                data = { interest: interest, checked: false }
-                checkInter.push(data)
-            })
-            this.state = {
-                name: '',
-                email: '',
-                country: '',
-                region: '',
-                phone: '',
-                interests: [],
-                skills: [],
-                skillsInput: '',
-                oldPassphrase: '',
-                newPassphrase: '',
-                retypeNewPassphrase: '',
-                checkboxInterests: checkInter,
-            }
-        }
+    state = {
+        name: '',
+        email: '',
+        country: '',
+        region: '',
+        phone: '',
+        interests: [],
+        skills: [],
+        skillsInput: '',
+        oldPassphrase: '',
+        newPassphrase: '',
+        retypeNewPassphrase: '',
+        checkboxInterests: [],
     }
 
     componentDidMount() {
-        //const href = window.location.href;
-        //const id = href.substr(href.lastIndexOf('/') + 1);
-        /*
+        const href = window.location.href;
+        const id = href.substr(href.lastIndexOf('/') + 1);
+        
         getUser(id).then(response => {
-            const checkboxInterests = this.state.checkboxInterests.map(interest => {
-                if (response.user.volunteerInterests.includes(interest.interest)) {
+            let checkboxInterests;
+            
+            if (this.state.checkboxInterests.length === 0) {
+                checkboxInterests = interests.map(interest => ({ interest: interest, checked: false }))
+            }
+
+            checkboxInterests = checkboxInterests.map(interest => {
+                if (response.user && response.user.interests && response.user.interests.includes(interest.interest)) {
                     return { ...interest, checked: true };
                 } 
                 return { ...interest, checked: false };
             });
             this.setState({...response.user, checkboxInterests});
-            console.log(response.user);
         });
-         */
     }
 
     handleField = (fieldName, event) => {
