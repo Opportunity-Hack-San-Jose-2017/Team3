@@ -14,6 +14,7 @@ require('../signup/SignupComponent.css');
 
 class ProfileComponent extends React.Component {
     state = {
+        _id: '',
         name: '',
         email: '',
         country: '',
@@ -35,17 +36,24 @@ class ProfileComponent extends React.Component {
         getUser(id).then(response => {
             let checkboxInterests;
             
-            if (this.state.checkboxInterests.length === 0) {
-                checkboxInterests = interests.map(interest => ({ interest: interest, checked: false }))
+            if (response['error']) {
+                window.location.href = '/login'
             }
+            else {
+                if (this.state.checkboxInterests.length === 0) {
+                    checkboxInterests = interests.map(interest => ({ interest: interest, checked: false }))
+                }
 
-            checkboxInterests = checkboxInterests.map(interest => {
-                if (response.user && response.user.interests && response.user.interests.includes(interest.interest)) {
-                    return { ...interest, checked: true };
-                } 
-                return { ...interest, checked: false };
-            });
-            this.setState({...response.user, checkboxInterests, skillsInput: response.user.skills && response.user.skills.join(',')});
+                checkboxInterests = checkboxInterests.map(interest => {
+                    if (response.user && response.user.interests && response.user.interests.includes(interest.interest)) {
+                        return { ...interest, checked: true };
+                    } 
+                    return { ...interest, checked: false };
+                });
+                this.setState({...response.user, checkboxInterests, skillsInput: response.user.skills && response.user.skills.join(',')});
+            }
+        }).catch( error => {
+            window.alert('Invalid operation')
         });
     }
 
@@ -136,6 +144,7 @@ class ProfileComponent extends React.Component {
     }
     handleUpdateProfile = () => {
         updateUser(this.state).then( (response) => {
+            console.log(response)
             window.alert('Thank you for editing your account information')    
         }).catch( (error) => {
             console.log(error)
