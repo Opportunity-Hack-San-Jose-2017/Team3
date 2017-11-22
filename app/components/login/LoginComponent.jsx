@@ -72,7 +72,6 @@ class LoginComponent extends React.Component {
             console.log('Error in login', error)
             window.alert('Error logging in please try again')
         })
-
     }
 
     goBacktoGiveLightMain = (event) => {

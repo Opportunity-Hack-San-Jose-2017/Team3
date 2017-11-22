@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
+const nodeExcel = require('excel-export')
+const json2xls = require('json2xls')
+const fs = require('fs')
+//const nodeExcel = require('exceljs')
 
 const app = express();
 const db = require('./lib/db');
@@ -60,8 +64,36 @@ app.get('/api/user/:id', (req, res) => {
             return res.json({ user });
         });
     } else {
-        return res.json({ error: 'Not authenticated' });
+        return res.json({ error: 'Not authenticated....' });
     }
+});
+
+app.get('/api/admin/user/exportData', (req, res) => {
+    db.getAll('user').then((results) => {
+
+        var headers = Object.keys(results[0])
+        var conf ={}
+        conf.stylesXmlFile = "./lib/styles.xml"
+        conf.name = "UserData"
+        conf.cols = headers
+        
+        var values = results.map( result => {
+            delete result['passphrase']
+            return Object.values(result)
+        })
+        console.log(values)
+        var sheet = nodeExcel.execute(conf)
+        fs.writeFileSync('./lib/volunteers.xlsx', sheet, 'binary')
+
+        //res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+        //res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
+        const file = './lib/volunteers.xlsx'
+        const filename = 'volunteers.xlsx'
+        return res.download(file, filename)
+    }).catch((error) => {
+        console.log(error)
+        return reject(error)
+    })
 });
 
 app.post('/api/user', (req, res) => {
