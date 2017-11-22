@@ -8,6 +8,9 @@ const session = require('express-session');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 const nodeExcel = require('excel-export')
+const json2xls = require('json2xls')
+const fs = require('fs')
+//const nodeExcel = require('exceljs')
 
 const app = express();
 const db = require('./lib/db');
@@ -66,21 +69,27 @@ app.get('/api/user/:id', (req, res) => {
 });
 
 app.get('/api/admin/user/exportData', (req, res) => {
-    console.log("index js call api user export data path")
     db.getAll('user').then((results) => {
-        console.log(Object.keys(results[0]))
+
         var headers = Object.keys(results[0])
         var conf ={}
-        //conf.stylesXmlFile = "./styles.xml"
+        conf.stylesXmlFile = "./lib/styles.xml"
         conf.name = "UserData"
         conf.cols = headers
-        conf.rows = results
+        
+        var values = results.map( result => {
+            delete result['passphrase']
+            return Object.values(result)
+        })
+        console.log(values)
         var sheet = nodeExcel.execute(conf)
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats')
-        res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
-        console.log("the sheet is ")
-        console.log(typeof(sheet))
-        return res.end(sheet, 'binary')
+        fs.writeFileSync('./lib/volunteers.xlsx', sheet, 'binary')
+
+        //res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+        //res.setHeader("Content-Disposition", "attachment; filename=" + "UserData.xlsx")
+        const file = './lib/volunteers.xlsx'
+        const filename = 'volunteers.xlsx'
+        return res.download(file, filename)
     }).catch((error) => {
         console.log(error)
         return reject(error)
