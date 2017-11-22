@@ -4,8 +4,6 @@ const DefaultHeaders = {
 }
 
 const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) => {
-    console.log(method)
-    console.log(method == 'GET')
     if (method == 'GET') {
         console.log("is a get request")
         return fetch(path, {
@@ -15,7 +13,6 @@ const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) =>
         })
     }
     else {
-        console.log("NOT a get request")
         return fetch(path, {
             method: method,
             headers: headers,
@@ -66,6 +63,17 @@ const getUser = (id) => {
         })
     }) 
 }
+const getAllUsers = (id) => {
+    return new Promise((resolve, reject) => {
+        return makeRequest(undefined, 'GET', '/api/admin/users').then(response => {
+            return resolve(response.json())
+        }).catch(error => {
+            window.alert('Error retrieving user')
+            console.log(error)
+            return reject(error)
+        })
+    }) 
+}
 
 const exportUserData  = () => {
     console.log("export user data in api js called")
@@ -102,4 +110,5 @@ export {
     getUser,
     updateUser,
     exportUserData,
+    getAllUsers,
 }

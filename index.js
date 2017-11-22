@@ -67,10 +67,18 @@ app.get('/api/user/:id', (req, res) => {
         return res.json({ error: 'Not authenticated....' });
     }
 });
+app.get('/api/admin/users', (req, res) => {
+    db.getAll('user').then((results) => {
+        console.log(results)
+        return res.json({results})
+    }).catch((error) => {
+        console.log(error)
+        return res.status(422).json(error)
+    })
+}
 
 app.get('/api/admin/user/exportData', (req, res) => {
     db.getAll('user').then((results) => {
-
         var headers = Object.keys(results[0])
         var conf ={}
         conf.stylesXmlFile = "./lib/styles.xml"

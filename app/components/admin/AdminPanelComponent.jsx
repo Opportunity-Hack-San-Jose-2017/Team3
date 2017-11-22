@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { exportUserData } from '../../api/api'
+import { exportUserData, getAllUsers } from '../../api/api'
 //require('./GiveLightLogoComponent.css');
 
 
