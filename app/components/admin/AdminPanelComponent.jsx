@@ -25,6 +25,7 @@ class AdminPanelComponent extends React.Component {
         
         return (
             <div>
+                <h2>Welcome to Admin Organization Page</h2>
                 <button onClick={this.handleGettingData}>Export User Data</button>
             </div>
         )

@@ -34,6 +34,7 @@ class SignupComponent extends React.Component {
             skillsInput: '',
             passphrase: '',
             retypePassphrase: '',
+            isAdmin: false,
             checkboxInterests: checkInter,
         }
     }
