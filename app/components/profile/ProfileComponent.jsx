@@ -36,9 +36,13 @@ class ProfileComponent extends React.Component {
         const href = window.location.href;
         const id = href.substr(href.lastIndexOf('/') + 1);
         
+        console.log("reloading the page in did mount")
+        console.log(href)
+        console.log(id)
         getUser(id).then(response => {
             let checkboxInterests;
             
+            console.log(response)
             if (this.state.checkboxInterests.length === 0) {
                 checkboxInterests = interests.map(interest => ({ interest: interest, checked: false }))
             }

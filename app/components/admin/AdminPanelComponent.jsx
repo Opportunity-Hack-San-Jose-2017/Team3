@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { exportUserData, getAllUsers } from '../../api/api'
-//require('./GiveLightLogoComponent.css');
+
+require('./AdminPanelComponent.css');
 
 
 class AdminPanelComponent extends React.Component {
@@ -37,8 +38,9 @@ class AdminPanelComponent extends React.Component {
         return (
             <div>
                 <h2>Welcome to Admin Organization Page</h2>
-                <button onClick={this.handleGettingData}>Export User Data</button>
-                {console.log(this.state)}
+                <div>
+                    <button onClick={this.handleGettingData}>Export User Data</button>
+                </div>
                 <VolunteerList allVolunteers={this.state.allUsers} />
             </div>
         )
@@ -54,7 +56,7 @@ class VolunteerList extends React.Component {
     render () {
         if (this.props.allVolunteers) {
             return (
-                <div>
+                <div className="volunteerListContainer">
                     {
                         this.props.allVolunteers.map( (volunteer, index) => {
                             return ( <VolunteerDisplay key={index} volunteerData={volunteer} />)
@@ -77,8 +79,18 @@ class VolunteerDisplay extends React.Component {
 
     render () {
         return (
-            <div>
-                <span>{this.props.volunteerData.name}</span> 
+            <div className="volunteerDisplayContainer">
+                <div className="volunteerContactInformation">
+                    <div>Name: {this.props.volunteerData.name}</div>
+                    <div>Email: {this.props.volunteerData.email}</div>
+                    <div>Phone: {this.props.volunteerData.phone}</div>
+                    <div>Country: {this.props.volunteerData.country}</div> 
+                    <div>Region: {this.props.volunteerData.region}</div> 
+                </div> 
+                <div className="volunteerDetailsContainer">
+                    <div>Interests: {this.props.volunteerData.interests.join(', ')}</div>
+                    <div>Skills: {this.props.volunteerData.skills.join(', ')}</div> 
+                </div> 
             </div>
         )
     }

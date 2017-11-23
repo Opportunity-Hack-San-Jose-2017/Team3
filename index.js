@@ -60,9 +60,15 @@ app.get('/api/users', (req, res) => {
 
 app.get('/api/user/:id', (req, res) => {
     if (req.isAuthenticated()) {
-        db.getById('user', req.params.id).then(user => {
+        if (req.user) {
+            var user = req.user
             return res.json({ user });
-        });
+        }
+        else {
+            db.getById('user', req.params.id).then(user => {
+                return res.json({ user });
+            });
+        }
     } else {
         return res.json({ error: 'Not authenticated....' });
     }
