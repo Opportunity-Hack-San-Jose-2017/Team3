@@ -76,7 +76,7 @@ app.post('/api/user', (req, res) => {
     // even if we have already done so on the front end. This is to prevent malicious users
     // from adding unexpected fields by modifying the front end JS in the browser.
     db.insertOne('user', _.pick(req.body, [
-        'name', 'email', 'country', 'region', 'phone', 'interests', 'passphrase'
+        'name', 'email', 'country', 'region', 'phone', 'interests', 'passphrase', 'skills'
     ])).then(result => {
         var userRecord = req.body
         userRecord.recordType = "New User"
