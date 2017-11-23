@@ -45,7 +45,7 @@ class ProfileComponent extends React.Component {
                 } 
                 return { ...interest, checked: false };
             });
-            this.setState({...response.user, checkboxInterests});
+            this.setState({...response.user, checkboxInterests, skillsInput: response.user.skills.join(',')});
         });
     }
 

@@ -14,8 +14,10 @@
     "deploy-windows": "SET NODE_ENV=production & webpack --config webpack.production.config.js",
     "heroku-postbuild": "webpack -p --config ./webpack.production.config.js --progress"
   },
-    "engines" : { "node" : "6" },
-    "dependencies": {
+  "engines": {
+    "node": "6"
+  },
+  "dependencies": {
     "@uirouter/react": "^0.5.4",
     "babel-core": "6.x",
     "babel-eslint": "8.x",
@@ -45,17 +47,18 @@
     "express-session": "^1.15.6",
     "husky": "^0.12.0",
     "json-loader": "^0.5.7",
+    "lodash": "^4.17.4",
     "material-ui": "^0.19.4",
     "method-override": "^2.x",
     "mongodb": "^2.2.33",
     "nodemailer": "^4.4.0",
     "open-browser-webpack-plugin": "0.0.3",
     "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "react": "15.x",
     "react-country-region-selector-material-ui": "1.0.0",
     "react-dom": "15.x",
-    "react-facebook-login": "3.6.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-toolbox": "^2.0.0-beta.12",

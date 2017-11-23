@@ -18,7 +18,7 @@ npm run build
 **Connecting to the production database**
  - In the root of your app folder, create a folder called `config` if it doesn't already exist.
  - Under the `config` folder create a file called secret.json
- - In secret.json, add the mongoDB password as `mongo_db_password`
+ - In secret.json, add the mongoDB password as `mongoDbPassword`
 
 #### Step 3: Launch
 ```
