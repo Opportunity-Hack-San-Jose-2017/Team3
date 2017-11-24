@@ -8,11 +8,8 @@ class VolunteerInterestsCheckboxesComponent extends React.Component {
     constructor(props) {
         super(props)
         this.props = props
-        const checkInter = interests.map(interest => ({ interest: interest, checked: false }));
 
         this.state = {
-            checkboxInterests: checkInter,
-            interests: [],
         }
     }
     disableCheckboxes = () => {
@@ -22,11 +19,10 @@ class VolunteerInterestsCheckboxesComponent extends React.Component {
     render () {
         return (
             <div className="interestsCheckboxContainer">
-                {console.log("checkbox component", this.props)}
                 <div className="checkBoxStyle">
                     {
                         this.props.checkboxInterests.map( (checkInterest, index) => {
-                            if (this.disableCheckboxes()) {
+                            if (this.disableCheckboxes() || this.props.allowAll) {
                                 return (
                                         <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.props.handleCheckbox(e, index, checkInterest.interest)} />
                                 )

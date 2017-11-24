@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { exportUserData, getAllUsers } from '../../api/api'
+import { exportUserData, getAllUsers, searchVolunteers } from '../../api/api'
+import { interests } from '../../models/interests'
+import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 require('./AdminPanelComponent.css');
 
@@ -7,19 +10,44 @@ require('./AdminPanelComponent.css');
 class AdminPanelComponent extends React.Component {
     constructor(props) {
         super(props)
+        const checkInterests = interests.map(interest => ({ interest: interest, checked: false }));
         this.state = {
             allUsers: [],
+            filteredVolunteers: [],
+            volunteerInterestFilterCheckboxes: checkInterests,
+            filterInterests: '',
+            searchQuery: {
+            },
         }
     }
     componentDidMount() {
         getAllUsers().then( response => {
-            console.log('in get all users response')
-            console.log(response)
             this.setState({
-                allUsers: response
+                allUsers: response,
+                filteredVolunteers: response,
             })
         }).catch( error => {
             console.log(error)    
+        })
+    }
+
+    handleCountry = (event, index, value) => {
+        this.setState({
+            ...this.state,
+            searchQuery: {
+                ...this.state.searchQuery,
+                country: value
+            }
+        })
+    }
+
+    handleRegion = (event, index, value) => {
+        this.setState({
+            ...this.state,
+            searchQuery: {
+                ...this.state.searchQuery,
+                region: value
+            }
         })
     }
 
@@ -33,6 +61,37 @@ class AdminPanelComponent extends React.Component {
             window.alert('Error getting export data')
         })
     }
+    handleCheckbox = (event, index, interest) => {
+        var data = this.state.volunteerInterestFilterCheckboxes
+        data[index] = { interest: data[index].interest, checked: !data[index].checked }
+        var volunteerInterests = []
+        data.map( interestCheckbox => {
+            if (interestCheckbox.checked) {
+                volunteerInterests.push(interestCheckbox.interest)
+            }
+        })
+        this.setState({
+            ...this.state,
+            volunteerInterestFilterCheckboxes: data,
+            searchQuery: {
+                ...this.state.searchQuery,
+                interests: volunteerInterests
+            },
+        })
+    }
+
+    handleSearch = (event) => {
+        console.log(this.state)
+        searchVolunteers(this.state.searchQuery).then( response => {
+            console.log(response)
+            this.setState({
+                filteredVolunteers: response
+            })
+        }).catch( error => {
+            console.log(error)    
+        })
+
+    }
 
     render() {
         return (
@@ -41,7 +100,25 @@ class AdminPanelComponent extends React.Component {
                 <div>
                     <button onClick={this.handleGettingData}>Export User Data</button>
                 </div>
-                <VolunteerList allVolunteers={this.state.allUsers} />
+                <div>
+                    <div className="countryRegionContainer">
+                        <CountryDropdown
+                            value={this.state.searchQuery.country}
+                            onChange={this.handleCountry}
+                        />
+                    </div>
+                    <div>
+                        <RegionDropdown
+                            country={this.state.searchQuery.country}
+                            value={this.state.searchQuery.region}
+                            onChange={this.handleRegion}
+                        />
+                    </div>
+                    <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.volunteerInterestFilterCheckboxes} allowAll={true} />
+
+                    <button onClick={this.handleSearch}>Filter</button>
+                </div>
+                <VolunteerList allVolunteers={this.state.filteredVolunteers} />
             </div>
         )
     }

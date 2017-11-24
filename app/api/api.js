@@ -21,6 +21,7 @@ const makeRequest = (uploadData = {}, method, path, headers = DefaultHeaders) =>
     }
 }
 
+
 const loginUser = (userCreds) => {
     return makeRequest(userCreds, 'POST', '/api/login').then(response => {
         return response.json()
@@ -74,6 +75,19 @@ const getAllUsers = (id) => {
     }) 
 }
 
+const searchVolunteers = (searchQuery) => {
+    return new Promise((resolve, reject) => {
+        return makeRequest(searchQuery, 'POST', '/api/admin/search/users').then(response => {
+            return resolve(response.json())
+        }).catch(error => {
+            window.alert('Error retrieving user')
+            console.log(error)
+            return reject(error)
+        })
+    }) 
+
+}
+
 const exportUserData  = () => {
     const headers = {
         'Content-Type': 'application/vnd.openxmlformats',
@@ -109,4 +123,5 @@ export {
     updateUser,
     exportUserData,
     getAllUsers,
+    searchVolunteers,
 }

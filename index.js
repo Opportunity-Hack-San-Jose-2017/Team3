@@ -48,6 +48,16 @@ app.post('/api/login', (req, res, next) => {
     }
 });
 
+app.post('/api/admin/search/users', (req, res) => {
+    if (auth.isAdmin(req)) {
+        db.findAll('user', req.body).then(users => {
+            return res.json(users);
+        });
+    } else {
+        return res.json({ error: 'You do not have permission to access this resource' });
+    }
+});
+
 app.get('/api/users', (req, res) => {
     if (auth.isAdmin(req)) {
         db.getAll('user').then(users => {

@@ -168,7 +168,6 @@ class SignupComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Please choose at most 3:</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <hr />
                     <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
