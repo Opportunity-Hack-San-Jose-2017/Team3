@@ -5,7 +5,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FacebookLogin from 'react-facebook-login';
+
 import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
+import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
+
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 import { registerUser } from '../../api/api'
@@ -90,9 +93,6 @@ class SignupComponent extends React.Component {
             interests: volunteerInterests
         })
     }
-    disableCheckboxes = () => {
-        return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
-    }
     validateState = () => {
         var errorMessage = ''
         let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -167,25 +167,8 @@ class SignupComponent extends React.Component {
                 </div>
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Please choose at most 3:</h3>
-                    <div className="interestsCheckboxContainer">
-                        <div className="checkBoxStyle">
-                            {
-                                this.state.checkboxInterests.map( (checkInterest, index) => {
-                                    if (this.disableCheckboxes()) {
-                                        return (
-                                                <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                        )
-                                    }
-                                    else {
-                                        return (
-                                                <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest} checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                        )
-
-                                    }
-                                })
-                            }
-                        </div>
-                    </div>
+                    <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
+                    <hr />
                     <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
                 </div>
                 <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>

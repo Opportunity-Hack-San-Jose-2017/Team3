@@ -3,6 +3,9 @@ logs
 *.log
 npm-debug.log*
 config/projectInfoData.js
+
+.*.swp
+
 # Runtime data
 pids
 *.pid
