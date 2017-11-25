@@ -50,6 +50,12 @@ app.post('/api/login', (req, res, next) => {
 
 app.post('/api/admin/search/users', (req, res) => {
     if (auth.isAdmin(req)) {
+        if (req.body.interests) {
+
+        }
+        else if (req.body.skills) {
+
+        }
         db.findAll('user', req.body).then(users => {
             return res.json(users);
         });
