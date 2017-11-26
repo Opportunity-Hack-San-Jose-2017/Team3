@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper';
 
 import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
+import VolunteerSkillsInputComponent from '../commonComponents/SkillsInputComponent'
 
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
@@ -62,7 +63,7 @@ class SignupComponent extends React.Component {
         this.setState({
             ...this.state,
             skillsInput: event.target.value,
-            skills: event.target.value.split(/[ ,]+/)
+            skills: event.target.value.split(/\s*,\s*/)
         })
     }
     responseFacebook = (response) => {
@@ -163,7 +164,7 @@ class SignupComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Please choose at most 3:</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skilsInput} />
                 </div>
                 <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
             </form>

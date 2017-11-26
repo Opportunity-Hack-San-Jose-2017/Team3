@@ -2,6 +2,7 @@ import * as React from 'react'
 import { exportUserData, getAllUsers, searchVolunteers } from '../../api/api'
 import { interests } from '../../models/interests'
 import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
+import VolunteerSkillsInputComponent from '../commonComponents/SkillsInputComponent'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 require('./AdminPanelComponent.css');
@@ -17,6 +18,7 @@ class AdminPanelComponent extends React.Component {
             volunteerInterestFilterCheckboxes: checkInterests,
             filterInterests: '',
             searchQuery: {
+                skills: []
             },
         }
     }
@@ -28,6 +30,17 @@ class AdminPanelComponent extends React.Component {
             })
         }).catch( error => {
             console.log(error)    
+        })
+    }
+
+    handleSkillsInput = (event) => {
+        event.preventDefault()
+        this.setState({
+            ...this.state,
+            searchQuery: {
+                ...this.state.searchQuery,
+                skills: event.target.value.split(/\s*,\s*/)
+            }
         })
     }
 
@@ -81,11 +94,19 @@ class AdminPanelComponent extends React.Component {
     }
 
     handleSearch = (event) => {
-        console.log(this.state)
+        if (this.state.searchQuery.skills.length == 0) {
+            delete this.state.searchQuery['skills']
+        }
+
         searchVolunteers(this.state.searchQuery).then( response => {
             console.log(response)
             this.setState({
-                filteredVolunteers: response
+                ...this.state,
+                filteredVolunteers: response,
+                searchQuery: {
+                    ...this.state.searchQuery,
+                    skills: [],
+                }
             })
         }).catch( error => {
             console.log(error)    
@@ -115,7 +136,11 @@ class AdminPanelComponent extends React.Component {
                         />
                     </div>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.volunteerInterestFilterCheckboxes} allowAll={true} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.searchQuery.skills.join(', ')} />
 
+                    <br />
+                    <br />
+                    <br />
                     <button onClick={this.handleSearch}>Filter</button>
                 </div>
                 <VolunteerList allVolunteers={this.state.filteredVolunteers} />
