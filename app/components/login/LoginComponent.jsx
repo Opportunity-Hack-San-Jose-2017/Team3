@@ -1,5 +1,4 @@
 import * as React from 'react'
-import FacebookLogin from 'react-facebook-login'
 import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
@@ -13,12 +12,10 @@ import {
     Link
 } from 'react-router-dom'
 
-require('./LoginComponent.css');
-require('../sharedCss.css');
-require('../facebook/FacebookButton.css');
+require('./LoginComponent.css')
+require('../sharedCss.css')
+require('../facebook/FacebookButton.css')
 
-
-var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
 
 class LoginComponent extends React.Component {
     state = {
@@ -44,8 +41,9 @@ class LoginComponent extends React.Component {
         this.handleLoggingUser()
     }
 
-    redirectUrl = () => {
-
+    loginWithFacebook = (e) => {
+        e.preventDefault()
+        window.location = '/api/auth/facebook'
     }
     handleSubmit = (event) => {
         event.preventDefault()
@@ -96,14 +94,12 @@ class LoginComponent extends React.Component {
             <Paper zDepth={1} className="paperStyle">
                 <GiveLightLogoComponent />
                 <form onSubmit={this.onSubmit} className="LoginForm">
-                    <FacebookLogin
-                        appId={facebookAppID}
-                        autoLoad={false}
-                        textButton="Login With Facebook"
-                        fields="name,email,picture"
-                        onClick={this.redirectUrl}
-                        callback={this.responseFacebook}
-                    />
+                <button
+                        onClick={this.loginWithFacebook}
+                        className="uibutton"
+                    >
+                        &nbsp;&nbsp;&nbsp;&nbsp;Login with Facebook&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={e => this.handleField(e, 'email')} /></div>
                     <div><TextField type="password" name="passphrase" value={this.state.passphrase} floatingLabelText="Passphrase" onChange={e => this.handleField(e, 'passphrase')} /></div>
                     <div><button className="giveLightButton" onClick={e => this.handleSubmit(e)} >login</button></div>

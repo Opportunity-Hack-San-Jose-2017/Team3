@@ -4,27 +4,24 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import FacebookLogin from 'react-facebook-login';
 
 import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
 
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
-import { registerUser } from '../../api/api'
+import { registerUser, signupFacebook } from '../../api/api'
 import { interests } from '../../models/interests'
 
 
-require('../sharedCss.css');
-require('./SignupComponent.css');
-require('../facebook/FacebookButton.css');
-
-var facebookAppID = require('!json../../../config/projectInfoData.json')['facebookAppID']
+require('../sharedCss.css')
+require('./SignupComponent.css')
+require('../facebook/FacebookButton.css')
 
 class SignupComponent extends React.Component {
     constructor(props) {
         super(props)
-        const checkInter = interests.map(interest => ({ interest: interest, checked: false }));
+        const checkInter = interests.map(interest => ({ interest: interest, checked: false }))
         
         this.state = {
             name: '',
@@ -73,10 +70,11 @@ class SignupComponent extends React.Component {
             ...this.state,
             name: response.name,
             email: response.email,
-        });
+        })
     }
-    redirectUrl = () => {
-
+    signupWithFacebook = (e) => {
+        e.preventDefault()
+        window.location = '/api/auth/facebook'
     }
     handleCheckbox = (event, index, interest) => {
         var data = this.state.checkboxInterests
@@ -120,7 +118,7 @@ class SignupComponent extends React.Component {
         return errorMessage
     }
     handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
         let error = this.validateState()
         if (!error) {
             registerUser(this.state)
@@ -129,7 +127,7 @@ class SignupComponent extends React.Component {
             window.alert(error)
         }
 
-    };
+    }
 
     render () {
         return (
@@ -137,15 +135,12 @@ class SignupComponent extends React.Component {
             <GiveLightLogoComponent />
             <form onSubmit={e => this.onSubmit(e)} className="main">
                 <div className="section">
-                    <FacebookLogin
-                        appId={facebookAppID}
-                        autoLoad={false}
-                        textButton="&nbsp;&nbsp;&nbsp;&nbsp;Prefill with Facebook&nbsp;&nbsp;&nbsp;&nbsp;"
-                        fields="name,email,picture"
-                        onClick={this.redirectUrl}
-                        cssClass="uibutton"
-                        callback={this.responseFacebook}
-                    />
+                    <button
+                        onClick={this.signupWithFacebook}
+                        className="uibutton"
+                    >
+                        &nbsp;&nbsp;&nbsp;&nbsp;Signup with Facebook&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
                     <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
                     <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
                     <div><TextField type="number" floatingLabelText="Phone" name="phone" onChange={(e) => this.handleField('phone', e)} /></div>
