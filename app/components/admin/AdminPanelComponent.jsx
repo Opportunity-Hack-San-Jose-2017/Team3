@@ -18,55 +18,17 @@ class AdminPanelComponent extends React.Component {
             volunteerInterestFilterCheckboxes: checkInterests,
             filterInterests: '',
             searchQuery: {
-                skills: []
             },
         }
     }
     componentDidMount() {
         getAllUsers().then( response => {
             this.setState({
-                allUsers: response,
                 filteredVolunteers: response,
             })
         }).catch( error => {
             console.log(error)    
         })
-    }
-
-    handleSkillsInput = (event) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            searchQuery: {
-                ...this.state.searchQuery,
-                skills: event.target.value.split(/\s*,\s*/)
-            }
-        })
-        this.searchVolunteersHandler()
-    }
-
-    handleCountry = (event, index, value) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            searchQuery: {
-                ...this.state.searchQuery,
-                country: value
-            }
-        })
-        this.searchVolunteersHandler()
-    }
-
-    handleRegion = (event, index, value) => {
-        event.preventDefault()
-        this.setState({
-            ...this.state,
-            searchQuery: {
-                ...this.state.searchQuery,
-                region: value
-            }
-        })
-        this.searchVolunteersHandler()
     }
 
     handleGettingData = (event) => {
@@ -79,6 +41,44 @@ class AdminPanelComponent extends React.Component {
             window.alert('Error getting export data')
         })
     }
+
+    getAllVolunteers = () => {
+        getAllUsers().then( response => {
+            this.setState({
+                filteredVolunteers: response,
+            })
+        }).catch( error => {
+            console.log(error)    
+        })
+    }
+
+    handleSkillsInput = (event) => {
+        event.preventDefault()
+        let searchQuery = {
+            ...this.state.searchQuery,
+            skills: event.target.value.split(/\s*,\s*/)
+        }
+        this.searchVolunteersHandler(searchQuery)
+    }
+
+    handleCountry = (event, index, value) => {
+        event.preventDefault()
+        let searchQuery = {
+            ...this.state.searchQuery,
+            country: value
+        }
+        this.searchVolunteersHandler(searchQuery)
+    }
+
+    handleRegion = (event, index, value) => {
+        event.preventDefault()
+        let searchQuery = {
+            ...this.state.searchQuery,
+            region: value
+        }
+        this.searchVolunteersHandler(searchQuery)
+    }
+
     handleCheckbox = (event, index, interest) => {
         event.preventDefault()
         var data = this.state.volunteerInterestFilterCheckboxes
@@ -89,51 +89,40 @@ class AdminPanelComponent extends React.Component {
                 volunteerInterests.push(interestCheckbox.interest)
             }
         })
-        this.setState({
-            ...this.state,
-            volunteerInterestFilterCheckboxes: data,
-            searchQuery: {
-                ...this.state.searchQuery,
-                interests: volunteerInterests
-            },
-        })
-        this.searchVolunteersHandler()
-    }
-
-    handleSearch = (event) => {
-        event.preventDefault()
-        console.log(this.state.searchQuery)
-        if (this.state.searchQuery.skills.length == 0) {
-            delete this.state.searchQuery['skills']
+        let searchQuery = {
+            ...this.state.searchQuery,
+            interests: volunteerInterests
         }
-        this.searchVolunteersHandler()
+        this.searchVolunteersHandler(searchQuery)
     }
 
-    searchVolunteersHandler = () => {
-        searchVolunteers(this.state.searchQuery).then( response => {
-            console.log(response)
+    searchVolunteersHandler = (searchQuery) => {
+        if (searchQuery.skills && searchQuery.skills.length == 0) {
+            delete searchQuery['skills']
+        }
+        console.log(searchQuery)
+        searchVolunteers(searchQuery).then( response => {
             this.setState({
                 ...this.state,
                 filteredVolunteers: response,
-                searchQuery: {
-                    ...this.state.searchQuery,
-                    skills: [],
-                }
+                searchQuery,
             })
         }).catch( error => {
             console.log(error)    
         })
-
     }
 
     render() {
         return (
             <div>
-                <h2>Welcome to Admin Organization Page</h2>
-                <div>
-                    <button onClick={this.handleGettingData}>Export User Data</button>
+                <div className="adminHeaderContainer">
+                    {console.log(this.state)}
+                    <h2>Welcome to Admin Organization Page</h2>
+                    <div>
+                        <button onClick={this.handleGettingData}>Export User Data</button>
+                    </div>
                 </div>
-                <div>
+                <div className="filterContainer">
                     <div className="countryRegionContainer">
                         <CountryDropdown
                             value={this.state.searchQuery.country}
@@ -148,14 +137,12 @@ class AdminPanelComponent extends React.Component {
                         />
                     </div>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.volunteerInterestFilterCheckboxes} allowAll={true} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.searchQuery.skills.join(', ')} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={ this.state.searchQuery.skills ? this.state.searchQuery.skills.join(', ') : ''} />
 
-                    <br />
-                    <br />
-                    <br />
-                    <button onClick={this.handleSearch}>Filter</button>
                 </div>
-                <VolunteerList allVolunteers={this.state.filteredVolunteers} />
+                <div className="filterResultsContainer">
+                    <VolunteerList allVolunteers={this.state.filteredVolunteers} />
+                </div>
             </div>
         )
     }

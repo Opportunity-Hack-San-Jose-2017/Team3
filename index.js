@@ -53,23 +53,31 @@ app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failu
 });
 
 app.post('/api/admin/search/users', (req, res) => {
-    console.log(req.body)
+    console.log(req.user)
     if (auth.isAdmin(req)) {
-        if (req.body.interests) {
-            req.body.interests = {
-                $in: req.body.interests
+        var searchQuery = req.body 
+        if (searchQuery.interests) {
+            searchQuery.interests = {
+                $in: searchQuery.interests
             } 
         }
-        else if (req.body.skills) {
-            req.body.skills = {
-                $in: req.body.skills
+        else if (searchQuery.skills) {
+          searchQuery.skills = {
+                $in: searchQuery.skills
             } 
         }
-        db.findAll('user', req.body).then(users => {
+        var query = { $or: []}
+        Object.keys(searchQuery).map( key => {
+            var keyObj = {}
+            keyObj[key] = searchQuery[key]
+            query['$or'].push(keyObj)    
+        })
+        searchQuery = query
+        db.findAll('user', searchQuery).then(users => {
             return res.json(users);
         });
     } else {
-        return res.json({ error: 'You do not have permission to access this resource' });
+        return res.json({ error: 'You do not have permission to access this resource...' });
     }
 });
 
@@ -79,7 +87,7 @@ app.get('/api/users', (req, res) => {
             return res.json({ users })
         })
     } else {
-        return res.json({ error: 'You do not have permission to access this resource' })
+        return res.json({ error: 'You do not have permission to access this resource.' })
     }
 })
 
@@ -106,7 +114,7 @@ app.get('/api/admin/users', (req, res) => {
         })
     }
     else {
-        return res.json({ error: 'You do not have permission to access this resource' })
+        return res.json({ error: 'You do not have permission to access this resource.....' })
 
     }
 })
