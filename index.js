@@ -30,9 +30,7 @@ app.get(['/', '/signup', '/login', '/profile/:id'], (req, res) => {
 })
 
 app.post('/api/login', (req, res, next) => {
-    if (req.body.facebookLogin) {
-        // TODO: This is completely unsecure and temporary... need to replace react-facebook-login with https://github.com/jaredhanson/passport-facebook
-        req.user = req.body
+    if (req.user) {
         return res.json(req.user)
     } else {
         // See: https://github.com/jaredhanson/passport-local
@@ -55,6 +53,7 @@ app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failu
 });
 
 app.post('/api/admin/search/users', (req, res) => {
+    console.log(req)
     if (auth.isAdmin(req)) {
         if (req.body.interests) {
             req.body.interests = {
@@ -91,18 +90,25 @@ app.get('/api/user/:id', (req, res) => {
     }
     else {
         db.getById('user', req.params.id).then(user => {
+            req.user = user
             return res.json({ user })
         })
     }
 })
 
 app.get('/api/admin/users', (req, res) => {
-    db.getAll('user').then((results) => {
-        return res.json(results)
-    }).catch((error) => {
-        console.log(error)
-        return res.status(422).json(error)
-    })
+    if (auth.isAdmin(req)) {
+        db.getAll('user').then((results) => {
+            return res.json(results)
+        }).catch((error) => {
+            console.log(error)
+            return res.status(422).json(error)
+        })
+    }
+    else {
+        return res.json({ error: 'You do not have permission to access this resource' })
+
+    }
 })
 
 app.get('/api/admin/user/exportData', (req, res) => {
@@ -149,7 +155,7 @@ app.post('/api/user', (req, res) => {
 })
 
 app.put('/api/user', (req, res) => {
-    if (req.isAuthenticated()) {
+    if (req.user) {
         db.updateOneById('user', req.body).then(result => {
             var userRecord = req.body
             userRecord.recordType = "User Profile Update"
