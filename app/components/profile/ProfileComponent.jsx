@@ -7,6 +7,8 @@ import TextField from 'material-ui/TextField'
 import Paper from 'material-ui/Paper'
 import AdminPanelComponent from '../admin/AdminPanelComponent'
 import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
+import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
+import VolunteerSkillsInputComponent from '../commonComponents/SkillsInputComponent'
 
 import { Redirect } from 'react-router-dom'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
@@ -30,15 +32,13 @@ class ProfileComponent extends React.Component {
         retypeNewPassphrase: '',
         checkboxInterests: [],
         isAdmin: false,
+        adminTabs: 0,
     }
 
     componentDidMount() {
         const href = window.location.href;
         const id = href.substr(href.lastIndexOf('/') + 1);
         
-        console.log("reloading the page in did mount")
-        console.log(href)
-        console.log(id)
         getUser(id).then(response => {
             let checkboxInterests;
             
@@ -151,71 +151,83 @@ class ProfileComponent extends React.Component {
         })
     }
 
-    render () {
+
+    handleTabs = (event, tab) => {
+        this.setState({
+            ...this.state,
+            adminTabs: tab,
+        })
+    }
+
+    profileDisplayDetails = () => {
+        return (
+            <Paper>
+            <form onSubmit={e => this.onSubmit(e)} className="main">
+                <h2>Volunteer Profile</h2>
+                <div className="section">
+                    <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
+                    <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
+                    <div><TextField type="number" floatingLabelText="Phone" name="phone" value={this.state.phone} onChange={(e) => this.handleField('phone', e)} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.oldPassphrase} floatingLabelText="Coming soon Old Passphrase" onChange={(e) => this.handleField('oldPassphrase', e)} /></div>
+                    <div><TextField type="password" name="passphrase" value={this.state.newPassphrase} floatingLabelText="Coming soon New Passphrase" onChange={(e) => this.handleField('newPassphrase', e)} /></div>
+                    <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Coming soon Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
+                    <div className="countryRegionContainer">
+                        <CountryDropdown
+                            value={this.state.country}
+                            onChange={this.handleCountry}
+                        />
+                    </div>
+                    <div>
+                        <RegionDropdown
+                            country={this.state.country}
+                            value={this.state.region}
+                            onChange={this.handleRegion}
+                        />
+                    </div>
+                </div>
+                <div className={`section volunteerDetailsContainer`}>
+                    <h3>Choose 3 Interests</h3>
+                    <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skilsInput} />
+                </div>
+                <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
+            </form>
+            </Paper>
+        )
+    }
+
+    displayPanels = () => {
         if (this.state.isAdmin) {
-            return (
-                <AdminPanelComponent />
-            )
+            if (this.state.adminTabs == 0) {
+                return (<AdminPanelComponent />)
+            }
+            else {
+                return (
+                    this.profileDisplayDetails()
+                )
+            }
         }
         else {
             return (
-                <Paper>
-                <GiveLightLogoComponent />
-                <form onSubmit={e => this.onSubmit(e)} className="main">
-                    <h2>Volunteer Profile</h2>
-                    <div className="section">
-                        <div className="checkBoxStyle"><TextField type="text" name="name" value={this.state.name} floatingLabelText="Name" onChange={(e) => this.handleField('name', e)} /></div>
-                        <div><TextField type="text" name="email" value={this.state.email} floatingLabelText="Email" onChange={(e) => this.handleField('email', e)} /></div>
-                        <div><TextField type="number" floatingLabelText="Phone" name="phone" value={this.state.phone} onChange={(e) => this.handleField('phone', e)} /></div>
-                        <div><TextField type="password" name="passphrase" value={this.state.oldPassphrase} floatingLabelText="Coming soon Old Passphrase" onChange={(e) => this.handleField('oldPassphrase', e)} /></div>
-                        <div><TextField type="password" name="passphrase" value={this.state.newPassphrase} floatingLabelText="Coming soon New Passphrase" onChange={(e) => this.handleField('newPassphrase', e)} /></div>
-                        <div><TextField type="password" name="retypePassphrase" value={this.state.retypePassphrase} floatingLabelText="Coming soon Retype Passphrase" onChange={(e) => this.handleField('retypePassphrase', e)} /></div>
-                        <div className="countryRegionContainer">
-                            <CountryDropdown
-                                value={this.state.country}
-                                onChange={this.handleCountry}
-                            />
-                        </div>
-                        <div>
-                            <RegionDropdown
-                                country={this.state.country}
-                                value={this.state.region}
-                                onChange={this.handleRegion}
-                            />
-                        </div>
-                    </div>
-                    <div className={`section volunteerDetailsContainer`}>
-                        <h3>Choose 3 Interests</h3>
-                        <div className="interestsCheckboxContainer">
-                            <div className="checkBoxStyle">
-                                {
-                                    this.state.checkboxInterests.map((checkInterest, index) => {
-                                        if (this.disableCheckboxes()) {
-                                            return (
-                                                <Checkbox key={index} label={checkInterest.interest} checked={checkInterest.checked}
-                                                    onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                            )
-                                        }
-                                        else {
-                                            return (
-                                                <Checkbox key={index} disabled={!checkInterest.checked} label={checkInterest.interest}
-                                                    checked={checkInterest.checked} onCheck={(e) => this.handleCheckbox(e, index, checkInterest.interest)} />
-                                            )
-
-                                        }
-                                    })
-                                }
-                            </div>
-                        </div>
-                        <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.state.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.handleSkillsInput} /></div>
-                    </div>
-                    <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
-                </form>
-                </Paper>
+                this.profileDisplayDetails()
             )
         }
     }
-}
 
+    render () {
+        return (
+            <div>
+
+                <a onClick={(e) => this.handleTabs(e, 0)} >Admin</a> | 
+                <a onClick={(e) => this.handleTabs(e, 1)} >Volunteer Profile</a>
+                <GiveLightLogoComponent />
+                { 
+                    this.displayPanels()
+                }
+            
+            </div>
+        )
+    }
+}
 
 export default ProfileComponent

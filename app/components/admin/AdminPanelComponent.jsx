@@ -42,9 +42,11 @@ class AdminPanelComponent extends React.Component {
                 skills: event.target.value.split(/\s*,\s*/)
             }
         })
+        this.searchVolunteersHandler()
     }
 
     handleCountry = (event, index, value) => {
+        event.preventDefault()
         this.setState({
             ...this.state,
             searchQuery: {
@@ -52,9 +54,11 @@ class AdminPanelComponent extends React.Component {
                 country: value
             }
         })
+        this.searchVolunteersHandler()
     }
 
     handleRegion = (event, index, value) => {
+        event.preventDefault()
         this.setState({
             ...this.state,
             searchQuery: {
@@ -62,6 +66,7 @@ class AdminPanelComponent extends React.Component {
                 region: value
             }
         })
+        this.searchVolunteersHandler()
     }
 
     handleGettingData = (event) => {
@@ -75,6 +80,7 @@ class AdminPanelComponent extends React.Component {
         })
     }
     handleCheckbox = (event, index, interest) => {
+        event.preventDefault()
         var data = this.state.volunteerInterestFilterCheckboxes
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
         var volunteerInterests = []
@@ -91,13 +97,19 @@ class AdminPanelComponent extends React.Component {
                 interests: volunteerInterests
             },
         })
+        this.searchVolunteersHandler()
     }
 
     handleSearch = (event) => {
+        event.preventDefault()
+        console.log(this.state.searchQuery)
         if (this.state.searchQuery.skills.length == 0) {
             delete this.state.searchQuery['skills']
         }
+        this.searchVolunteersHandler()
+    }
 
+    searchVolunteersHandler = () => {
         searchVolunteers(this.state.searchQuery).then( response => {
             console.log(response)
             this.setState({

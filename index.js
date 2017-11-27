@@ -53,7 +53,7 @@ app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failu
 });
 
 app.post('/api/admin/search/users', (req, res) => {
-    console.log(req)
+    console.log(req.body)
     if (auth.isAdmin(req)) {
         if (req.body.interests) {
             req.body.interests = {
