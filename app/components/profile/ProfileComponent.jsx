@@ -41,8 +41,7 @@ class ProfileComponent extends React.Component {
         
         getUser(id).then(response => {
             let checkboxInterests;
-            
-            console.log(response)
+
             if (this.state.checkboxInterests.length === 0) {
                 checkboxInterests = interests.map(interest => ({ interest: interest, checked: false }))
             }
@@ -188,7 +187,7 @@ class ProfileComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Choose 3 Interests</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skilsInput} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skills ? this.state.skills.join(', ') : ''} />
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>
@@ -196,10 +195,26 @@ class ProfileComponent extends React.Component {
         )
     }
 
+    displayAdminNavigation = () => {
+        if (this.state.isAdmin) {
+            return (
+                <div>
+                    <h2>Admin Profile</h2>
+                    <div className="adminProfileNavigationContainer">
+                        <a onClick={(e) => this.handleTabs(e, 0)} >Admin</a> | 
+                        <a onClick={(e) => this.handleTabs(e, 1)} >Volunteer Profile</a>
+                    </div>
+                </div>
+            )
+        }
+    }
+
     displayPanels = () => {
         if (this.state.isAdmin) {
             if (this.state.adminTabs == 0) {
-                return (<AdminPanelComponent />)
+                return (
+                    <AdminPanelComponent />
+                )
             }
             else {
                 return (
@@ -217,13 +232,9 @@ class ProfileComponent extends React.Component {
     render () {
         return (
             <div>
-
-                <a onClick={(e) => this.handleTabs(e, 0)} >Admin</a> | 
-                <a onClick={(e) => this.handleTabs(e, 1)} >Volunteer Profile</a>
                 <GiveLightLogoComponent />
-                { 
-                    this.displayPanels()
-                }
+                { this.displayAdminNavigation() }
+                { this.displayPanels() }
             
             </div>
         )

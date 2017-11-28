@@ -52,7 +52,7 @@ class LoginComponent extends React.Component {
 
     handleLoggingUser = () => {
         loginUser(this.state).then(user => {
-            if (user) {
+            if (user._id) {
                 this.setState({
                     user,
                     goToProfile: true
@@ -63,7 +63,6 @@ class LoginComponent extends React.Component {
                 this.setState({
                     email: '',
                     passphrase: ''
-    
                 })
             }
         }).catch( (error) => {

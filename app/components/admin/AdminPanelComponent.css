@@ -1,11 +1,15 @@
+.adminPanelContainer {
+    display: block;
+}
+
 .volunteerListContainer {
-    width: 1000px;
+    width: 500px;
     text-align: center;
     display: inline-block;
 }
 
 .volunteerDisplayContainer {
-    width: 500px;
+    width: 100%;
     margin: 6px;
     padding: 6px;
     text-align: left;
@@ -19,4 +23,19 @@
 
 .volunteerDetailsInformation {
 
+}
+
+.filterContainer {
+    display: inline-block;
+    width: 400px;
+    height: 600px;
+    margin: 10px;
+}
+
+.filterResultsContainer {
+    display: inline-block;
+    height: 500px;
+    width: 560px;
+    margin: 10px;
+    overflow-y: scroll;
 }

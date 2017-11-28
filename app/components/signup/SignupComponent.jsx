@@ -122,6 +122,7 @@ class SignupComponent extends React.Component {
         e.preventDefault()
         let error = this.validateState()
         if (!error) {
+            console.log(this.state)
             registerUser(this.state)
         }
         else {
@@ -164,7 +165,7 @@ class SignupComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Please choose at most 3:</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skilsInput} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skill ? this.state.skills.join(', ') : ''} />
                 </div>
                 <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
             </form>

@@ -1,8 +1,16 @@
+.giveLightContainer {
+    text-align: center;
+    background-color: red;
+    width: 400px;
+}
+
 .giveLightLogo {
     
     background-image: url('http://www.givelight.org/images/branding/logo_lg.png');
     background-repeat: no-repeat;
     background-position: center;
-    height: 230px;
+    height: 180px;
+    width: 400px;
+    display: inline-block;
     margin: 10px;
 }

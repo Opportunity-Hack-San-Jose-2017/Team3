@@ -30,20 +30,20 @@ app.get(['/', '/signup', '/login', '/profile/:id'], (req, res) => {
 })
 
 app.post('/api/login', (req, res, next) => {
-    if (req.user) {
-        return res.json(req.user)
-    } else {
-        // See: https://github.com/jaredhanson/passport-local
-        passport.authenticate('local', (err, user, info) => {
-            if (err || !user) {
-                console.log('error with login:', err, user)
-                return res.end()
-            }
-            req.login(user, () => {
-                return res.json(user)
-            })
-        })(req, res, next)
-    }
+    // See: https://github.com/jaredhanson/passport-local
+    passport.authenticate('local', (err, user, info) => {
+        console.log(err)
+        console.log(user)
+        console.log(info)
+        if (err || !user) {
+            console.log('error with login:', err, user)
+            return res.status(422).json(err)
+        }
+        req.login(user, () => {
+            return res.json(user)
+        })    
+    })(req, res, next)
+
 })
 
 app.get('/api/auth/facebook', passport.authenticate('facebook'));
@@ -52,27 +52,30 @@ app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failu
   res.redirect(`/profile/${req.user._id}`)
 });
 
+const prepareSearchQuery = (searchQuery) => {
+    if (searchQuery.interests) {
+        searchQuery.interests = {
+            $in: searchQuery.interests
+        } 
+    }
+    else if (searchQuery.skills) {
+      searchQuery.skills = {
+            $in: searchQuery.skills
+        } 
+    }
+    var query = { $or: []}
+    Object.keys(searchQuery).map( key => {
+        var keyObj = {}
+        keyObj[key] = searchQuery[key]
+        query['$or'].push(keyObj)    
+    })
+    return query
+}
+
 app.post('/api/admin/search/users', (req, res) => {
-    console.log(req.user)
     if (auth.isAdmin(req)) {
-        var searchQuery = req.body 
-        if (searchQuery.interests) {
-            searchQuery.interests = {
-                $in: searchQuery.interests
-            } 
-        }
-        else if (searchQuery.skills) {
-          searchQuery.skills = {
-                $in: searchQuery.skills
-            } 
-        }
-        var query = { $or: []}
-        Object.keys(searchQuery).map( key => {
-            var keyObj = {}
-            keyObj[key] = searchQuery[key]
-            query['$or'].push(keyObj)    
-        })
-        searchQuery = query
+        console.log(req.body)
+        searchQuery = prepareSearchQuery(req.body)
         db.findAll('user', searchQuery).then(users => {
             return res.json(users);
         });
@@ -92,19 +95,24 @@ app.get('/api/users', (req, res) => {
 })
 
 app.get('/api/user/:id', (req, res) => {
+    console.log('get USER ID happening')
     if (req.user) {
         var user = req.user
         return res.json({ user });
     }
     else {
         db.getById('user', req.params.id).then(user => {
+            console.log('get finishing')
             req.user = user
+            console.log(req.user)
             return res.json({ user })
         })
     }
 })
 
 app.get('/api/admin/users', (req, res) => {
+    console.log('get USERS happening')
+    console.log(req.user)
     if (auth.isAdmin(req)) {
         db.getAll('user').then((results) => {
             return res.json(results)
@@ -149,6 +157,7 @@ app.post('/api/user', (req, res) => {
     // It is good practice to specifically pick the fields we want to insert here *in the backend*,
     // even if we have already done so on the front end. This is to prevent malicious users
     // from adding unexpected fields by modifying the front end JS in the browser.
+    console.log(req.body)
     db.insertOne('user', _.pick(req.body, [
         'name', 'email', 'country', 'region', 'phone', 'interests', 'passphrase', 'skills'
     ])).then(result => {

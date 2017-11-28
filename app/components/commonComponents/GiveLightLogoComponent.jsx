@@ -13,7 +13,7 @@ class GiveLightLogoComponent extends React.Component {
     render() {
         
         return (
-            <div>
+            <div className="giveLightLogoContainer">
                 <a href="http://www.givelight.org"><div className="giveLightLogo"></div></a>
             </div>
         )

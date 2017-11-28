@@ -6,6 +6,8 @@ import VolunteerSkillsInputComponent from '../commonComponents/SkillsInputCompon
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
 
 require('./AdminPanelComponent.css');
+require('../signup/SignupComponent.css');
+
 
 
 class AdminPanelComponent extends React.Component {
@@ -56,8 +58,10 @@ class AdminPanelComponent extends React.Component {
         event.preventDefault()
         let searchQuery = {
             ...this.state.searchQuery,
-            skills: event.target.value.split(/\s*,\s*/)
+            skillsInput: event.target.value,
+            skills: event.target.value.split(/\s*,\s*/),
         }
+        console.log(searchQuery)
         this.searchVolunteersHandler(searchQuery)
     }
 
@@ -100,13 +104,20 @@ class AdminPanelComponent extends React.Component {
         if (searchQuery.skills && searchQuery.skills.length == 0) {
             delete searchQuery['skills']
         }
-        console.log(searchQuery)
+        let cacheSkillsInput =  searchQuery['skillsInput']
+        delete searchQuery['skillsInput']
         searchVolunteers(searchQuery).then( response => {
-            this.setState({
-                ...this.state,
-                filteredVolunteers: response,
-                searchQuery,
-            })
+            console.log(response)
+            if (response.length) {
+                this.setState({
+                    ...this.state,
+                    filteredVolunteers: response,
+                    searchQuery: {
+                        ...searchQuery,
+                        skillsInput: cacheSkillsInput,
+                    }
+                })
+            }
         }).catch( error => {
             console.log(error)    
         })
@@ -114,16 +125,14 @@ class AdminPanelComponent extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="adminPanelContainer">
                 <div className="adminHeaderContainer">
-                    {console.log(this.state)}
-                    <h2>Welcome to Admin Organization Page</h2>
                     <div>
                         <button onClick={this.handleGettingData}>Export User Data</button>
                     </div>
                 </div>
                 <div className="filterContainer">
-                    <div className="countryRegionContainer">
+                    <div >
                         <CountryDropdown
                             value={this.state.searchQuery.country}
                             onChange={this.handleCountry}
@@ -137,7 +146,7 @@ class AdminPanelComponent extends React.Component {
                         />
                     </div>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.volunteerInterestFilterCheckboxes} allowAll={true} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={ this.state.searchQuery.skills ? this.state.searchQuery.skills.join(', ') : ''} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={ this.state.searchQuery.skillsInput} />
 
                 </div>
                 <div className="filterResultsContainer">
@@ -152,6 +161,8 @@ class VolunteerList extends React.Component {
     constructor (props) {
         super(props)
         this.props = props
+        console.log('volunteerlist component props passed', this.props)
+        console.log('volunteerlist component props passed', this.props.allVolunteers)
     }
 
     render () {
@@ -188,7 +199,7 @@ class VolunteerDisplay extends React.Component {
                     <div>Country: {this.props.volunteerData.country}</div> 
                     <div>Region: {this.props.volunteerData.region}</div> 
                 </div> 
-                <div className="volunteerDetailsContainer">
+                <div>
                     <div>Interests: {this.props.volunteerData.interests.join(', ')}</div>
                     <div>Skills: {this.props.volunteerData.skills.join(', ')}</div> 
                 </div> 
