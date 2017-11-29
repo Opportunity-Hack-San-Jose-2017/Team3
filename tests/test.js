@@ -1,22 +1,27 @@
-var expect = require('chai').expect
+import { expect } from 'chai'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var givelightSite = require('../index.js')
-describe('connecting give light frontend server', function() {
-    var frontendServer
+import App from '../app/components/App'
+import { shallow, configure } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-15'
+
+configure({ adapter: new Adapter() })
+
+describe('main js app component', function() {
     const defaultProps = {
         dispatch: () => {},
         manifest: { components: [] },
     }
 
     beforeEach(function() {
-        frontendServer = givelightSite
-        console.log(frontendServer)
+        console.log(App)
     });
     
     it('should render without blowing up', () => {
-        //const wrapper = shallow(<Thing {...defaultProps} />);
+        const wrapper = shallow(<App />)
         console.log('first test')
-        expect(1).to.eql(1);
+        expect(wrapper.length).to.eql(1);
     })
 
 
