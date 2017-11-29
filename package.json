@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
     "test": "npm run lint",
+    "mocha-test": "mocha tests/test.js",
     "build": "webpack",
     "watch-build": "webpack --watch",
     "watch": "webpack --watch",
@@ -70,6 +71,10 @@
     "webpack": "^3.x"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "mocha": "^4.0.1",
     "webpack-dev-server": "2.x"
   },
   "keywords": [
