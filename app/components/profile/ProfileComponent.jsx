@@ -16,6 +16,7 @@ import { getUser, updateUser } from '../../api/api'
 import { interests } from '../../models/interests'
 
 require('../signup/SignupComponent.css');
+require('./ProfileComponent.css');
 require('../sharedCss.css');
 
 class ProfileComponent extends React.Component {
@@ -200,10 +201,9 @@ class ProfileComponent extends React.Component {
         if (this.state.isAdmin) {
             return (
                 <div>
-                    <h2>Admin Profile</h2>
                     <div className="adminProfileNavigationContainer">
-                        <a onClick={(e) => this.handleTabs(e, 0)} >Admin</a> | 
-                        <a onClick={(e) => this.handleTabs(e, 1)} >Volunteer Profile</a>
+                        <div className="navItem"><a className="navItem" onClick={(e) => this.handleTabs(e, 0)} >Search</a></div> |
+                        <div className="navItem"><a className="navItem" onClick={(e) => this.handleTabs(e, 1)} >Profile</a></div>
                     </div>
                 </div>
             )
