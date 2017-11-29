@@ -16,6 +16,7 @@ import { getUser, updateUser } from '../../api/api'
 import { interests } from '../../models/interests'
 
 require('../signup/SignupComponent.css');
+require('../sharedCss.css');
 
 class ProfileComponent extends React.Component {
     state = {

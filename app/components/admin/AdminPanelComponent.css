@@ -2,39 +2,16 @@
     display: block;
 }
 
-.volunteerListContainer {
-    width: 500px;
-    text-align: center;
-    display: inline-block;
-}
-
-.volunteerDisplayContainer {
-    width: 100%;
-    margin: 6px;
-    padding: 6px;
-    text-align: left;
-    display: inline-block;
-    border: solid #cccccc 1px;
-}
-
-.volunteerContactInformation {
-    width: 100%;
-}
-
-.volunteerDetailsInformation {
-
-}
-
 .filterContainer {
     display: inline-block;
     width: 400px;
-    height: 600px;
+    height: 400px;
     margin: 10px;
 }
 
 .filterResultsContainer {
     display: inline-block;
-    height: 500px;
+    height: 400px;
     width: 560px;
     margin: 10px;
     overflow-y: scroll;

@@ -32,9 +32,6 @@ app.get(['/', '/signup', '/login', '/profile/:id'], (req, res) => {
 app.post('/api/login', (req, res, next) => {
     // See: https://github.com/jaredhanson/passport-local
     passport.authenticate('local', (err, user, info) => {
-        console.log(err)
-        console.log(user)
-        console.log(info)
         if (err || !user) {
             console.log('error with login:', err, user)
             return res.status(422).json(err)
@@ -49,7 +46,7 @@ app.post('/api/login', (req, res, next) => {
 app.get('/api/auth/facebook', passport.authenticate('facebook'));
 
 app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(`/profile/${req.user._id}`)
+    res.redirect(`/profile/${req.user._id}`)
 });
 
 const prepareSearchQuery = (searchQuery) => {
@@ -74,7 +71,6 @@ const prepareSearchQuery = (searchQuery) => {
 
 app.post('/api/admin/search/users', (req, res) => {
     if (auth.isAdmin(req)) {
-        console.log(req.body)
         searchQuery = prepareSearchQuery(req.body)
         db.findAll('user', searchQuery).then(users => {
             return res.json(users);
@@ -95,24 +91,19 @@ app.get('/api/users', (req, res) => {
 })
 
 app.get('/api/user/:id', (req, res) => {
-    console.log('get USER ID happening')
     if (req.user) {
         var user = req.user
         return res.json({ user });
     }
     else {
         db.getById('user', req.params.id).then(user => {
-            console.log('get finishing')
             req.user = user
-            console.log(req.user)
             return res.json({ user })
         })
     }
 })
 
 app.get('/api/admin/users', (req, res) => {
-    console.log('get USERS happening')
-    console.log(req.user)
     if (auth.isAdmin(req)) {
         db.getAll('user').then((results) => {
             return res.json(results)

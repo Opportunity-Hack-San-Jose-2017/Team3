@@ -15,19 +15,9 @@
     text-align: left;
 }
 
-.main {
-    display: inline-block;
-    font-family: 'Roboto';
-    margin: 10px;
-    width: 800px;
-    background-color: #F3F2F0;
-    text-align: center;
-}
-
 .checkBoxStyle {
     margin-top: 10px;
 }
-
 
 .interestsCheckboxContainer {
     display: inline-block;
