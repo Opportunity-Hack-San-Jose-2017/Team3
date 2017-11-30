@@ -16,3 +16,13 @@
     margin: 10px;
     overflow-y: scroll;
 }
+
+.loadingScreenContainer {
+    display: block;
+    width: 800px;
+    height: 800px;
+    position: fixed;
+    top: 100px;
+    left: 300px;
+    border: 1px solid #ccc;
+}

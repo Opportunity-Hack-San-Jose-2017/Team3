@@ -20,6 +20,7 @@ class AdminPanelComponent extends React.Component {
             filteredVolunteers: [],
             volunteerInterestFilterCheckboxes: checkInterests,
             filterInterests: '',
+            loadingScreenShow: false,
             searchQuery: {
             },
         }
@@ -47,6 +48,7 @@ class AdminPanelComponent extends React.Component {
         getAllUsers().then( response => {
             this.setState({
                 filteredVolunteers: response,
+                loadingScreenShow: false,
             })
         }).catch( error => {
             console.log(error)    
@@ -86,6 +88,7 @@ class AdminPanelComponent extends React.Component {
 
     handleCheckbox = (event, index, interest) => {
         event.preventDefault()
+        this.setState({ ...this.state, loadingScreenShow: true })
         var data = this.state.volunteerInterestFilterCheckboxes
         data[index] = { interest: data[index].interest, checked: !data[index].checked }
         var volunteerInterests = []
@@ -110,17 +113,31 @@ class AdminPanelComponent extends React.Component {
 
         if (Object.keys(searchQuery).length != 0) {
             searchVolunteers(searchQuery).then( response => {
+                console.log(response)
                 if (response.length) {
                     this.setState({
                         ...this.state,
                         filteredVolunteers: response,
+                        loadingScreenShow: false,
                         searchQuery: {
                             ...searchQuery,
                         }
                     })
                 }
+                else {
+                    this.setState({
+                        ...this.state,
+                        filteredVolunteers: [],
+                        loadingScreenShow: false,
+                        searchQuery: {
+                            ...searchQuery,
+                        }
+                    })
+
+                }
             }).catch( error => {
                 console.log(error)
+                this.setState({ ...this.state, loadingScreenShow: false })
             })
         }
         else {
@@ -128,9 +145,33 @@ class AdminPanelComponent extends React.Component {
         }
     }
 
+    showLoadingScreen = () => {
+        if (this.state.loadingScreenShow) {
+            return (
+                <div className="loadingScreenContainer">
+                    Searching Volunteers Please Wait...
+                </div>
+            )
+        }
+    }
+
+    displayVolunteerList = () => {
+        if (this.state.filteredVolunteers.length == 0) {
+            return (
+                <div> No Results for search query</div>
+            )
+        }
+        else {
+            return (
+                <VolunteerListComponent allVolunteers={this.state.filteredVolunteers} />
+            )
+        }
+    }
+
     render() {
         return (
             <div className="adminPanelContainer">
+                {this.showLoadingScreen()}
                 <div className="adminHeaderContainer">
                     <div>
                         <button onClick={this.handleGettingData}>Export User Data</button>
@@ -155,10 +196,10 @@ class AdminPanelComponent extends React.Component {
 
                 </div>
                 <div className="filterResultsContainer">
-                    <VolunteerListComponent allVolunteers={this.state.filteredVolunteers} />
+                    { this.displayVolunteerList() }
                 </div>
             </div>
-        )
+            )
     }
 }
 

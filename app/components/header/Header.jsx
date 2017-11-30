@@ -30,7 +30,7 @@ export default class Header extends React.Component {
       style={mystyle}
       className="nav-bar"
       iconElementRight={rightButtons}
-      title="Give Light"
+      title=""
     />
     );
   }

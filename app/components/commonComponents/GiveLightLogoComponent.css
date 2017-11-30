@@ -9,8 +9,9 @@
     background-image: url('http://www.givelight.org/images/branding/logo_lg.png');
     background-repeat: no-repeat;
     background-position: center;
-    height: 180px;
-    width: 400px;
+    background-size: contain;
+    height: 140px;
+    width: 180px;
     display: inline-block;
     margin: 10px;
 }
