@@ -211,17 +211,10 @@ class ProfileComponent extends React.Component {
     }
 
     displayPanels = () => {
-        if (this.state.isAdmin) {
-            if (this.state.adminTabs == 0) {
-                return (
-                    <AdminPanelComponent />
-                )
-            }
-            else {
-                return (
-                    this.profileDisplayDetails()
-                )
-            }
+        if (this.state.isAdmin && this.state.adminTabs == 0) {
+            return (
+                <AdminPanelComponent />
+            )
         }
         else {
             return (
