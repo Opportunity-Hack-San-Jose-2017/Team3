@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
     "test": "npm run lint",
-    "mocha-test": "mocha --require ignore-styles --compilers js:babel-core/register tests/test.js",
+    "mocha-test": "mocha --recursive --require ignore-styles --compilers js:babel-core/register tests/",
+    "mocha-debug-test": "mocha debug --recursive --require ignore-styles --compilers js:babel-core/register tests/",
     "build": "webpack",
     "watch-build": "webpack --watch",
     "watch": "webpack --watch",
