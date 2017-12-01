@@ -1,9 +1,10 @@
 import { expect } from 'chai'
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import VolunteerListComponent from '../../app/components/admin/volunteerList/VolunterrListComponent'
 import { shallow, configure, mount } from 'enzyme'
+import sinon from 'sinon'
 import Adapter from 'enzyme-adapter-react-15'
 
 configure({ adapter: new Adapter() })
@@ -39,6 +40,8 @@ describe('VolunteerList component tests', () => {
     it ('displays no volunteers list container if no volunteers', () => {
         const testVolunteers = []
         const wrapper = shallow(<VolunteerListComponent allVolunteers={testVolunteers} />)
+        const mountWrapper = mount(<VolunteerListComponent allVolunteers={testVolunteers} />)
+        debugger
         expect(wrapper.instance().props.allVolunteers).to.equal(testVolunteers)
 
     })

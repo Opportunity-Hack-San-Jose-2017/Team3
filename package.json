@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
     "test": "npm run lint",
-    "mocha-test": "mocha --recursive --require ignore-styles --compilers js:babel-core/register tests/",
-    "mocha-debug-test": "mocha debug --recursive --require ignore-styles --compilers js:babel-core/register tests/",
+    "mocha-test": "mocha --recursive -w tests/helpers/browser.js --require ignore-styles --compilers js:babel-core/register tests/",
+    "mocha-debug-test": "mocha debug --recursive -w tests/helpers/browser.js --require ignore-styles --compilers js:babel-core/register tests/",
     "build": "webpack",
     "watch-build": "webpack --watch",
     "watch": "webpack --watch",
@@ -79,8 +79,10 @@
     "enzyme-adapter-react-15": "^1.0.5",
     "enzyme-adapter-react-16": "^1.1.0",
     "ignore-styles": "^5.0.1",
+    "jsdom": "^11.5.1",
     "mocha": "^4.0.1",
     "react-test-renderer": "15.6.1",
+    "sinon": "^4.1.2",
     "webpack-dev-server": "2.x"
   },
   "keywords": [
