@@ -60,11 +60,11 @@ const prepareSearchQuery = (searchQuery) => {
             $in: searchQuery.skills
         } 
     }
-    var query = { $or: []}
+    var query = { $and: []}
     Object.keys(searchQuery).map( key => {
         var keyObj = {}
         keyObj[key] = searchQuery[key]
-        query['$or'].push(keyObj)    
+        query['$and'].push(keyObj)    
     })
     return query
 }
