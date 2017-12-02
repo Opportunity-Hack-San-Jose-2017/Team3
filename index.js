@@ -62,7 +62,7 @@ app.get('/api/users', (req, res) => {
 })
 
 app.get('/api/user/:id', (req, res) => {
-    if (req.isAuthenticated() && req.params.id == req.user._id) {
+    if (req.isAuthenticated() && req.params.id === req.user._id.toString()) {
         db.getById('user', req.params.id).then(user => {
             return res.json({ user })
         })
@@ -89,10 +89,10 @@ app.post('/api/user', (req, res) => {
 })
 
 app.put('/api/user', (req, res) => {
-    if (req.isAuthenticated() && req.body._id === req.user._id) {
+    if (req.isAuthenticated() && req.body._id === req.user._id.toString()) {
         db.updateOneById('user', req.body).then(result => {
             var userRecord = req.body;
-            userRecord.recordType = "User Profile Update"
+            userRecord.recordType = 'User Profile Update'
             mailer.notifyAdmin(userRecord);
             return res.json(result);
         }).catch(error => {
