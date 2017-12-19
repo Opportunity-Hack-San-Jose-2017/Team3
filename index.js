@@ -96,10 +96,13 @@ app.get('/api/user/:id', (req, res) => {
         return res.json({ user });
     }
     else {
+    if (req.isAuthenticated() && req.params.id === req.user._id.toString()) {
         db.getById('user', req.params.id).then(user => {
             req.user = user
             return res.json({ user })
         })
+    } else {
+        return res.status(401).json({ error: 'Not authenticated' })
     }
 })
 
@@ -153,7 +156,7 @@ app.post('/api/user', (req, res) => {
         'name', 'email', 'country', 'region', 'phone', 'interests', 'passphrase', 'skills'
     ])).then(result => {
         var userRecord = req.body
-        userRecord.recordType = "New User"
+        userRecord.recordType = 'New User'
         mailer.notifyAdmin(userRecord)
         return res.json(result)
     }).catch(error => {
@@ -163,12 +166,16 @@ app.post('/api/user', (req, res) => {
 })
 
 app.put('/api/user', (req, res) => {
+<<<<<<< HEAD
     if (req.user) {
+=======
+    if (req.isAuthenticated() && req.body._id === req.user._id.toString()) {
+>>>>>>> 5481c9d5589152ff4d486254c4edadd2536aec0a
         db.updateOneById('user', req.body).then(result => {
-            var userRecord = req.body
-            userRecord.recordType = "User Profile Update"
-            mailer.notifyAdmin(userRecord)
-            return res.json(result)
+            var userRecord = req.body;
+            userRecord.recordType = 'User Profile Update'
+            mailer.notifyAdmin(userRecord);
+            return res.json(result);
         }).catch(error => {
             console.log(error)
             return res.json(error)
