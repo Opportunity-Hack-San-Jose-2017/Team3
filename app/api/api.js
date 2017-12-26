@@ -75,6 +75,19 @@ const getAllUsers = (id) => {
     }) 
 }
 
+const makeAdmin = (volunteerEmail) => {
+    return new Promise((resolve, reject) => {
+        return makeRequest(volunteerEmail, 'POST', '/api/admin/user/makeAdmin').then(response => {
+            return resolve(response.json())
+        }).catch(error => {
+            window.alert('Error makeing  user admin', error)
+            console.log(error)
+            return reject(error)
+        })
+    }) 
+    
+}
+
 const searchVolunteers = (searchQuery) => {
     return new Promise((resolve, reject) => {
         return makeRequest(searchQuery, 'POST', '/api/admin/search/users').then(response => {
@@ -122,6 +135,7 @@ export {
     getUser,
     updateUser,
     exportUserData,
+    makeAdmin,
     getAllUsers,
     searchVolunteers,
 }

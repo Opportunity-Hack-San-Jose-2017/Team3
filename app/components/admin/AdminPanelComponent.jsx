@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { exportUserData, getAllUsers, searchVolunteers } from '../../api/api'
+import { exportUserData, getAllUsers, searchVolunteers, makeAdmin } from '../../api/api'
 import { interests } from '../../models/interests'
 import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
 import VolunteerSkillsInputComponent from '../commonComponents/SkillsInputComponent'
 import VolunteerListComponent from './volunteerList/VolunterrListComponent'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector-material-ui'
+import { validateEmail } from '../../../lib/validation.js'
 
-require('./AdminPanelComponent.css');
-require('../sharedCss.css');
+require('./AdminPanelComponent.css')
+require('../sharedCss.css')
 
 
 
@@ -21,6 +22,7 @@ class AdminPanelComponent extends React.Component {
             volunteerInterestFilterCheckboxes: checkInterests,
             filterInterests: '',
             loadingScreenShow: false,
+            makeAdminField: '',
             searchQuery: {
             },
         }
@@ -168,6 +170,33 @@ class AdminPanelComponent extends React.Component {
         }
     }
 
+    handleMakeAdmin = (event) => {
+        console.log('handleing',event.target.value)
+        this.setState({
+            ...this.state,
+            makeAdminField: event.target.value,
+        })
+    }
+    submitMakeAdmin = () => {
+        event.preventDefault()
+        console.log('submitting',this.state.makeAdminField)
+        let emailInvalidMsg = validateEmail(this.state.makeAdminField, '')
+            if (emailInvalidMsg == '') {
+            let data = {
+                'email': this.state.makeAdminField
+            }
+            makeAdmin(data).then( response => {
+                console.log(response)
+            }).catch( error => {
+                console.log(error)
+            })
+        }
+        else {
+            window.alert('Invalid Email')
+        }
+        
+    }
+
     render() {
         return (
             <div className="adminPanelContainer">
@@ -175,6 +204,10 @@ class AdminPanelComponent extends React.Component {
                 <div className="adminHeaderContainer">
                     <div>
                         <button onClick={this.handleGettingData}>Export User Data</button>
+                        <div>
+                            <input type="text" onChange={this.handleMakeAdmin} />
+                            <button onClick={this.submitMakeAdmin} >Make New Admin</button>
+                        </div>
                     </div>
                 </div>
                 <div className="filterContainer">

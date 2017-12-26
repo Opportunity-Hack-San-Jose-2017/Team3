@@ -164,20 +164,24 @@ app.post('/api/user', (req, res) => {
     })
 })
 
-app.post('/api/user/makeAdmin', (req, res) => {
-    db.getByEmail('user', _.pick(req.body, ['email'])).then( volunteer => {
-        volunteer.isAdmin = true
-        db.updateOneById('user', volunteer).then(result => {
-            return res.status(200).json(result)
-        }).catch(error => {
-            console.log(error)
-            return res.status(200).json(error)
+app.post('/api/admin/user/makeAdmin', (req, res) => {
+    if (auth.isAdmin(req)) {
+        db.getByEmail('user', _.pick(req.body, ['email'])).then( volunteer => {
+            volunteer.isAdmin = true
+            db.updateOneById('user', volunteer).then(result => {
+                return res.status(200).json(result)
+            }).catch(error => {
+                console.log(error)
+                return res.status(200).json(error)
+            })
+        }).catch( error => {
+            console.log('error in getByEmail', error)
         })
-    }).catch( error => {
-        console.log('error in getByEmail', error)
-    })
-    
+    }
+    else {
+        return res.json({ error: 'You do not have permission to access this resource.....' })
 
+    }
 })
 
 app.put('/api/user', (req, res) => {
