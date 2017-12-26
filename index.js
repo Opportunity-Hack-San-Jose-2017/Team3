@@ -95,7 +95,6 @@ app.get('/api/user/:id', (req, res) => {
         var user = req.user
         return res.json({ user });
     }
-    else {
     if (req.isAuthenticated() && req.params.id === req.user._id.toString()) {
         db.getById('user', req.params.id).then(user => {
             req.user = user
@@ -165,12 +164,24 @@ app.post('/api/user', (req, res) => {
     })
 })
 
+app.post('/api/user/makeAdmin', (req, res) => {
+    db.getByEmail('user', _.pick(req.body, ['email'])).then( volunteer => {
+        volunteer.isAdmin = true
+        db.updateOneById('user', volunteer).then(result => {
+            return res.status(200).json(result)
+        }).catch(error => {
+            console.log(error)
+            return res.status(200).json(error)
+        })
+    }).catch( error => {
+        console.log('error in getByEmail', error)
+    })
+    
+
+})
+
 app.put('/api/user', (req, res) => {
-<<<<<<< HEAD
-    if (req.user) {
-=======
     if (req.isAuthenticated() && req.body._id === req.user._id.toString()) {
->>>>>>> 5481c9d5589152ff4d486254c4edadd2536aec0a
         db.updateOneById('user', req.body).then(result => {
             var userRecord = req.body;
             userRecord.recordType = 'User Profile Update'
