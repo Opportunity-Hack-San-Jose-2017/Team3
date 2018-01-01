@@ -95,7 +95,7 @@ app.get('/api/user/:id', (req, res) => {
         var user = req.user
         return res.json({ user });
     }
-    else if (req.isAuthenticated() && req.params.id === req.user._id.toString()) {
+    if (req.isAuthenticated() && req.params.id === req.user._id.toString()) {
         db.getById('user', req.params.id).then(user => {
             req.user = user
             return res.json({ user })
@@ -149,10 +149,12 @@ app.post('/api/user', (req, res) => {
     // It is good practice to specifically pick the fields we want to insert here *in the backend*,
     // even if we have already done so on the front end. This is to prevent malicious users
     // from adding unexpected fields by modifying the front end JS in the browser.
-    console.log(req.body)
-    db.insertOne('user', _.pick(req.body, [
+    var newUser =  _.pick(req.body, [
         'name', 'email', 'country', 'region', 'phone', 'interests', 'passphrase', 'skills'
-    ])).then(result => {
+    ])
+    newUser.isAdmin = false
+    newUser.approvedBy = ''
+    db.insertOne('user', newUser).then(result => {
         var userRecord = req.body
         userRecord.recordType = 'New User'
         mailer.notifyAdmin(userRecord)
@@ -161,6 +163,26 @@ app.post('/api/user', (req, res) => {
         console.log(error)
         return res.status(422).json(error)
     })
+})
+
+app.post('/api/admin/user/makeAdmin', (req, res) => {
+    if (auth.isAdmin(req)) {
+        db.getByEmail('user', _.pick(req.body, ['email'])).then( volunteer => {
+            volunteer.isAdmin = true
+            volunteer.approvedBy = req.user._id
+            db.updateOneById('user', volunteer).then(result => {
+                return res.status(200).json(result)
+            }).catch(error => {
+                console.log(error)
+                return res.status(200).json(error)
+            })
+        }).catch( error => {
+            console.log('error in getByEmail', error)
+        })
+    }
+    else {
+        return res.json({ error: 'You do not have permission to access this resource.....' })
+    }
 })
 
 app.put('/api/user', (req, res) => {

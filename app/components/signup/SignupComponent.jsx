@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
+import { validateEmail } from '../../../lib/validation.js'
 
 import GiveLightLogoComponent from '../commonComponents/GiveLightLogoComponent'
 import VolunteerInterestsCheckboxesComponent from '../commonComponents/VolunteerInterestsCheckboxesComponent'
@@ -94,12 +95,9 @@ class SignupComponent extends React.Component {
     }
     validateState = () => {
         var errorMessage = ''
-        let emailPatternReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        errorMessage = validateEmail(this.state.email)
         if (this.state.name.length == 0) {
             errorMessage += 'Please enter a valid name\n'
-        }
-        if (!emailPatternReg.test(this.state.email)) {
-            errorMessage += 'Please enter a valid email\n'
         }
         if (!this.state.country) {
             errorMessage += 'Please select a country\n'
