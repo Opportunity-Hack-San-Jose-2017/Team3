@@ -59,13 +59,23 @@ class SignupComponent extends React.Component {
             region: value
         })
     }
+    
     handleSkillsInput = (event) => {
         event.preventDefault()
-        this.setState({
-            ...this.state,
-            skillsInput: event.target.value,
-            skills: event.target.value.split(/\s*,\s*/)
-        })
+        if (event.target.value == "") {
+            this.setState({
+                ...this.state,
+                skillsInput: "",
+                skills: []
+            })
+        }
+        else {
+            this.setState({
+                ...this.state,
+                skillsInput: event.target.value,
+                skills: this.state.skillsInput.split(/[,]+/)
+            })
+        }
     }
     responseFacebook = (response) => {
         this.setState({
@@ -120,7 +130,6 @@ class SignupComponent extends React.Component {
         e.preventDefault()
         let error = this.validateState()
         if (!error) {
-            console.log(this.state)
             registerUser(this.state)
         }
         else {
@@ -163,7 +172,7 @@ class SignupComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Please choose at most 3:</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skill ? this.state.skills.join(', ') : ''} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skillsInput ? this.state.skillsInput : ''} />
                 </div>
                 <div><button className="giveLightButton" onClick={e =>this.handleSubmit(e)} >sign up</button></div>
             </form>

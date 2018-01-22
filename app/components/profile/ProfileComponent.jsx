@@ -102,11 +102,20 @@ class ProfileComponent extends React.Component {
     }
     handleSkillsInput = (event) => {
         event.preventDefault()
-        this.setState({
-            ...this.state,
-            skillsInput: event.target.value,
-            skills: event.target.value.split(/[ ,]+/)
-        })
+        if (event.target.value == "") {
+            this.setState({
+                ...this.state,
+                skillsInput: "",
+                skills: []
+            })
+        }
+        else {
+            this.setState({
+                ...this.state,
+                skillsInput: event.target.value,
+                skills: this.state.skillsInput.split(/[,]+/)
+            })
+        }
     }
     disableCheckboxes = () => {
         return this.state.checkboxInterests.filter( (interest) => {return interest.checked}).length < 3
@@ -198,7 +207,7 @@ class ProfileComponent extends React.Component {
                 <div className={`section volunteerDetailsContainer`}>
                     <h3>Choose 3 Interests</h3>
                     <VolunteerInterestsCheckboxesComponent handleCheckbox={this.handleCheckbox} checkboxInterests={this.state.checkboxInterests} />
-                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skills ? this.state.skills.join(', ') : ''} />
+                    <VolunteerSkillsInputComponent handleSkillsInput={this.handleSkillsInput} skillsInput={this.state.skillsInput ? this.state.skillsInput : ''} />
                 </div>
                 <div><RaisedButton className={`darkStyle saveButton`} type="submit" label="Update Profile" /></div>
             </form>

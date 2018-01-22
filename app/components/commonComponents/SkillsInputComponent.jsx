@@ -17,7 +17,9 @@ class VolunteerSkillsInputComponent extends React.Component {
 
     render () {
         return (
-                    <div className="skillsInputStyle"><TextField type="text" name="skills" value={this.props.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.props.handleSkillsInput} /></div>
+            <div className="skillsInputStyle">
+                <TextField type="text" name="skills" value={this.props.skillsInput} floatingLabelText="Skills e.g.: excel, quickbooks,..." onChange={this.props.handleSkillsInput} />
+        </div>
 
         )
     }
