@@ -56,8 +56,11 @@ const prepareSearchQuery = (searchQuery) => {
         } 
     }
     else if (searchQuery.skills) {
-      searchQuery.skills = {
-            $in: searchQuery.skills
+        const regexSkills = searchQuery.skills.map( (skill) => {
+            return new RegExp(skill, "gi")
+        })
+        searchQuery.skills = {
+            $in: regexSkills
         } 
     }
     var query = { $or: []}
